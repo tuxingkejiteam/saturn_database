@@ -1,0 +1,28 @@
+# -*- coding: utf-8  -*-
+# -*- author: jokker -*-
+
+# ignore all .pyc and .pyo .pyd file
+*.pyc
+*.py[cod]
+
+# ignore assign file
+src\appQingZang\pluginQZ\*.py[cod]
+src\common\config\*.py[cod]
+src\common\entity\*.py[cod]
+src\common\jdbc\*.py[cod]
+src\common\process\*.py[cod]
+src\common\utils\*.py[cod]
+src\common\*.py[cod]
+src\*.py[cod]
+
+# ignore folder : idea
+.idea/
+/dist/
+/build/
+/JoUtil.egg-info/
+
+# 手动排除: 选中文件夹 - 右击 - git - add to .gitignore - .gitignore
+# make .ignore work immediately : https://blog.csdn.net/x541211190/article/details/106052777 ：
+# git rm -r --cached .
+
+
