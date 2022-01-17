@@ -117,3 +117,6 @@ class MySQL(object):
         self.database.close()
         print('操作耗时：{:.4f}s'.format(time() - self.start_time))
         print('数据库连接已断开！')
+
+
+db = MySQL()
