@@ -35,3 +35,28 @@ class LabelInfo:
 
     def __str__(self):  # 若打印此类，则会输出图片的编码。
         return self.unique_code
+
+
+
+    # todo 需要增加最基础的属性操作等，这样会在后面方便很多
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

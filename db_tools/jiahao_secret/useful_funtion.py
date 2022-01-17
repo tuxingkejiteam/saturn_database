@@ -2,21 +2,21 @@ import datetime
 import json
 import os
 import xml.etree.ElementTree as ET
-
 # 字母数值对照表
 import cv2
 
 comparison_tabel = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: 'a', 11: 'b',
                     12: 'c', 13: 'd', 14: 'e', 15: 'f', 16: 'g', 17: 'h', 18: 'i', 19: 'j', 20: 'k', 21: 'm',
-                    22: 'n', 23: 'p', 24: 'q', 25: 'r', 26: 's', 27: 't', 28: 'u', 29: 'v', 30: 'w', 31: 'x',
+                    22: 'n',  23: 'p', 24: 'q', 25: 'r', 26: 's', 27: 't', 28: 'u', 29: 'v', 30: 'w', 31: 'x',
                     32: 'y', 33: 'z'}
 comparison_tabel1 = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'a': 10, 'b': 11,
-                     'c': 12, 'd': 13, 'e': 14, 'f': 15, 'g': 16, 'h': 17, 'i': 18, 'j': 19, 'k': 20, 'm': 21,
-                     'n': 22, 'p': 23, 'q': 24, 'r': 25, 's': 26, 't': 27, 'u': 28, 'v': 29, 'w': 30, 'x': 31,
-                     'y': 32, 'z': 33}
+                    'c': 12, 'd': 13, 'e': 14, 'f': 15, 'g': 16, 'h': 17, 'i': 18, 'j': 19, 'k': 20, 'm':21 ,
+                    'n': 22, 'p': 23, 'q': 24, 'r': 25, 's': 26, 't': 27, 'u': 28, 'v': 29, 'w': 30, 'x': 31,
+                    'y': 32, 'z': 33}
 year_dict = {2019: 'A', 2020: 'B', 2021: 'C', 2022: 'D', 2023: 'E', 2024: 'F', 2025: 'G'}
 year_dict1 = {'A': 2019, 'B': 2020, 'C': 2021, 'D': 2022, 'E': 2023, 'F': 2024, 'G': 2025}
-object_count = 1
+
+object_count=1
 
 
 def first_3_letters() -> str:
@@ -56,7 +56,8 @@ def coding_rank(serial_number) -> str:
     letter_6 = comparison_tabel[remainder_2]
     letter_7 = comparison_tabel[remainder_1]
 
-    return letter_4 + letter_5 + letter_6 + letter_7
+
+    return letter_4 + letter_5 + letter_6+letter_7
 
 
 def binary2ten(number_2_str) -> str:
@@ -72,24 +73,23 @@ def binary2ten(number_2_str) -> str:
             add_zeros += '0'
         return add_zeros + number_10_str
 
-
-def already_rename(name) -> bool:  # 通过图片前三位命名日期和当天日期进行比较，或者是否符合命名规则来判断图片是否已经入库
+def already_rename(name)-> bool:                   #通过图片前三位命名日期和当天日期进行比较，或者是否符合命名规则来判断图片是否已经入库
     date = datetime.datetime.now()
     year = date.year
     month = date.month
     day = date.day
-    old_name = list(name)
+    old_name=list(name)
     if old_name[0] not in year_dict1:
         return False
-    elif old_name[1] not in comparison_tabel1:
+    elif old_name[1]not in comparison_tabel1:
         return False
-    elif old_name[2] not in comparison_tabel1:
+    elif old_name[2]not in comparison_tabel1:
         return False
     elif int(year_dict1[old_name[0]]) <= year:
         com_year = year_dict1[old_name[0]]
         com_month = comparison_tabel1[old_name[1]]
         com_day = comparison_tabel1[old_name[2]]
-        if 10 <= com_month <= 22:
+        if com_month >= 10 and com_month <= 22:
             pic_month = com_month - 9
             pic_day = com_day - 9
         else:
@@ -106,14 +106,14 @@ def already_rename(name) -> bool:  # 通过图片前三位命名日期和当天�
         elif pic_month == month:
             if pic_day < day:
                 return True
-            elif pic_day == day:
-                pic_no = old_name[3] + old_name[4] + old_name[5] + old_name[6]
-                count_pic = coding_rank_back(pic_no)
-                today_count = get_record(old_name[0] + old_name[1] + old_name[2])
-                if int(count_pic) <= today_count:
+            elif pic_day==day:
+                pic_no=old_name[3]+old_name[4]+old_name[5]+old_name[6]
+                count_pic=coding_rank_back(pic_no)
+                today_count=get_record(old_name[0]+old_name[1]+old_name[2])
+                if int(count_pic)<=today_count:
                     return True
                 else:
-                    # print('NO.号超出当日记录')
+                    #print('NO.号超出当日记录')
                     return False
             elif com_year < year:
                 return True
@@ -122,40 +122,34 @@ def already_rename(name) -> bool:  # 通过图片前三位命名日期和当天�
     else:
         return False
 
-
-def coding_rank_back(serial_string) -> str:  # 将36进制返还会10进制来计数
+def coding_rank_back(serial_string) -> str:                            #将36进制返还会10进制来计数
     # 将36进制字符转换回十进制
     # 方法：整除取余法
-    letter_1 = int(comparison_tabel1[serial_string[0]])
+    letter_1=int(comparison_tabel1[serial_string[0]])
     letter_2 = int(comparison_tabel1[serial_string[1]])
     letter_3 = int(comparison_tabel1[serial_string[2]])
     letter_4 = int(comparison_tabel1[serial_string[3]])
-    count = letter_1 * 34 * 34 * 34 + letter_2 * 34 * 34 + letter_3 * 34 + letter_4
+    count=letter_1*34*34*34+letter_2*34*34+letter_3*34+letter_4
     return str(count)
 
-
-def img_filter(file_list) -> list:  # list中.jpg文件筛选函数
-    if file_list[-4:] in ['.jpg', '.JPG', '.png', '.PNG', '.bmp', 'BMP']:
+def img_filter(file_list) -> list:                                     #list中.jpg文件筛选函数
+    if file_list[-4:]in['.jpg','.JPG','.png','.PNG','.bmp','BMP']:
         return True
     else:
         return False
 
-
-def xml_filter(file_list) -> list:  # list中.xml文件筛选函数
+def xml_filter(file_list)-> list:                                      #list中.xml文件筛选函数
     if file_list[-4:] in ['.xml']:
-        return True
+         return True
     else:
-        return False
+         return False
 
-
-def json_filter(file_list) -> list:  # list中.json文件筛选函数
+def json_filter(file_list)-> list:                                     #list中.json文件筛选函数
     if file_list[-5:] in ['.json']:
-        return True
+         return True
     else:
-        return False
-
-
-def get_xml_objects(xml_name) -> dict:  # 从xml中读取objects
+         return False
+def get_xml_objects(xml_name)-> dict:                                  #从xml中读取objects
     with open('finish.txt', 'w', encoding='utf-8') as f1:
         # 路径信息
         # for xml_name in os.listdir(path):
@@ -232,37 +226,34 @@ def get_xml_objects(xml_name) -> dict:  # 从xml中读取objects
                 object_count += 1
         return objects
 
-
-def get_json_objects(json_file) -> dict:  # 从json中读取标注的objects
+def get_json_objects(json_file)-> dict:                                      #从json中读取标注的objects
     json_objects = {}
     global object_count
-    with open(json_file, 'rb') as data:
+    with open(json_file,'rb') as data:
         result = json.load(data)
     for dict in result['shapes']:
         dict.pop("group_id")
         dict.pop('flags')
-        json_objects[object_count] = dict
-        object_count += 1
-    object_count = 1
+        json_objects[object_count]=dict
+        object_count+=1
+    object_count=1
     return json_objects
 
-
-def object_count2one():  # 全局变量object_count归一
+def object_count2one():                                               #全局变量object_count归一
     global object_count
-    object_count = 1
+    object_count=1
 
-
-def get_all_MD5(JSON_DIR) -> dict:  # 获取out_json中所有json中的MD5值放入一个list
+def get_all_MD5(JSON_DIR)-> dict:                                    #获取out_json中所有json中的MD5值放入一个list
     json_list = os.listdir(JSON_DIR)
-    all_MD5 = {}
+    all_MD5={}
     for json_file in json_list:
-        with open(os.path.join(JSON_DIR, json_file), 'r') as data:
+        with open(os.path.join(JSON_DIR,json_file) ,'r') as data:
             result = json.load(data)
-        all_MD5[result['MD5']] = result['unique_code']
+        all_MD5[result['MD5']]=result['unique_code']
     return all_MD5
 
 
-def get_xml_objects_with_count(xml_name, count) -> dict:  # 从xml中读取objects
+def get_xml_objects_with_count(xml_name,count)-> dict:                                  #从xml中读取objects
     with open('finish.txt', 'w', encoding='utf-8') as f1:
         # 路径信息
         # for xml_name in os.listdir(path):
@@ -338,46 +329,43 @@ def get_xml_objects_with_count(xml_name, count) -> dict:  # 从xml中读取objec
                 object_count += 1
         return objects
 
-
-def get_json_objects_with_count(json_file, count) -> dict:  # 从json中读取标注的objects
+def get_json_objects_with_count(json_file,count)-> dict:                                      #从json中读取标注的objects
     json_objects = {}
-    object_count = count
-    with open(json_file, 'rb') as data:
+    object_count=count
+    with open(json_file,'rb') as data:
         result = json.load(data)
     for dict in result['shapes']:
         dict.pop("group_id")
         dict.pop('flags')
-        json_objects[object_count] = dict
-        object_count += 1
+        json_objects[object_count]=dict
+        object_count+=1
     return json_objects
 
 
-def have_record(code_date) -> bool:
-    with open('record.json') as data:
+
+def have_record(code_date)->bool:
+    with open ('record.json') as data:
         record = json.load(data)
-        if code_date in record:
+        if  code_date in record:
             return True
         else:
             return False
 
-
-def get_record(code_date) -> int:
+def get_record(code_date)->int:
     with open('record.json') as data:
         record = json.load(data)
         return record[code_date]
 
-
-def save_record(code_date, count):
-    with open('record.json') as data:
+def save_record(code_date,count):
+    with open ('record.json') as data:
         record = json.load(data)
-        record[code_date] = count
-        new_record = json.dumps(record)
-    with open('record.json', 'w') as data:
+        record[code_date]=count
+        new_record=json.dumps(record)
+    with open('record.json','w') as data:
         data.write(new_record)
 
-
-def split_box(img_filename, xml_name, obj_img_path, img_name):  # 把图片按xml中的标注框，把标注目标分割出来
-    # if os.path.exists(xml_name):  # 判断与图片同名的标签是否存在，因为图片不一定每张都打标
+def split_box(img_filename,xml_name,obj_img_path,img_name):     #把图片按xml中的标注框，把标注目标分割出来
+    #if os.path.exists(xml_name):  # 判断与图片同名的标签是否存在，因为图片不一定每张都打标
     img_cv = cv2.imread(img_filename)
     root = ET.parse(xml_name).getroot()  # 利用ET读取xml文件
     for obj in root.iter('object'):
@@ -388,22 +376,22 @@ def split_box(img_filename, xml_name, obj_img_path, img_name):  # 把图片按xm
         ymin = int(float(bndbox.find('ymin').text))
         ymax = int(float(bndbox.find('ymax').text))
         obj_img = img_cv[int(ymin):int(ymax), int(xmin):int(xmax)]
-        path = obj_img_path + '\\' + label
+        path=obj_img_path+'\\'+label
         if not os.path.exists(path):
             os.mkdir(path)
-        cv2.imwrite(os.path.join(path, img_name + '_' + label + '_' + '[' + str(xmin) + ',' + str(ymax) + ',' + str(
-            xmax) + ',' + str(ymin) + ']' + '.jpg'), obj_img)
+        cv2.imwrite(os.path.join(path,img_name+'_'+label+'_'+'['+str(xmin)+','+str(ymax)+','+str(xmax)+','+str(ymin)+']'+'.jpg'),obj_img)
 
 
-def already_in_database(unique_code) -> bool:
-    with open('record.json') as data:
-        record = json.load(data)
-    key_as_date = unique_code[0:3]
-    value_as_num = coding_rank_back(unique_code[-4:])
-    if int(record[key_as_date]) >= int(value_as_num):
+def already_in_database(unique_code)-> bool:
+    with open ('record.json') as data:
+        record=json.load(data)
+    key_as_date=unique_code[0:3]
+    value_as_num=coding_rank_back(unique_code[-4:])
+    if (int(record[key_as_date])>=int(value_as_num)):
         return True
     else:
         return False
+
 
 # root=r'E:\测试库\绝缘子-60\云南绝缘子雷击-6\lalalalal'
 # root1=r'E:\测试库\绝缘子-60'

@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 
 # TODO：读取xml和json信息的函数，独立功能拆分
 class DataLoader(object):  # 数据入库类
+
     def __init__(self, host='localhost', user='root', password='', db_name='Saturn_Database'):
         # 链接数据库。
         # 入参：数据库服务器地址，用户名，密码，数据库名
@@ -38,6 +39,8 @@ class DataLoader(object):  # 数据入库类
         # TODO：根据当前日期生成数据仓库中，图片和json的目录。
         self.img_output_dir = ''  # 图片输出地址
         self.json_output_dir = ''  # json输出地址
+
+        # todo 这个数据单独放在一个地方，而不是现在这样写在类里面
 
         self.comparison_tabel = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9',
                                  10: 'a', 11: 'b', 12: 'c', 13: 'd', 14: 'e', 15: 'f', 16: 'g', 17: 'h', 18: 'i',
