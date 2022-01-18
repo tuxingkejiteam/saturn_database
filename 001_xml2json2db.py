@@ -19,7 +19,9 @@ opt = Opt(conf_path)
 for each_img_path in FileOperationUtil.re_all_file(xml_dir, endswitch=['.jpg', '.JPG', '.png', '.PNG']):
     xml_name = FileOperationUtil.bang_path(each_img_path)[1] + '.xml'
     each_xml_path = os.path.join(xml_dir, xml_name)
+    # 获取标准 json
     json_path, img_path = opt.get_json_from_xml(each_xml_path, each_img_path)
+    # 标准 json 入库
     opt.add_uc_to_root(json_path, img_path, is_clip=True)
 
 
