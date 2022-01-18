@@ -21,11 +21,10 @@ class Create(object):
         self.json = LabelInfo  # 读取json信息的类，使用时传入json文件的路径。
         self.date = self.Operation_date()  # 获取操作时的日期信息
 
-    def add_necessary_info(self, json_path):
-        # 将一个json文件中必然含有的信息，插入数据库
-        json_class = self.json(json_path)  # 读取实例化的json文件
-        self.__data_init(json_class)  # 初始化json中必然含有的信息。
-        self.database.commit()  # 提交修改
+    def add_md5_uc_info(self, md5, uc):
+        # 将md5信息，添加到md5_uc这个表中
+        sql_statement = "INSERT INTO md5_uc (MD5,UC) VALUES('{}','{}');".format(md5, uc)
+        self.db_cursor.execute(sql_statement)  # 执行语句
         pass
 
     def add_json(self, json_file: str):
@@ -63,7 +62,7 @@ class Create(object):
         self.db_cursor.execute(sql_statement)  # 执行语句
 
         # 在其他信息表中，添加UC，原名，宽高，md5几条信息。
-        sql_statement = " INSERT INTO 其他信息表 (唯一编码,原名,宽,高,md5) VALUES('{}','{}',{},{},'{}');" \
+        sql_statement = "INSERT INTO 其他信息表 (唯一编码,原名,宽,高,md5) VALUES('{}','{}',{},{},'{}');" \
             .format(json_class.unique_code, json_class.org_name, json_class.W, json_class.H, json_class.MD5)
         self.db_cursor.execute(sql_statement)  # 执行语句
 

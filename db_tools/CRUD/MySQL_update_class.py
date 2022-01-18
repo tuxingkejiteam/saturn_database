@@ -1,5 +1,5 @@
 import datetime
-from Img_class import LabelInfo
+from db_tools.tools.Img_class import LabelInfo
 
 
 class Update(object):

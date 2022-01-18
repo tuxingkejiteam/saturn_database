@@ -1,22 +1,10 @@
 from db_tools.CRUD.MySQL import MySQL
 
-mysql = MySQL(password='fly1031')
 
-
-def md5_in_db(md5: str):
-    return mysql.R.md5_in_db(md5)
-
-
-def get_uc_from_md5(json_path):
-    pass
-
-
-def insert_md5_uc_to_db(json_path):
-    # 将json中必然含有的信息写入数据库（md5占坑）
-    mysql.C.add_necessary_info(json_path)
-    pass
-
-# --------------------------
-
-def get_uc(md5):
-    pass
+# 数据库初始化
+mysql = MySQL(host='192.168.3.101', user='root', password='root123', db_name='Saturn_Database')
+# 假装有一个list
+MD5_list = ['5a96a260a93dd004364be81589f1016f', 'f341a333a4bb011aa8bf0f2fce395048',
+            '0fbeb8aec7eb843811f9fce4462ce68d', 'wojiushiyishinengbunengyouxinduc']
+UC_list = mysql.get_uc(MD5_list)
+print(UC_list)

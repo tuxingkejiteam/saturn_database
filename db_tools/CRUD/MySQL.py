@@ -1,6 +1,7 @@
 import pymysql
 import json
 from time import time
+import datetime
 from db_tools.CRUD.MySQL_create_class import Create
 from db_tools.CRUD.MySQL_delete_class import Delete
 from db_tools.CRUD.MySQL_read_class import Read
@@ -26,7 +27,7 @@ class MySQL(object):
     #         print(seek, '函数的作用为：')
     #         print('此函数的作用，是将每一个json文件都必然含有的信息写入数据库。包括：唯一编码，图片原名，长宽，是否为裸图，MD5值')
 
-    def __init__(self, host='localhost', user='root', password='', db_name='Saturn_Database'):
+    def __init__(self, host='192.168.3.101', user='root', password='', db_name='Saturn_Database'):
         # TODO:调用之前，检查json文件是否是已经存在的文件。
         # 启动数据库函数。若启动失败，则报出错误并优雅地终止程序。
         # 入参：数据库服务器地址，用户名，密码，数据库名
@@ -54,20 +55,20 @@ class MySQL(object):
         self.R = Read  # 查
         self.U = Update  # 改
 
-        with open('docs/record.json') as data:
+        with open('db_tools/docs/record.json') as data:
             self.record = json.load(data)
 
-        comparison_table = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'a': 10,
-                            'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15, 'g': 16, 'h': 17, 'i': 18, 'j': 19, 'k': 20,
-                            'm': 21, 'n': 22, 'p': 23, 'q': 24, 'r': 25, 's': 26, 't': 27, 'u': 28, 'v': 29, 'w': 30,
-                            'x': 31, 'y': 32, 'z': 33}
-        self.comparison_table = comparison_table
+        self.comparison_tabel = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9',
+                                 10: 'a', 11: 'b', 12: 'c', 13: 'd', 14: 'e', 15: 'f', 16: 'g', 17: 'h', 18: 'i',
+                                 19: 'j', 20: 'k', 21: 'm', 22: 'n', 23: 'p', 24: 'q', 25: 'r', 26: 's', 27: 't',
+                                 28: 'u', 29: 'v', 30: 'w', 31: 'x', 32: 'y', 33: 'z'}
+        self.year_dict = {2019: 'A', 2020: 'B', 2021: 'C', 2022: 'D', 2023: 'E', 2024: 'F', 2025: 'G'}
 
         # 计时模块
         self.start_time = time()
 
     def create(self, json_file) -> bool:
-        # 对数据库进行添加数据操作
+        # # 实例化需要用到的操作：写
         C = self.C(self.database, self.db_cursor)
         succeed = C.add_json(json_file)
         return succeed
@@ -88,19 +89,113 @@ class MySQL(object):
 
         return result_list
 
-    def __check_uc(self, UC: str) -> bool:
-        # 检查该数据是否已经在数据库当中
-        key_as_date = UC[0:3]
-        num_of_data = UC[-4:]
-        letter_1 = int(self.comparison_table[num_of_data[0]])
-        letter_2 = int(self.comparison_table[num_of_data[1]])
-        letter_3 = int(self.comparison_table[num_of_data[2]])
-        letter_4 = int(self.comparison_table[num_of_data[3]])
-        count = letter_1 * 34 * 34 * 34 + letter_2 * 34 * 34 + letter_3 * 34 + letter_4
-        if int(self.record[key_as_date]) >= int(count):
-            return True
+    # 给一个md5，返回一个uc
+    def get_uc(self, md5_list) -> list:
+        # 实例化需要用到的操作：读和写
+        R = self.R(self.database, self.db_cursor)
+        C = self.C(self.database, self.db_cursor)
+
+        # 获取当前日期的已编码数量
+        uc_date = self.__first_3_letters()
+
+        uc_list = ['' for i in range(len(md5_list))]  # 初始化uc列表，长度与md5列表相同
+        new_data_num = 0  # 记录新录入的md5数量
+
+        count = 0
+        for md5 in md5_list:
+            result = R.md5_in_db(md5)  # 查询md5是否出现在了数据库当中
+            if result[0]:
+                uc_list[count] = result[1]
+            else:
+                new_data_num += 1
+            count += 1
+
+        # 查询后立刻更新record表，尽快占坑
+        coding_num = R.get_coding_num(uc_date)  # 查询一个当日已编码数量
+        # TODO:更新操作，暂时不用update类
+        sql_statement = "UPDATE record SET 已使用数量={} WHERE 日期编码='{}';".format(coding_num + new_data_num, uc_date)
+        self.db_cursor.execute(sql_statement)  # 执行语句
+        self.database.commit()  # 立即提交修改
+
+        # 根据新数据的数量，统一申请一个UC编码的list
+        new_uc_list = self.apply_for_uc(new_data_num, coding_num, uc_date)
+
+        count = 0
+        for idx, item in enumerate(uc_list):
+            if item == '':
+                C.add_md5_uc_info(md5_list[idx], new_uc_list[count])  # 将MD5和UC插入数据库
+                uc_list[idx] = new_uc_list[count]
+                count += 1
+            else:
+                pass
+        self.database.commit()  # 提交add_md5_uc_info的修改。很不爽。
+
+        return uc_list
+
+    def apply_for_uc(self, new_num, coding_num, uc_date) -> list:
+        # 使用一个编码的上下界，申请一个新uc的列表
+        uc_rank_list = []
+        for i in range(coding_num+1, coding_num + new_num+1):
+            uc_rank_list.append(uc_date + self.__coding_rank(i))
+        return uc_rank_list
+
+    @staticmethod
+    def Operation_date() -> str:
+        # 生成一个日期的三位编码，以记录标签更新的日期。
+        date = datetime.datetime.now()
+        year = date.year
+        month = date.month
+        day = date.day
+        if month < 10:
+            month = '0' + str(month)
         else:
-            return False
+            month = str(month)
+        if day < 10:
+            day = '0' + str(day)
+        else:
+            day = str(day)
+        year = str(year)[2:]
+
+        return year + month + day
+
+    def __first_3_letters(self) -> str:
+        # 获取日期编码
+        date = datetime.datetime.now()
+        year = date.year
+        month = date.month
+        day = date.day
+        letter_1 = self.year_dict[year]
+
+        if day <= 15:
+            letter_2 = self.comparison_tabel[month + 9]  # 上半月，月份从a开始
+            letter_3 = self.comparison_tabel[day + 9]
+        else:
+            letter_2 = self.comparison_tabel[month + 9 + 12]  # 下半月，月份从m开始
+            letter_3 = self.comparison_tabel[day - 15 + 9]
+
+        return letter_1 + letter_2 + letter_3
+
+    def __coding_rank(self, serial_number) -> str:
+        # 获取序列，编码至四位。每位有34种选择。
+        # 方法：整除取余法
+        assert serial_number <= 1336336, "编码溢出，操作终止！"
+        remainder_1 = serial_number % 34  # 取余数
+        quotient_1 = serial_number // 34
+
+        remainder_2 = quotient_1 % 34  # 取余数
+        quotient_2 = quotient_1 // 34
+
+        remainder_3 = quotient_2 % 34  # 取余数
+        quotient_3 = quotient_2 // 34
+
+        remainder_4 = quotient_3 % 34  # 取余数
+        assert quotient_3 // 34 == 0, '编码溢出，操作终止！'
+        letter_4 = self.comparison_tabel[remainder_4]
+        letter_5 = self.comparison_tabel[remainder_3]
+        letter_6 = self.comparison_tabel[remainder_2]
+        letter_7 = self.comparison_tabel[remainder_1]
+
+        return letter_4 + letter_5 + letter_6 + letter_7
 
     def __str__(self):
         # 打印数据库中的所有表格名
@@ -117,6 +212,3 @@ class MySQL(object):
         self.database.close()
         print('操作耗时：{:.4f}s'.format(time() - self.start_time))
         print('数据库连接已断开！')
-
-
-db = MySQL()

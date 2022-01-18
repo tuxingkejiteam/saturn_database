@@ -62,14 +62,25 @@ class Read(object):
 
         pass
 
-    def md5_in_db(self, md5: str) -> bool:
-        sql_statement = "SELECT 唯一编码 FROM `其他信息表` WHERE md5={};".format(md5)
+    def md5_in_db(self, md5):
+        # 通过md5，返回一个UC。新md5则会生成一个新值，旧md5则会使用旧值。
+        sql_statement = "SELECT UC FROM `md5_uc` WHERE MD5='{}';".format(md5)
         self.db_cursor.execute(sql_statement)
-        label_info = self.db_cursor.fetchall()
-        if len(label_info) == 1:
-            return True  # md5已经存在与数据库
+        uc_info = self.db_cursor.fetchall()
+        if len(uc_info) == 1:
+            return True, uc_info[0][0]  # md5已经存在与数据库，则返回已有的UC
         else:
-            return False  # md5不存在于数据库
+            return False, ''  # md5不存在于数据库
+
+    def get_coding_num(self, uc_date) -> int:
+        sql_statement = "SELECT 已使用数量 FROM `record` WHERE 日期编码='{}';".format(uc_date)
+        self.db_cursor.execute(sql_statement)
+        coding_num = self.db_cursor.fetchall()
+        if len(coding_num) == 0:
+            print("warning!有日子没有弄record了。")
+            return 0
+        else:
+            return coding_num[0][0]
 
     def __get_json(self, UC):
         # 通过唯一编码，返回该编码对应的json标注信息，私有函数，禁止外部调用
