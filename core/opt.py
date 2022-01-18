@@ -4,6 +4,7 @@
 import os
 import shutil
 import configparser
+from .jsonInfo import JsonInfo
 from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 # todo 导入数据库操作函数
@@ -34,6 +35,7 @@ class Opt(object):
         self.sql_path = None
         self.json_dir = None
         self.img_dir = None
+        self.tmp_dir = None
         #
         self.parse_config()
 
@@ -49,16 +51,19 @@ class Opt(object):
 
         cf = configparser.ConfigParser()
         cf.read(self.config_path)
-        self.sql_path = cf.get('common', 'sql_path')   #  cf.get('database_config', 'PASSWORD'))
+        self.sql_path = cf.get('common', 'sql_path')
         self.root_dir = cf.get('common', 'root_dir')
+        self.tmp_dir = cf.get('common', 'tmp_dir')
         #
         self.json_dir = self.img_dir = os.path.join(self.root_dir, "json_img")
 
+        print('-' * 30)
         print("* sql path : {0}".format(self.sql_path))
         print("* root dir : {0}".format(self.root_dir))
         print("* json dir : {0}".format(self.json_dir))
         print("* img dir : {0}".format(self.img_dir))
-
+        print("* tmp dir : {0}".format(self.tmp_dir))
+        print('-'*30)
 
     @staticmethod
     def add_json(json_path):
@@ -88,7 +93,7 @@ class Opt(object):
             return False
 
     def add_uc_to_root(self, json_path, img_path):
-
+        """将 json 存放到 root 目录中去"""
         if not self._check_json_img_consistence(json_path, img_path):
             raise ValueError("* json img uc not equal")
 
@@ -102,6 +107,10 @@ class Opt(object):
         pass
 
     def update_uc_from_root(self, json_path, img_path):
+
+        # todo del_uc_from_root
+        # todo add_uc_to_root
+
         pass
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -121,15 +130,18 @@ class Opt(object):
             return False
     # ------------------------------------------------------------------------------------------------------------------
 
-    @staticmethod
     def get_json_from_xml(self, xml_path, img_path, save_path):
 
         # todo 申请 uc
+        uc = "123456"
         # todo 解析 xml
+        a = JsonInfo()
+        a.parse_xml(xml_path=xml_path)
+        a.unique_code = uc
+        json_path = os.path.join(self.tmp_dir, "{0}.json".format(uc))
+        a.save_to_json(json_path)
         # todo 完善 jsonInfo
         # todo 保存为 json
-
-        pass
 
     @staticmethod
     def get_json_from_labelme_json(self, json_path, img_path, save_path):
@@ -138,6 +150,5 @@ class Opt(object):
     @staticmethod
     def get_json_from_img(self, img_path, save_path):
         pass
-
 
 
