@@ -8,7 +8,7 @@ from db_tools.CRUD.MySQL_read_class import Read
 from db_tools.CRUD.MySQL_update_class import Update
 
 
-class MySQL(object):
+class SaturnSQL(object):
     # @staticmethod
     # def help(seek: str):
     #     # PyMySQL接口的帮助文档。打印相关的操作信息。
@@ -55,9 +55,6 @@ class MySQL(object):
         self.R = Read  # 查
         self.U = Update  # 改
 
-        with open('db_tools/docs/record.json') as data:
-            self.record = json.load(data)
-
         self.comparison_tabel = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9',
                                  10: 'a', 11: 'b', 12: 'c', 13: 'd', 14: 'e', 15: 'f', 16: 'g', 17: 'h', 18: 'i',
                                  19: 'j', 20: 'k', 21: 'm', 22: 'n', 23: 'p', 24: 'q', 25: 'r', 26: 's', 27: 't',
@@ -90,7 +87,7 @@ class MySQL(object):
         return result_list
 
     # 给一个md5，返回一个uc
-    def get_uc(self, md5_list) -> list:
+    def get_uc(self, md5_list: list) -> list:
         # 实例化需要用到的操作：读和写
         R = self.R(self.database, self.db_cursor)
         C = self.C(self.database, self.db_cursor)
