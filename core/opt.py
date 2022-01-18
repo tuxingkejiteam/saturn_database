@@ -2,8 +2,11 @@
 # -*- author: jokker -*-
 
 import os
+import cv2
 import shutil
+import random
 import configparser
+import numpy as np
 from .jsonInfo import JsonInfo
 from JoTools.utils.FileOperationUtil import FileOperationUtil
 
@@ -66,15 +69,15 @@ class Opt(object):
         print('-'*30)
 
     @staticmethod
-    def add_json(json_path):
+    def add_json_to_db(json_path):
         pass
 
     @staticmethod
-    def update_json(json_path):
+    def update_json_to_db(json_path):
         pass
 
     @staticmethod
-    def del_json(json_path):
+    def del_json_from_db(json_path):
         pass
 
     @staticmethod
@@ -87,21 +90,32 @@ class Opt(object):
     def _check_json_img_consistence(json_path, img_path):
         uc_1 = FileOperationUtil.bang_path(json_path)[1]
         uc_2 = FileOperationUtil.bang_path(img_path)[1]
-        if uc_1 == uc_2:
-            return True
-        else:
-            return False
+        if os.path.exists(json_path) and os.path.exists(img_path):
+            if uc_1 == uc_2:
+                return True
+        return False
 
-    def add_uc_to_root(self, json_path, img_path):
+    def add_uc_to_root(self, json_path, img_path, is_clip=False):
         """将 json 存放到 root 目录中去"""
         if not self._check_json_img_consistence(json_path, img_path):
             raise ValueError("* json img uc not equal")
 
         uc = FileOperationUtil.bang_path(json_path)[1]
         json_path_dst, img_path_dst = self.get_json_img_path_from_uc(uc)
+        #
+        json_dir = os.path.split(json_path_dst)[0]
+        img_dir = os.path.split(img_path_dst)[0]
+        os.makedirs(json_dir, exist_ok=True)
+        os.makedirs(img_dir, exist_ok=True)
+        #
+        if is_clip:
+            shutil.move(json_path, json_path_dst)
+            shutil.move(img_path, img_path_dst)
+        else:
+            shutil.copy(json_path, json_path_dst)
+            shutil.copy(img_path, img_path_dst)
 
-        shutil.copy(json_path, json_path_dst)
-        shutil.copy(img_path, img_path_dst)
+        print("* add {0} [xml,img] to root".format(uc))
 
     def del_uc_from_root(self, json_path, img_path):
         pass
@@ -130,25 +144,29 @@ class Opt(object):
             return False
     # ------------------------------------------------------------------------------------------------------------------
 
-    def get_json_from_xml(self, xml_path, img_path, save_path):
-
+    def get_json_from_xml(self, xml_path, img_path):
+        """输入一个 xml img 得到 json 文件"""
         # todo 申请 uc
-        uc = "123456"
-        # todo 解析 xml
+        uc = str(random.randrange(1, 50000)).rjust(7, '0')
+        # 解析 xml
         a = JsonInfo()
-        a.parse_xml(xml_path=xml_path)
+        a.parse_xml(xml_path=xml_path, img_path=img_path, uc=uc)
         a.unique_code = uc
+        #
         json_path = os.path.join(self.tmp_dir, "{0}.json".format(uc))
+        save_img_path = os.path.join(self.tmp_dir, "{0}.jpg".format(uc))
         a.save_to_json(json_path)
-        # todo 完善 jsonInfo
-        # todo 保存为 json
+        # 将 img 重命名之后
+        img_ndarry = cv2.imdecode(np.fromfile(img_path, dtype=np.uint8), 1)
+        cv2.imwrite(save_img_path, img_ndarry)
+        return json_path, save_img_path
 
     @staticmethod
-    def get_json_from_labelme_json(self, json_path, img_path, save_path):
+    def get_json_from_labelme_json(self, json_path, save_path):
         pass
 
     @staticmethod
-    def get_json_from_img(self, img_path, save_path):
+    def get_json_from_img(self, save_path):
         pass
 
 
