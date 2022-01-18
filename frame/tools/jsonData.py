@@ -13,14 +13,14 @@ class ImgLabel(object):
         self.size = None
         self.H = None
         self.W = None
-        self.class_code = None
         self.MD5 = None
         self.trace = None
         self.objects = None
+        self.mode = None  # 输配变模式
         self.train_info = None
         self.extra_info = None
         self.objects_num = None
-        self.json_data=None
+        self.json_data = None
         #
         self.parse_json_info(json_path)
 
@@ -67,14 +67,14 @@ class ImgLabel(object):
         self.size = json_dic['size']
         self.H = self.size['height']
         self.W = self.size['width']
-        self.class_code = json_dic['class_code']
         self.MD5 = json_dic['MD5']
         self.trace = bool(json_dic['trace'])
         self.objects = json_dic['objects']
+        self.mode = json_dic['mode']  # 输配变模式
         self.train_info = json_dic['train_info']
         self.extra_info = json_dic['extra_info']
         self.objects_num = len(self.objects)
-        self.json_data=json_dic
+        self.json_data = json_dic
 
     # ------------------------------------------------------------------------------------------------------------------
 

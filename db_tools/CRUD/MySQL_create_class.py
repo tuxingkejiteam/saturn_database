@@ -3,7 +3,7 @@ import sys
 import os
 from tqdm import tqdm
 from pathlib import Path
-from Img_class import LabelInfo
+from db_tools.tools.Img_class import LabelInfo
 
 
 class Create(object):
@@ -20,6 +20,13 @@ class Create(object):
 
         self.json = LabelInfo  # 读取json信息的类，使用时传入json文件的路径。
         self.date = self.Operation_date()  # 获取操作时的日期信息
+
+    def add_necessary_info(self, json_path):
+        # 将一个json文件中必然含有的信息，插入数据库
+        json_class = self.json(json_path)  # 读取实例化的json文件
+        self.__data_init(json_class)  # 初始化json中必然含有的信息。
+        self.database.commit()  # 提交修改
+        pass
 
     def add_json(self, json_file: str):
         # 此函数用于在数据库中添加一组记录。既支持传入单个json文件路径，也支持导入当前路径下的全部json文件。
@@ -64,7 +71,7 @@ class Create(object):
         # TODO:将已标注目标全部置为0，若文件中确实含有此标签，则将0修改为1
 
         # 私有函数，禁止外部访问，仅通过add_json函数调用。
-        self.__data_init(json_class)  # 初始化json中必然含有的信息。
+        # self.__data_init(json_class)  # 初始化json中必然含有的信息。
         object_dic = json_class.objects
 
         # 大类字典
@@ -118,7 +125,7 @@ class Create(object):
                 bool_part += ',True'
                 pass
             # 更新标签对应的小类表
-            sql_statement = "INSERT INTO {} (唯一编码{}) VALUES('{}'{});"\
+            sql_statement = "INSERT INTO {} (唯一编码{}) VALUES('{}'{});" \
                 .format(key, name_part, json_class.unique_code, bool_part)
             self.db_cursor.execute(sql_statement)  # 执行语句
 

@@ -2,7 +2,7 @@ import pymysql
 import sys
 import os
 from pathlib import Path
-from Img_class import LabelInfo
+from db_tools.tools.Img_class import LabelInfo
 
 
 class Delete(object):

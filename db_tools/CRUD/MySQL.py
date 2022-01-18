@@ -1,10 +1,10 @@
 import pymysql
 import json
 from time import time
-from CRUD.MySQL_create_class import Create
-from CRUD.MySQL_delete_class import Delete
-from CRUD.MySQL_read_class import Read
-from CRUD.MySQL_update_class import Update
+from db_tools.CRUD.MySQL_create_class import Create
+from db_tools.CRUD.MySQL_delete_class import Delete
+from db_tools.CRUD.MySQL_read_class import Read
+from db_tools.CRUD.MySQL_update_class import Update
 
 
 class MySQL(object):
