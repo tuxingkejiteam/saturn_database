@@ -87,7 +87,7 @@ class SaturnSQL(object):
         return result_list
 
     # 给一个md5，返回一个uc
-    def get_uc(self, md5_list: list) -> list:
+    def get_uc_list(self, md5_list: list) -> list:
         # 实例化需要用到的操作：读和写
         R = self.R(self.database, self.db_cursor)
         C = self.C(self.database, self.db_cursor)
