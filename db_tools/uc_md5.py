@@ -15,3 +15,8 @@ def insert_md5_uc_to_db(json_path):
     # 将json中必然含有的信息写入数据库（md5占坑）
     mysql.C.add_necessary_info(json_path)
     pass
+
+# --------------------------
+
+def get_uc(md5):
+    pass

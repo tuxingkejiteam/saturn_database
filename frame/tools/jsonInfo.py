@@ -3,9 +3,11 @@
 
 
 import json
+from JoTools.utils.JsonUtil import JsonUtil
 
 
-class ImgLabel(object):
+
+class JsonInfo(object):
 
     def __init__(self, json_path):
         self.org_name = None
@@ -16,13 +18,13 @@ class ImgLabel(object):
         self.MD5 = None
         self.trace = None
         self.objects = None
-        self.mode = None  # 输配变模式
+        self.mode = None                # 输配变模式, 输电，配电还是变点
         self.train_info = None
         self.extra_info = None
         self.objects_num = None
         self.json_data = None
         #
-        self.parse_json_info(json_path)
+        self.parse_json(json_path)
 
     def __getitem__(self, item):
         if item > self.objects_num:
@@ -31,14 +33,14 @@ class ImgLabel(object):
         dix = str(item)
         return self.objects[dix]
 
-    def __len__(self):  # 使得len可作用于实例化的类上，返回的是标注含有多少个目标
+    def __len__(self):
         return self.objects_num
 
-    def __str__(self):  # 若打印此类，则会输出图片的编码和原名。
+    def __str__(self):
         return self.unique_code + ' ' + self.org_name
 
     def __iter__(self):
-        return self.objects.items()  # 返回一个可迭代对象。
+        return self.objects.items()
 
     def __add__(self, other):
         """两个要素相加"""
@@ -48,20 +50,19 @@ class ImgLabel(object):
         if not other.MD5 == self.MD5:
             raise ValueError("* MD5 must be equal")
 
-        # todo 判断元素是否已存在
-
-        # todo 要增加的要素需要进行处理，点，线，面
-
+        for each_obj in other.objects:
+            # todo 判断元素是否已存在
+            # todo 要增加的要素需要进行处理，点，线，面
+            self.objects.append(each_obj)
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def parse_json_info(self, json_path):
+    def parse_json(self, json_path):
         """从json文件中获取图像信息"""
-
-        # fixme 这边输入的 json 必须符合一定的样式，使用 GetJson 从其他样式的数据中获取
 
         with open(json_path, 'r') as load_f:
             json_dic = json.load(load_f)
+
         self.org_name = json_dic['org_name']
         self.unique_code = json_dic['unique_code']
         self.size = json_dic['size']
@@ -70,13 +71,34 @@ class ImgLabel(object):
         self.MD5 = json_dic['MD5']
         self.trace = bool(json_dic['trace'])
         self.objects = json_dic['objects']
-        self.mode = json_dic['mode']  # 输配变模式
+        self.mode = json_dic['mode']                            # 输配变模式
         self.train_info = json_dic['train_info']
         self.extra_info = json_dic['extra_info']
         self.objects_num = len(self.objects)
         self.json_data = json_dic
 
+    def parse_xml(self, xml_path, img_path=None):
+        pass
+
+    def parse_labelme_json(self, json_path, img_path):
+        pass
+
     # ------------------------------------------------------------------------------------------------------------------
+
+    def save_to_json(self, sabe_path):
+        """转为存入数据库的 json 样式"""
+        jsontext = {}
+        jsontext['org_name']        = self.org_name
+        jsontext['unique_code']     = self.unique_code
+        jsontext['size']            = {'width': self.W, 'height': self.H}
+        jsontext["train_info"]      = self.train_info
+        jsontext["trace"]           = self.trace
+        jsontext['MD5']             = self.MD5
+        jsontext["extra_info"]      = self.extra_info
+        jsontext["mode"]            = self.mode
+        jsontext['objects']         = self.objects
+        #
+        JsonUtil.save_data_to_json_file(jsontext, sabe_path)
 
     def save_to_json_label_me(self):
         """生成labelme软件可以识别的json格式"""
@@ -92,16 +114,6 @@ class ImgLabel(object):
 
     def save_to_xml(self):
         """转为我们现在 xml 的样式"""
-        pass
-
-
-
-class GetJson(object):
-
-    def get_json_from_xml(self):
-        pass
-
-    def get_json_from_json_label_me(self):
         pass
 
 
