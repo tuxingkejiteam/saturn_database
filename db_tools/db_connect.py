@@ -1,4 +1,3 @@
-from useful_funtion import get_small_img
 from CRUD.MySQL import MySQL
 
 

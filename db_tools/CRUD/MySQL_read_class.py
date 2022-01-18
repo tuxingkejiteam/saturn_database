@@ -62,6 +62,15 @@ class Read(object):
 
         pass
 
+    def md5_in_db(self, md5: str) -> bool:
+        sql_statement = "SELECT 唯一编码 FROM `其他信息表` WHERE {};".format(md5)
+        self.db_cursor.execute(sql_statement)
+        label_info = self.db_cursor.fetchall()
+        if len(label_info) == 1:
+            return True  # md5已经存在与数据库
+        else:
+            return False  # md5不存在于数据库
+
     def __get_json(self, UC):
         # 通过唯一编码，返回该编码对应的json标注信息，私有函数，禁止外部调用
 
