@@ -9,7 +9,7 @@ from JoTools.utils.JsonUtil import JsonUtil
 
 class JsonInfo(object):
 
-    def __init__(self, json_path):
+    def __init__(self, json_path=None):
         self.org_name = None
         self.unique_code = None
         self.size = None
@@ -22,7 +22,7 @@ class JsonInfo(object):
         self.train_info = None
         self.extra_info = None
         self.objects_num = None
-        self.json_data = None
+        self.json_path = json_path
         #
         self.parse_json(json_path)
 
@@ -60,6 +60,9 @@ class JsonInfo(object):
     def parse_json(self, json_path):
         """从json文件中获取图像信息"""
 
+        if json_path is None:
+            return
+
         with open(json_path, 'r') as load_f:
             json_dic = json.load(load_f)
 
@@ -75,7 +78,6 @@ class JsonInfo(object):
         self.train_info = json_dic['train_info']
         self.extra_info = json_dic['extra_info']
         self.objects_num = len(self.objects)
-        self.json_data = json_dic
 
     def parse_xml(self, xml_path, img_path=None):
         pass
