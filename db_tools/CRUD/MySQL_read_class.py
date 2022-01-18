@@ -62,10 +62,10 @@ class Read(object):
 
         pass
 
-    def md5_in_db(self, md5, args=None):
+    def md5_in_db(self, md5):
         # 通过md5，返回一个UC。新md5则会生成一个新值，旧md5则会使用旧值。
         sql_statement = "SELECT UC FROM `md5_uc` WHERE MD5='{}';".format(md5)
-        self.db_cursor.execute(sql_statement, args)
+        self.db_cursor.execute(sql_statement)
         uc_info = self.db_cursor.fetchall()
         if len(uc_info) == 1:
             return True, uc_info[0][0]  # md5已经存在与数据库，则返回已有的UC
