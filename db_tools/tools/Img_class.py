@@ -12,8 +12,8 @@ class LabelInfo:
         self.size = self.json_dic['size']
         self.H = self.size['height']
         self.W = self.size['width']
-        self.class_code = self.json_dic['class_code']
         self.MD5 = self.json_dic['MD5']
+        self.mode = self.json_dic['mode']
         self.trace = bool(self.json_dic['trace'])
         self.visible = bool(self.json_dic['visible'])
         self.objects = self.json_dic['objects']
