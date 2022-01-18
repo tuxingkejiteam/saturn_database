@@ -9,11 +9,11 @@ import configparser
 import numpy as np
 from .jsonInfo import JsonInfo
 from JoTools.utils.FileOperationUtil import FileOperationUtil
-from db_tools.CRUD.MySQL import ZYMySQL
+from db_tools.CRUD.MySQL_class import SaturnSQL
 from JoTools.utils.HashlibUtil import HashLibUtil
 from JoTools.utils.DecoratorUtil import DecoratorUtil
 
-mysql_zy = ZYMySQL(host='192.168.3.101', user='root', password='root123', db_name='Saturn_Database')
+mysql_zy = SaturnSQL(host='192.168.3.101', user='root', password='root123', db_name='Saturn_Database')
 
 
 class Opt(object):
@@ -135,7 +135,7 @@ class Opt(object):
         """输入一个 xml img 得到 json 文件"""
         # 申请 uc
         each_hash = HashLibUtil.get_file_md5(img_path)
-        uc = mysql_zy.get_uc([each_hash])[0]
+        uc = mysql_zy.get_uc_list([each_hash])[0]
         # 解析 xml
         a = JsonInfo()
         a.parse_xml(xml_path=xml_path, img_path=img_path, uc=uc)
