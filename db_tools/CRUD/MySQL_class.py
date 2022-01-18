@@ -55,6 +55,9 @@ class SaturnSQL(object):
         self.R = Read  # 查
         self.U = Update  # 改
 
+        with open('db_tools/docs/record.json') as data:
+            self.record = json.load(data)
+
         self.comparison_tabel = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9',
                                  10: 'a', 11: 'b', 12: 'c', 13: 'd', 14: 'e', 15: 'f', 16: 'g', 17: 'h', 18: 'i',
                                  19: 'j', 20: 'k', 21: 'm', 22: 'n', 23: 'p', 24: 'q', 25: 'r', 26: 's', 27: 't',

@@ -9,25 +9,11 @@ import configparser
 import numpy as np
 from .jsonInfo import JsonInfo
 from JoTools.utils.FileOperationUtil import FileOperationUtil
+from db_tools.CRUD.MySQL import ZYMySQL
+from JoTools.utils.HashlibUtil import HashLibUtil
+from JoTools.utils.DecoratorUtil import DecoratorUtil
 
-# todo 导入数据库操作函数
-class DataBaseOpt():
-
-    @staticmethod
-    def add_json(json_path):
-        pass
-
-    @staticmethod
-    def del_json(json_path):
-        pass
-
-    @staticmethod
-    def update_json(json_path):
-        pass
-
-    @staticmethod
-    def get_uc(md5):
-        pass
+mysql_zy = ZYMySQL(host='192.168.3.101', user='root', password='root123', db_name='Saturn_Database')
 
 
 class Opt(object):
@@ -144,14 +130,17 @@ class Opt(object):
             return False
     # ------------------------------------------------------------------------------------------------------------------
 
+    @DecoratorUtil.time_this
     def get_json_from_xml(self, xml_path, img_path):
         """输入一个 xml img 得到 json 文件"""
-        # todo 申请 uc
-        uc = str(random.randrange(1, 50000)).rjust(7, '0')
+        # 申请 uc
+        each_hash = HashLibUtil.get_file_md5(img_path)
+        uc = mysql_zy.get_uc([each_hash])[0]
         # 解析 xml
         a = JsonInfo()
         a.parse_xml(xml_path=xml_path, img_path=img_path, uc=uc)
         a.unique_code = uc
+        a.MD5 = each_hash
         #
         json_path = os.path.join(self.tmp_dir, "{0}.json".format(uc))
         save_img_path = os.path.join(self.tmp_dir, "{0}.jpg".format(uc))

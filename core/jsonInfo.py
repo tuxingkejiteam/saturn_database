@@ -116,7 +116,8 @@ class JsonInfo(object):
         self.unique_code = uc
         self.H = a.height
         self.W = a.width
-        self.MD5 = HashLibUtil.get_file_md5(img_path)
+        if self.MD5 is None:
+            self.MD5 = HashLibUtil.get_file_md5(img_path)
         #
         self.objects = []
         for each_dete_obj in a:
@@ -173,7 +174,7 @@ class JsonInfo(object):
         """保存为voc数据集对应的样式"""
         pass
 
-    def save_to_xml(self):
+    def save_to_xml(self, xml_path):
         """转为我们现在 xml 的样式"""
         pass
 
