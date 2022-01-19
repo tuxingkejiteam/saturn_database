@@ -13,7 +13,12 @@ from db_tools.CRUD.MySQL_class import SaturnSQL
 from JoTools.utils.HashlibUtil import HashLibUtil
 from JoTools.utils.DecoratorUtil import DecoratorUtil
 
+this_dir = os.path.dirname(__file__)
+
 mysql_zy = SaturnSQL(host='192.168.3.101', user='root', password='root123', db_name='Saturn_Database')
+
+
+
 
 
 class Opt(object):
@@ -32,7 +37,9 @@ class Opt(object):
         """解析配置参数"""
 
         if self.config_path is None:
-            config_path = r"../config.ini"
+            # config_path = r"./config.ini"
+            config_path = os.path.join(this_dir, '..', 'config.ini')
+            print(os.path.abspath(config_path))
             if os.path.exists(config_path):
                 self.config_path = config_path
             else:
@@ -115,6 +122,32 @@ class Opt(object):
 
     # ------------------------------------------------------------------------------------------------------------------
 
+    def update_json_attr(self, uc_list, attr_list):
+        """更新 json 的信息 [[attr_name, attr_value]]"""
+        # fixme 我提供对应的接口，是不是存 uc txt 我不去管，但是需要通过接口才能去改变对应的属性
+        json_list = []
+        for each_uc in uc_list:
+            each_json_path = self.get_json_img_path_from_uc(each_uc)[0]
+            each_json_info = JsonInfo(each_json_path)
+            for attr_name, attr_value in attr_list:
+                setattr(each_json_info, attr_name, attr_value)
+                json_list.append(each_json_path)
+
+        # 将 json 信息全部导入到数据库中
+        mysql_zy.update_json_list_to_db(json_list)
+
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def get_all_uc_list_from_root(self):
+        """查询本地存储的 json 的 uc 名列表"""
+        pass
+
+    def get_all_uc_list_from_db(self):
+        """查询已记录的 uc 名列表，或者 已分类的 uc 名列表"""
+        pass
+
+    # ------------------------------------------------------------------------------------------------------------------
+
     def get_json_img_path_from_uc(self, uc):
         """输入 uc 号，返回对应的 img 和 json 路径, 可用于存储和读取"""
         json_path = os.path.join(self.json_dir, uc[:3], "{0}.json".format(uc))
@@ -124,7 +157,7 @@ class Opt(object):
     def uc_in_root(self, uc):
         """uc 是不是存在于缓存空间"""
         json_path, img_path = self.get_json_img_path_from_uc(uc)
-        if os.path.exists(json_path) or os.path.exists(img_path):
+        if os.path.exists(json_path) and os.path.exists(img_path):
             return True
         else:
             return False

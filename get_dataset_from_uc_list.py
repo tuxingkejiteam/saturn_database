@@ -13,10 +13,10 @@ from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 opt = Opt()
 
-save_dir = r""
+save_dir = r"C:\Users\14271\Desktop\del\root_dir\train_data"
 
 # todo uc list 由查询得到，这边增加按条件查询代码
-uc_list = []
+uc_list = ['Dnd0001', 'Dnd0002', 'Dnd0003', 'Dnd0004', 'Dnd0005', 'Dnd0006', 'Dnd0007']
 
 
 for each_uc in uc_list:

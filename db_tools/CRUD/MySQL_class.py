@@ -55,8 +55,8 @@ class SaturnSQL(object):
         self.R = Read  # 查
         self.U = Update  # 改
 
-        with open('db_tools/docs/record.json') as data:
-            self.record = json.load(data)
+        # with open('db_tools/docs/record.json') as data:
+        #     self.record = json.load(data)
 
         self.comparison_tabel = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9',
                                  10: 'a', 11: 'b', 12: 'c', 13: 'd', 14: 'e', 15: 'f', 16: 'g', 17: 'h', 18: 'i',
@@ -210,5 +210,5 @@ class SaturnSQL(object):
     def __del__(self):
         # 断开数据库连接。
         self.database.close()
-        print('操作耗时：{:.4f}s'.format(time() - self.start_time))
-        print('数据库连接已断开！')
+        # print('操作耗时：{:.4f}s'.format(time() - self.start_time))
+        # print('数据库连接已断开！')

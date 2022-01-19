@@ -38,7 +38,7 @@ class JsonInfo(object):
         self.W = None
         self.MD5 = None
         self.trace = None
-        self.objects = None
+        self.objects = []
         self.mode = None                # 输配变模式, 输电，配电还是变点
         self.train_info = None
         self.extra_info = None
@@ -102,11 +102,25 @@ class JsonInfo(object):
         self.W = self.size['width']
         self.MD5 = json_dic['MD5']
         self.trace = bool(json_dic['trace'])
-        self.objects = json_dic['objects']
         self.mode = json_dic['mode']                            # 输配变模式
         self.train_info = json_dic['train_info']
         self.extra_info = json_dic['extra_info']
-        self.objects_num = len(self.objects)
+        # self.objects_num = len(self.objects)
+
+        for each_obj_dict in json_dic['objects']:
+            obj = Object()
+            if each_obj_dict['shape_type'] == 'rectangle':
+                obj.label = each_obj_dict['label']
+                obj.shape_type = 'rectangle'
+                obj.id = each_obj_dict['id']
+                obj.points = each_obj_dict['points']
+                self.objects.append(obj)
+            elif each_obj_dict['shape_type'] == 'robndbox':
+                obj.label = each_obj_dict['label']
+                obj.shape_type = 'robndbox'
+                obj.id = each_obj_dict['id']
+                obj.points = each_obj_dict['points']
+                self.objects.append(obj)
 
     def parse_xml(self, xml_path, uc, img_path):
 
@@ -121,16 +135,23 @@ class JsonInfo(object):
             self.MD5 = HashLibUtil.get_file_md5(img_path)
         #
         self.objects = []
+        #
         for each_dete_obj in a:
             obj = Object()
             if isinstance(each_dete_obj, DeteObj):
                 obj.label = each_dete_obj.tag
                 obj.shape_type = 'rectangle'
+                obj.id = each_dete_obj.id
+
+                # if obj.id in [None, -1]:
+                #     raise ValueError("* obj.id should not be in [None, -1]")
+
                 obj.points = [[each_dete_obj.x1, each_dete_obj.y1], [each_dete_obj.x2, each_dete_obj.y2]]
             elif isinstance(each_dete_obj, DeteAngleObj):
                 obj.label = each_dete_obj.tag
                 obj.shape_type = 'robndbox'
-                obj.points = each_dete_obj.get_points()
+                # obj.points = each_dete_obj.get_points()
+                obj.points = [each_dete_obj.cx, each_dete_obj.cy, each_dete_obj.w, each_dete_obj.h, each_dete_obj.angle]
             else:
                 raise ValueError("* just support DeteObj or DeteAngleObj")
             self.objects.append(obj)
@@ -157,6 +178,7 @@ class JsonInfo(object):
         jsontext['objects'] = []
         for each_obj in self.objects:
             jsontext['objects'].append({
+                'id':each_obj.id,
                 'label':each_obj.label,
                 'shape_type':each_obj.shape_type,
                 'points':each_obj.points,
@@ -175,9 +197,37 @@ class JsonInfo(object):
         """保存为voc数据集对应的样式"""
         pass
 
-    def save_to_xml(self, xml_path):
+    def save_to_xml(self, xml_path, img_path=None):
         """转为我们现在 xml 的样式"""
-        pass
+        a = DeteRes()
+        a.img_path = img_path
+        #
+        if img_path is None:
+            a.file_name = self.unique_code + ".jpg"
+            a.height = self.H
+            a.width = self.W
+        #
+        for each_obj in self.objects:
+            if each_obj.shape_type == 'rectangle':
+                each_dete_obj = DeteObj()
+                each_dete_obj.tag = each_obj.label
+                each_dete_obj.x1, each_dete_obj.y1 = each_obj.points[0]
+                each_dete_obj.x2, each_dete_obj.y2 = each_obj.points[1]
+                each_dete_obj.id = each_obj.id
+                a.add_obj_2(each_dete_obj)
+            elif each_obj.shape_type == 'robndbox':
+                each_dete_obj = DeteAngleObj()
+                each_dete_obj.tag = each_obj.label
+                each_dete_obj.cx = each_obj.points[0]
+                each_dete_obj.cy = each_obj.points[1]
+                each_dete_obj.w = each_obj.points[2]
+                each_dete_obj.h = each_obj.points[3]
+                each_dete_obj.angle = each_obj.points[4]
+                a.add_obj_2(each_dete_obj)
+            else:
+                print("* {0} 类型暂时无法转为 xml ".format(each_obj.shape_type))
+                pass
+        a.save_to_xml(xml_path)
 
     # ------------------------------------------------------------------------------------------------------------------
 
