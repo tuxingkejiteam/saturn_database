@@ -12,8 +12,10 @@ from JoTools.utils.FileOperationUtil import FileOperationUtil
 from db_tools.CRUD.MySQL_class import SaturnSQL
 from JoTools.utils.HashlibUtil import HashLibUtil
 from JoTools.utils.DecoratorUtil import DecoratorUtil
-
+from JoTools.utils.PickleUtil import PickleUtil
 this_dir = os.path.dirname(__file__)
+
+# fixme 为了增加速度，可以使用缓存模式，就是除非是强制进行更新并筛选，否者，只在已缓存的部分内容中进行删选
 
 
 class Opt(object):
@@ -27,7 +29,10 @@ class Opt(object):
         self.tmp_dir = None
         #
         self.sql_zy = None
+        # 缓存的数据
+        self.object_buffer_dir = None
         self.parse_config()
+        self._json_info_dict = {}
 
     def parse_config(self):
         """解析配置参数"""
@@ -48,6 +53,10 @@ class Opt(object):
         self.tmp_dir = cf.get('common', 'tmp_dir')
         #
         self.json_dir = self.img_dir = os.path.join(self.root_dir, "json_img")
+        self.object_buffer_dir = os.path.join(self.root_dir, 'buffer')
+        os.makedirs(self.json_dir, exist_ok=True)
+        os.makedirs(self.img_dir, exist_ok=True)
+        os.makedirs(self.object_buffer_dir, exist_ok=True)
         #
         host = cf.get('sql', 'host')
         user = cf.get('sql', 'user')
@@ -61,6 +70,7 @@ class Opt(object):
         print("* json dir : {0}".format(self.json_dir))
         print("* img dir : {0}".format(self.img_dir))
         print("* tmp dir : {0}".format(self.tmp_dir))
+        print("* object_buffer_dir dir : {0}".format(self.object_buffer_dir))
         print('-'*30)
 
     @staticmethod
@@ -194,21 +204,43 @@ class Opt(object):
 
     # ------------------------------------------------ find ------------------------------------------------------------
 
-    def get_uc_list_by_attr_from_root(self):
+    def get_uc_list_by_attr_from_root(self, func, data):
         """从本地查询内容"""
-        pass
+        uc_list = []
+        for index, each_json_path in enumerate(FileOperationUtil.re_all_file(self.json_dir, endswitch=['.json'])):
+            print(index, each_json_path)
+            each_json = JsonInfo(each_json_path)
+            if func(each_json, data):
+                uc_list.append(each_json.unique_code)
+        return uc_list
 
+    @DecoratorUtil.time_this
     def get_uc_list_by_label_from_root(self, need_label_list):
-        pass
+        """根据标签进行筛选"""
+        uc_list = []
+        for index, each_json_path in enumerate(FileOperationUtil.re_all_file(self.json_dir, endswitch=['.json'])):
+            print(index, each_json_path)
+            each_json = JsonInfo(each_json_path)
+            if each_json.has_label(need_label_list):
+                uc_list.append(each_json.unique_code)
+        return uc_list
 
+    @DecoratorUtil.time_this
+    def get_uc_list_by_label_from_root_buffer(self, need_label_list):
+        """根据标签进行筛选"""
+        uc_list = []
+
+        for each_uc_date in self._json_info_dict:
+            for each_uc in self._json_info_dict[each_uc_date]:
+                each_json = self._json_info_dict[each_uc_date][each_uc]
+                if each_json.has_label(need_label_list):
+                    uc_list.append(each_json.unique_code)
+        return uc_list
     # ------------------------------------------------ stastic ---------------------------------------------------------
 
+    @DecoratorUtil.time_this
     def count_tags(self):
         """统计标签"""
-        # （1）正框斜框分开统计
-        # （2）每一个标签分开统计
-
-        # todo 查找 root 下所有的 json 获取其中的标签数据
         count = {}
         for index, each_json_path in enumerate(FileOperationUtil.re_all_file(self.json_dir, endswitch=['.json'])):
             print(index, each_json_path)
@@ -220,11 +252,99 @@ class Opt(object):
                     count[each_type] = each_count[each_type]
                 else:
                     for each_label in each_count[each_type]:
-                        if each_label not in each_count[each_type]:
+                        if each_label not in count[each_type]:
                             count[each_type][each_label] = each_count[each_type][each_label]
                         else:
                             count[each_type][each_label] += each_count[each_type][each_label]
         return count
+
+    @DecoratorUtil.time_this
+    def count_buffer_tags(self):
+        """统计缓冲区中的标签"""
+        count = {}
+        for each_uc_date in self._json_info_dict:
+            for each_uc in self._json_info_dict[each_uc_date]:
+                each_json = self._json_info_dict[each_uc_date][each_uc]
+                each_count = each_json.count_tags()
+                # 统计结果进行合并
+                for each_type in each_count:
+                    if each_type not in count:
+                        count[each_type] = each_count[each_type]
+                    else:
+                        for each_label in each_count[each_type]:
+                            if each_label not in count[each_type]:
+                                count[each_type][each_label] = each_count[each_type][each_label]
+                            else:
+                                count[each_type][each_label] += each_count[each_type][each_label]
+        return count
+
+    # ------------------------------------------------ dataset ---------------------------------------------------------
+
+    def get_xml_dataset_by_uc_list(self, uc_list, save_dir):
+        """根据传入的 uc list 拷贝出数据"""
+        for each_uc in uc_list:
+            json_path, img_path = self.get_json_img_path_from_uc(each_uc)
+            # 读取 json_path, 转为 xml
+            save_xml_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.xml')
+            save_img_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.jpg')
+            json_info = JsonInfo(json_path)
+            shutil.copy(img_path, save_img_path)
+            json_info.save_to_xml(save_xml_path)
+
+    def get_json_dataset_by_uc_list(self, uc_list, save_dir):
+        """根据传入的 uc list 拷贝出数据"""
+        pass
+
+    def get_coco_dataset_by_uc_list(self, uc_list, save_dir):
+        """根据传入的 uc list 拷贝出数据"""
+        pass
+
+    def get_voc_dataset_by_uc_list(self, uc_list, save_dir):
+        """根据传入的 uc list 拷贝出数据"""
+        pass
+
+    # ------------------------------------------------ tmp_data --------------------------------------------------------
+
+    def update_buffer_objects(self, mode='new'):
+        """更新缓存数据，两种模式 new:只读取新的数据，all:所有的数据全部重新读取"""
+
+        # uc 日期一致的话存在同一个 pkl 中
+
+        # 读取历史 pkl
+        print("* read history buffer")
+        for each_pkl_path in FileOperationUtil.re_all_file(self.object_buffer_dir, endswitch=['.pkl']):
+            each_json_info_dict = PickleUtil.load_data_from_pickle_file(each_pkl_path)
+            uc_date = FileOperationUtil.bang_path(each_pkl_path)[1][:3]
+            self._json_info_dict[uc_date] = each_json_info_dict
+
+        # 更新最新的 json
+        print("* pase new json")
+        for each_json_path in FileOperationUtil.re_all_file(self.json_dir, endswitch=['.json']):
+            uc = FileOperationUtil.bang_path(each_json_path)[1]
+            uc_date = uc[:3]
+            if (uc not in self._json_info_dict[uc_date]) or (mode == 'all'):
+                each_json_info = JsonInfo(each_json_path)
+                if uc_date in self._json_info_dict:
+                    self._json_info_dict[uc_date][uc] = each_json_info
+                else:
+                    self._json_info_dict[uc_date] = {uc:each_json_info}
+
+        # 存储 pkl 到缓存中去
+        print("* save objects to pkl")
+        for each_uc_date in self._json_info_dict:
+            each_pkl_path = os.path.join(self.object_buffer_dir, "{0}.pkl".format(each_uc_date))
+            PickleUtil.save_data_to_pickle_file(self._json_info_dict[each_uc_date], each_pkl_path)
+
+    def load_buffer(self):
+        # 读取历史 pkl
+        print("* read history buffer")
+        for each_pkl_path in FileOperationUtil.re_all_file(self.object_buffer_dir, endswitch=['.pkl']):
+            each_json_info_dict = PickleUtil.load_data_from_pickle_file(each_pkl_path)
+            uc_date = FileOperationUtil.bang_path(each_pkl_path)[1][:3]
+            self._json_info_dict[uc_date] = each_json_info_dict
+
+
+
 
 
 

@@ -242,6 +242,17 @@ class JsonInfo(object):
                 count[each_obj.shape_type][each_obj.label] += 1
         return count
 
+    def has_label(self, label_list):
+        """是否含有某个 label"""
+
+        if isinstance(label_list, str):
+            label_list = [label_list]
+
+        for each_obj in self.objects:
+            if each_obj.label in label_list:
+                return True
+        return False
+
 
 
 

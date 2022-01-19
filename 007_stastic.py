@@ -9,8 +9,15 @@ from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 
 opt = Opt()
+opt.load_buffer()
+
+for each in opt.count_tags().items():
+    print(each)
 
 
-print(opt.count_tags())
+for each in opt.count_buffer_tags().items():
+    print(each)
+
+
 
 

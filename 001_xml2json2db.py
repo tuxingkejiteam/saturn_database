@@ -13,7 +13,9 @@ from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 xml_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\Annotations"
 img_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\JPEGImages"
-# conf_path = r"D:\Algo\saturn_database\config.ini"
+
+# xml_dir = r"C:\Users\14271\Desktop\test_del"
+# img_dir = r"C:\Users\14271\Desktop\test_del"
 
 opt = Opt()
 
