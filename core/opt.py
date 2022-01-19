@@ -207,9 +207,24 @@ class Opt(object):
         """统计标签"""
         # （1）正框斜框分开统计
         # （2）每一个标签分开统计
-        pass
 
-
+        # todo 查找 root 下所有的 json 获取其中的标签数据
+        count = {}
+        for index, each_json_path in enumerate(FileOperationUtil.re_all_file(self.json_dir, endswitch=['.json'])):
+            print(index, each_json_path)
+            each_json = JsonInfo(each_json_path)
+            each_count = each_json.count_tags()
+            # 统计结果进行合并
+            for each_type in each_count:
+                if each_type not in count:
+                    count[each_type] = each_count[each_type]
+                else:
+                    for each_label in each_count[each_type]:
+                        if each_label not in each_count[each_type]:
+                            count[each_type][each_label] = each_count[each_type][each_label]
+                        else:
+                            count[each_type][each_label] += each_count[each_type][each_label]
+        return count
 
 
 

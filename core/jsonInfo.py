@@ -42,7 +42,6 @@ class JsonInfo(object):
         self.mode = None                # 输配变模式, 输电，配电还是变点
         self.train_info = None
         self.extra_info = None
-        self.objects_num = None
         self.json_path = json_path
         #
         self.parse_json(json_path)
@@ -231,6 +230,17 @@ class JsonInfo(object):
 
     # ------------------------------------------------------------------------------------------------------------------
 
+    def count_tags(self):
+        """分类型统计标签"""
+        count = {}
+        for each_obj in self.objects:
+            if each_obj.shape_type not in count:
+                count[each_obj.shape_type] = {}
+            if each_obj.label not in count[each_obj.shape_type]:
+                count[each_obj.shape_type][each_obj.label] = 1
+            else:
+                count[each_obj.shape_type][each_obj.label] += 1
+        return count
 
 
 
