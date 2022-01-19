@@ -1,13 +1,21 @@
 CREATE DATABASE Saturn_Database;
 USE Saturn_Database;
 
+CREATE TABLE `md5_uc`(
+  `md5` CHAR(32),
+  `uc` CHAR(7),
+  PRIMARY KEY (`md5`)
+
+)
+
+
 CREATE TABLE `图片大类表` (
   `唯一编码` CHAR(7),
   `输配变` INT DEFAULT NULL,
   `电压等级` CHAR(6) DEFAULT NULL,
   `含有缺陷` BOOL DEFAULT NULL,
-  `历史遗留` BOOL NOT NULL,
-  `可见光` BOOL NOT NULL,
+  `历史遗留` BOOL DEFAULT NULL,
+  `可见光` BOOL DEFAULT TRUE,
   `裸图` BOOL DEFAULT NULL,
   `野外` BOOL DEFAULT NULL,
   `绝缘子` BOOL DEFAULT NULL,
@@ -50,7 +58,7 @@ CREATE TABLE `特殊标注表`(
   `唯一编码` CHAR(7),
   `标签` VARCHAR(20),
   `标注逻辑` VARCHAR (50)
-  );
+  );`md5_uc`
 
 CREATE TABLE `绝缘子` (
   `唯一编码` CHAR(7) NOT NULL,
