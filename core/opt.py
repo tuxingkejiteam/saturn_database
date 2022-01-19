@@ -15,11 +15,6 @@ from JoTools.utils.DecoratorUtil import DecoratorUtil
 
 this_dir = os.path.dirname(__file__)
 
-mysql_zy = SaturnSQL(host='192.168.3.101', user='root', password='root123', db_name='Saturn_Database')
-
-
-
-
 
 class Opt(object):
 
@@ -31,6 +26,7 @@ class Opt(object):
         self.img_dir = None
         self.tmp_dir = None
         #
+        self.sql_zy = None
         self.parse_config()
 
     def parse_config(self):
@@ -46,13 +42,19 @@ class Opt(object):
                 raise ValueError("* config path not exist")
 
         cf = configparser.ConfigParser()
-        cf.read(self.config_path)
+        cf.read(self.config_path, encoding='utf-8')
         self.sql_path = cf.get('common', 'sql_path')
         self.root_dir = cf.get('common', 'root_dir')
         self.tmp_dir = cf.get('common', 'tmp_dir')
         #
         self.json_dir = self.img_dir = os.path.join(self.root_dir, "json_img")
-
+        #
+        host = cf.get('sql', 'host')
+        user = cf.get('sql', 'user')
+        password = cf.get('sql', 'password')
+        db_name = cf.get('sql', 'db_name')
+        self.sql_zy = SaturnSQL(host=host, user=user, password=password, db_name=db_name)
+        #
         print('-' * 30)
         print("* sql path : {0}".format(self.sql_path))
         print("* root dir : {0}".format(self.root_dir))
@@ -133,7 +135,7 @@ class Opt(object):
                 json_list.append(each_json_path)
 
         # 将 json 信息全部导入到数据库中
-        mysql_zy.update_json_list_to_db(json_list)
+        self.sql_zy.update_json_list_to_db(json_list)
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -167,7 +169,7 @@ class Opt(object):
         """输入一个 xml img 得到 json 文件"""
         # 申请 uc
         each_hash = HashLibUtil.get_file_md5(img_path)
-        uc = mysql_zy.get_uc_list([each_hash])[0]
+        uc = self.sql_zy.get_uc_list([each_hash])[0]
         # 解析 xml
         a = JsonInfo()
         a.parse_xml(xml_path=xml_path, img_path=img_path, uc=uc)
@@ -189,5 +191,28 @@ class Opt(object):
     @staticmethod
     def get_json_from_img(self, save_path):
         pass
+
+    # ------------------------------------------------ find ------------------------------------------------------------
+
+    def get_uc_list_by_attr_from_root(self):
+        """从本地查询内容"""
+        pass
+
+    def get_uc_list_by_label_from_root(self, need_label_list):
+        pass
+
+    # ------------------------------------------------ stastic ---------------------------------------------------------
+
+    def count_tags(self):
+        """统计标签"""
+        # （1）正框斜框分开统计
+        # （2）每一个标签分开统计
+        pass
+
+
+
+
+
+
 
 

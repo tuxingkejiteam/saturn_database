@@ -11,13 +11,19 @@ from core.jsonInfo import JsonInfo
 from core.opt import Opt
 from JoTools.utils.FileOperationUtil import FileOperationUtil
 
-opt = Opt()
 
 save_dir = r"C:\Users\14271\Desktop\del\root_dir\train_data"
+
+# ----------------------------------------------------------------------------------------------------------------------
+
 
 # todo uc list 由查询得到，这边增加按条件查询代码
 uc_list = ['Dnd0001', 'Dnd0002', 'Dnd0003', 'Dnd0004', 'Dnd0005', 'Dnd0006', 'Dnd0007']
 
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+opt = Opt()
 
 for each_uc in uc_list:
     json_path, img_path = opt.get_json_img_path_from_uc(each_uc)
@@ -25,8 +31,12 @@ for each_uc in uc_list:
     save_xml_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.xml')
     save_img_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.jpg')
     json_info = JsonInfo(json_path)
-    json_info.save_to_xml(save_xml_path)
     shutil.copy(img_path, save_img_path)
+    # 保存为 xml
+    json_info.save_to_xml(save_xml_path)
+    # todo 保存为 coco
+    # todo 保存为 json_labelme
+
 
 
 
