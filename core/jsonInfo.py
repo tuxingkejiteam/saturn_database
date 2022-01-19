@@ -13,6 +13,7 @@ class Object(object):
         self.label = None
         self.shape_type = None
         self.points = None
+        self.id = None                  # 用于给每一个元素
 
     def __eq__(self, other):
         if self.label != other.label:
