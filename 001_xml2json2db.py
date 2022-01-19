@@ -24,9 +24,10 @@ for each_img_path in FileOperationUtil.re_all_file(img_dir, endswitch=['.jpg', '
     each_xml_path = os.path.join(xml_dir, xml_name)
     # 获取标准 json
     json_path, img_path = opt.get_json_from_xml(each_xml_path, each_img_path)
-    # # 标准 json 入库
+    # 标准 json 入库
     opt.add_uc_to_root(json_path, img_path, is_clip=True)
-
+    # 更新入数据库
+    # opt.add_json_to_db()
 
 
 

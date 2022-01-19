@@ -21,7 +21,7 @@ uc_list = ['Dnd0001', 'Dnd0002', 'Dnd0003', 'Dnd0004', 'Dnd0005', 'Dnd0006', 'Dn
 
 for each_uc in uc_list:
     json_path, img_path = opt.get_json_img_path_from_uc(each_uc)
-    # todo 读取 json_path, 转为 xml
+    # 读取 json_path, 转为 xml
     save_xml_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.xml')
     save_img_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.jpg')
     json_info = JsonInfo(json_path)

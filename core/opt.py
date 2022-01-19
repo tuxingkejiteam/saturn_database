@@ -124,7 +124,6 @@ class Opt(object):
 
     def update_json_attr(self, uc_list, attr_list):
         """更新 json 的信息 [[attr_name, attr_value]]"""
-        # fixme 我提供对应的接口，是不是存 uc txt 我不去管，但是需要通过接口才能去改变对应的属性
         json_list = []
         for each_uc in uc_list:
             each_json_path = self.get_json_img_path_from_uc(each_uc)[0]
