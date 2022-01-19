@@ -25,17 +25,8 @@ uc_list = ['Dnd0001', 'Dnd0002', 'Dnd0003', 'Dnd0004', 'Dnd0005', 'Dnd0006', 'Dn
 
 opt = Opt()
 
-for each_uc in uc_list:
-    json_path, img_path = opt.get_json_img_path_from_uc(each_uc)
-    # 读取 json_path, 转为 xml
-    save_xml_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.xml')
-    save_img_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.jpg')
-    json_info = JsonInfo(json_path)
-    shutil.copy(img_path, save_img_path)
-    # 保存为 xml
-    json_info.save_to_xml(save_xml_path)
-    # todo 保存为 coco
-    # todo 保存为 json_labelme
+# 导出
+opt.get_xml_dataset_by_uc_list(uc_list, save_dir)
 
 
 
