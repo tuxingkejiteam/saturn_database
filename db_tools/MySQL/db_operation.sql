@@ -19,4 +19,4 @@ CREATE TABLE `img_bit`(
 	`name` VARCHAR(10),
 	`bit` LONGBLOB
 );
-INSERT INTO `img_bit` VALUES ('test01', '015432564101010');
+INSERT INTO `img_bit` VALUES ('test01', '01\\\xxxx1010');
