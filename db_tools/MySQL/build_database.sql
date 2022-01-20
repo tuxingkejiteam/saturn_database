@@ -27,7 +27,7 @@ CREATE TABLE `标签信息表`(
   
 CREATE TABLE `图片大类表` (
   `唯一编码` CHAR(7),
-  `输配变` CHAR(2) DEFAULT NULL,
+  `输配变` CHAR(1) DEFAULT NULL,
   `电压等级` CHAR(6) DEFAULT NULL,
   `含有缺陷` BOOL DEFAULT NULL,
   `历史遗留` BOOL DEFAULT NULL,
@@ -46,20 +46,6 @@ CREATE TABLE `图片大类表` (
   PRIMARY KEY (`唯一编码`)
   );
 
-CREATE TABLE `其他信息表` (
-  `唯一编码` CHAR(7),
-  `原名` VARCHAR(100),
-  `宽` INT NOT NULL,
-  `高` INT NOT NULL,
-  `md5` VARCHAR(32) NOT NULL,
-  `分割标注` BOOL DEFAULT NULL,
-  `斜框标注` BOOL DEFAULT NULL,
-  `点线标注` BOOL DEFAULT NULL,
-  `训练信息` VARCHAR (50),
-  PRIMARY KEY (`唯一编码`),
-  UNIQUE KEY (`md5`)
-  );
-
 CREATE TABLE `标签信息表`(
   `标签` VARCHAR(20),
   `大类` VARCHAR(10) NOT NULL,
@@ -69,9 +55,3 @@ CREATE TABLE `标签信息表`(
   `更新日期` CHAR(6) DEFAULT '191111',
   PRIMARY KEY(`标签`)
   );
-
-CREATE TABLE `特殊标注表`(
-  `唯一编码` CHAR(7),
-  `标签` VARCHAR(20),
-  `标注逻辑` VARCHAR (50)
-  );`md5_uc`
