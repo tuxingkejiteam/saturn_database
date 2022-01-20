@@ -1,17 +1,33 @@
-CREATE DATABASE Saturn_Database;
-USE Saturn_Database;
+CREATE DATABASE `Saturn_Database_V1`;
+USE `Saturn_Database_V1`;
 
-CREATE TABLE `md5_uc`(
-  `md5` CHAR(32),
-  `uc` CHAR(7),
-  PRIMARY KEY (`md5`)
+CREATE TABLE `MD5对照表`(
+  `MD5` CHAR(32),
+  `UC` CHAR(7),
+  PRIMARY KEY (`md5`),
+  UNIQUE KEY (`uc`)
+);
 
-)
+CREATE TABLE `编码使用记录表`(
+  `日期编码` CHAR(3),
+  `已使用数量` INT,
+  PRIMARY KEY (`日期编码`)
+);
 
-
+CREATE TABLE `标签信息表`(
+  `标签` CHAR(20),
+  `大类` CHAR(10) NOT NULL,
+  `部件` CHAR(20) NOT NULL,
+  `描述` CHAR(20) NOT NULL,
+  `特殊` BOOL NOT NULL,
+  `更新日期` INT DEFAULT 191111,
+  PRIMARY KEY(`标签`)
+  );
+  
+  
 CREATE TABLE `图片大类表` (
   `唯一编码` CHAR(7),
-  `输配变` INT DEFAULT NULL,
+  `输配变` CHAR(1) DEFAULT NULL,
   `电压等级` CHAR(6) DEFAULT NULL,
   `含有缺陷` BOOL DEFAULT NULL,
   `历史遗留` BOOL DEFAULT NULL,
@@ -30,20 +46,6 @@ CREATE TABLE `图片大类表` (
   PRIMARY KEY (`唯一编码`)
   );
 
-CREATE TABLE `其他信息表` (
-  `唯一编码` CHAR(7),
-  `原名` VARCHAR(100),
-  `宽` INT NOT NULL,
-  `高` INT NOT NULL,
-  `md5` VARCHAR(32) NOT NULL,
-  `分割标注` BOOL DEFAULT NULL,
-  `斜框标注` BOOL DEFAULT NULL,
-  `点线标注` BOOL DEFAULT NULL,
-  `训练信息` VARCHAR (50),
-  PRIMARY KEY (`唯一编码`),
-  UNIQUE KEY (`md5`)
-  );
-
 CREATE TABLE `标签信息表`(
   `标签` VARCHAR(20),
   `大类` VARCHAR(10) NOT NULL,
@@ -52,33 +54,4 @@ CREATE TABLE `标签信息表`(
   `特殊` BOOL NOT NULL,
   `更新日期` CHAR(6) DEFAULT '191111',
   PRIMARY KEY(`标签`)
-  );
-
-CREATE TABLE `特殊标注表`(
-  `唯一编码` CHAR(7),
-  `标签` VARCHAR(20),
-  `标注逻辑` VARCHAR (50)
-  );`md5_uc`
-
-CREATE TABLE `绝缘子` (
-  `唯一编码` CHAR(7) NOT NULL,
-  `陶瓷绝缘子` BOOL DEFAULT NULL,
-  `复合绝缘子` BOOL DEFAULT NULL,
-  `玻璃绝缘子` BOOL DEFAULT NULL,
-  `瓷瓶棒` BOOL DEFAULT NULL,
-  `地线绝缘子` BOOL DEFAULT NULL,
-  `均压环` BOOL DEFAULT NULL,
-  `钢脚钢帽` BOOL DEFAULT NULL, 
-  `防污罩` BOOL DEFAULT NULL,
-  `避雷器` BOOL DEFAULT NULL,
-  `横担绝缘子` BOOL DEFAULT NULL,
-  `所有绝缘子` BOOL DEFAULT NULL,
-  `自爆` BOOL DEFAULT NULL,
-  `破损` BOOL DEFAULT NULL,
-  `脏污` BOOL DEFAULT NULL,
-  `雷击` BOOL DEFAULT NULL,
-  `锈蚀` BOOL DEFAULT NULL,
-  `倾斜` BOOL DEFAULT NULL,
-  `正常` BOOL DEFAULT NULL,
-  PRIMARY KEY (`唯一编码`)
   );

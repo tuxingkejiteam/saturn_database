@@ -1,6 +1,0 @@
-添加主键约束：
-ALTER TABLE <数据表名> ADD PRIMARY KEY(<列名>);
-
-查看表的信息：
-DESC <数据表名>
-
