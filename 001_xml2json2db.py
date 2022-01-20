@@ -11,8 +11,11 @@ from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 # fixme 支持两个模式，一种是主动更新，一种延迟更新
 
-xml_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\Annotations"
-img_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\JPEGImages"
+# xml_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\Annotations"
+# img_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\JPEGImages"
+
+xml_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_train_data_step_1\Annotations"
+img_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_train_data_step_1\JPEGImages"
 
 # xml_dir = r"C:\Users\14271\Desktop\test_del"
 # img_dir = r"C:\Users\14271\Desktop\test_del"

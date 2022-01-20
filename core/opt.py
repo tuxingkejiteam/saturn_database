@@ -319,10 +319,13 @@ class Opt(object):
 
         # 更新最新的 json
         print("* pase new json")
+        index = 0
         for each_json_path in FileOperationUtil.re_all_file(self.json_dir, endswitch=['.json']):
             uc = FileOperationUtil.bang_path(each_json_path)[1]
             uc_date = uc[:3]
             if (uc not in self._json_info_dict[uc_date]) or (mode == 'all'):
+                index += 1
+                print(index, each_json_path)
                 each_json_info = JsonInfo(each_json_path)
                 if uc_date in self._json_info_dict:
                     self._json_info_dict[uc_date][uc] = each_json_info
