@@ -1,7 +1,6 @@
 from CRUD.MySQL_class import SaturnSQL
 
-
-mysql = SaturnSQL(user='zy', password='zy', host='192.168.3.101')  # 启动数据库，并实例化数据库接口的方法类。
+mysql = SaturnSQL(user='root', password='root123', host='192.168.3.101')  # 启动数据库，并实例化数据库接口的方法类。
 # mysql.R.all_label()
 
 
@@ -18,20 +17,29 @@ mysql = SaturnSQL(user='zy', password='zy', host='192.168.3.101')  # 启动数�
 #     pass
 
 import numpy as np
+import cv2
+img_path = "D:\工作之禁忌之地\数据库建立\saturn_database\微信截图_20220119202753.png"
+# a = cv2.imdecode(np.fromfile(img_path, dtype=np.uint8), cv2.IMREAD_COLOR)  # 格式为BGR
+#
+# #a = np.ones((3, 4)).astype(np.uint8)
+# # a = np.random.randn(3, 4, 4).astype(np.uint8)
+# b = a.tobytes()
+# aaa = map(int, b)
+# d = list(map(int, b))
+# c = np.array(d, dtype=a.dtype).reshape(a.shape)
 
-# with open('db_tools/MySQL/build_database.sql') as f:
-#     a = f.read()
-a = np.random.randn(3, 4, 10).astype(np.uint8)
-b = a.tobytes()
-aaa = map(int, b)
-d = list(map(int, b))
-c = np.array(d, dtype=a.dtype).reshape(a.shape)
-
-sql = "INSERT INTO `img_bit` VALUES ('test01', '{}');".format(b)
+sql = "INSERT INTO `img_bit` VALUES ('test03', LOAD_FILE('{}'));".format(img_path)
 mysql.db_cursor.execute(sql)  # 执行语句
 mysql.database.commit()
-pass
 
+sql = "SELECT `bit` FROM `img_bit` WHERE `name`='test03'"
+mysql.db_cursor.execute(sql)  # 执行语句
+mysql.database.commit()
+
+label_info = list(mysql.db_cursor.fetchall())[0][0]
+e = list(map(int, label_info))
+f = np.array(d, dtype=a.dtype).reshape(a.shape)
+pass
 
 # class TestClass:
 #     a: int

@@ -14,3 +14,9 @@ DELETE FROM md5_uc WHERE `md5` IN(
 	SELECT `md5` FROM(
 		SELECT `md5` FROM md5_uc GROUP BY `md5` HAVING COUNT(`md5`) > 1
 		) AS tmp
+
+CREATE TABLE `img_bit`(
+	`name` VARCHAR(10),
+	`bit` LONGBLOB
+);
+INSERT INTO `img_bit` VALUES ('test01', '015432564101010');
