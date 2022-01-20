@@ -9,16 +9,15 @@ from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 # 读取 xml 中的内容，存放到数据库中
 
-# fixme 支持两个模式，一种是主动更新，一种延迟更新
+# todo 如果 json 存在，更新 json 中的 obj 数据，部分 attr 数据不进行更新
+# todo 如果 img 存在，不复制 img
+# todo 如果文件名本身就是符合 uc 规范的，可以不计算 md5 找到对应的 uc，可以直接使用
 
-# xml_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\Annotations"
-# img_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\JPEGImages"
+xml_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\Annotations"
+img_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\JPEGImages"
 
-xml_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_train_data_step_1\Annotations"
-img_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_train_data_step_1\JPEGImages"
-
-# xml_dir = r"C:\Users\14271\Desktop\test_del"
-# img_dir = r"C:\Users\14271\Desktop\test_del"
+# xml_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_train_data_step_1\Annotations"
+# img_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_train_data_step_1\JPEGImages"
 
 opt = Opt()
 

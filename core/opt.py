@@ -13,9 +13,13 @@ from db_tools.CRUD.MySQL_class import SaturnSQL
 from JoTools.utils.HashlibUtil import HashLibUtil
 from JoTools.utils.DecoratorUtil import DecoratorUtil
 from JoTools.utils.PickleUtil import PickleUtil
+from JoTools.utils.LogUtil import LogUtil
+
 this_dir = os.path.dirname(__file__)
 
 # fixme 为了增加速度，可以使用缓存模式，就是除非是强制进行更新并筛选，否者，只在已缓存的部分内容中进行删选
+
+# todo 写个日志装饰器，用于自动生成日志，或者写个日志函数，用于追踪每一步的操作，记录每一个操作的参数，日志有指定文件大小的功能最好能使用日志来做
 
 
 class Opt(object):
@@ -31,6 +35,9 @@ class Opt(object):
         self.sql_zy = None
         # 缓存的数据
         self.object_buffer_dir = None
+        self.log_dir = None
+        self.log = None
+        #
         self.parse_config()
         self._json_info_dict = {}
 
@@ -54,9 +61,12 @@ class Opt(object):
         #
         self.json_dir = self.img_dir = os.path.join(self.root_dir, "json_img")
         self.object_buffer_dir = os.path.join(self.root_dir, 'buffer')
+        self.log_dir = os.path.join(self.root_dir, 'log_dir')
+        self.log = LogUtil.get_log(os.path.join(self.log_dir, "opt.log"), 4, "opt", print_to_console=False)
         os.makedirs(self.json_dir, exist_ok=True)
         os.makedirs(self.img_dir, exist_ok=True)
         os.makedirs(self.object_buffer_dir, exist_ok=True)
+        os.makedirs(self.log_dir, exist_ok=True)
         #
         host = cf.get('sql', 'host')
         user = cf.get('sql', 'user')
@@ -105,6 +115,9 @@ class Opt(object):
         if not self._check_json_img_consistence(json_path, img_path):
             raise ValueError("* json img uc not equal")
 
+        self.log.info("add_uc_to_root :")
+        self.log.info("json_path : {0}".format(json_path))
+        self.log.info("img_path : {0}".format(img_path))
         uc = FileOperationUtil.bang_path(json_path)[1]
         json_path_dst, img_path_dst = self.get_json_img_path_from_uc(uc)
         #
@@ -136,16 +149,21 @@ class Opt(object):
 
     def update_json_attr(self, uc_list, attr_list):
         """更新 json 的信息 [[attr_name, attr_value]]"""
-        json_list = []
-        for each_uc in uc_list:
+        self.log.info("update_json_attr : ")
+        self.log.info("uc_list : {0}".format(uc_list))
+        self.log.info("attr_list : {0}".format(attr_list))
+        for index, each_uc in enumerate(uc_list):
+            print(index, each_uc)
             each_json_path = self.get_json_img_path_from_uc(each_uc)[0]
             each_json_info = JsonInfo(each_json_path)
             for attr_name, attr_value in attr_list:
                 setattr(each_json_info, attr_name, attr_value)
-                json_list.append(each_json_path)
+            # 统一保存 json
+            save_json_path = self.get_json_img_path_from_uc(each_json_info.unique_code)[0]
+            each_json_info.save_to_json(save_json_path)
 
-        # 将 json 信息全部导入到数据库中
-        self.sql_zy.update_json_list_to_db(json_list)
+        # todo 将 json 信息全部导入到数据库中
+        # self.sql_zy.update_json_list_to_db(json_list)
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -178,6 +196,9 @@ class Opt(object):
     def get_json_from_xml(self, xml_path, img_path):
         """输入一个 xml img 得到 json 文件"""
         # 申请 uc
+        self.log.info("get_json_from_xml : ")
+        self.log.info("xml path : {0}".format(xml_path))
+        self.log.info("img_path : {0}".format(img_path))
         each_hash = HashLibUtil.get_file_md5(img_path)
         uc = self.sql_zy.get_uc_list([each_hash])[0]
         # 解析 xml
@@ -186,13 +207,13 @@ class Opt(object):
         a.unique_code = uc
         a.MD5 = each_hash
         #
-        json_path = os.path.join(self.tmp_dir, "{0}.json".format(uc))
-        save_img_path = os.path.join(self.tmp_dir, "{0}.jpg".format(uc))
-        a.save_to_json(json_path)
+        save_json_path, save_img_path = self.get_json_img_path_from_uc(uc)
+        a.save_to_json(save_json_path)
         # 将 img 重命名之后
-        img_ndarry = cv2.imdecode(np.fromfile(img_path, dtype=np.uint8), 1)
-        cv2.imwrite(save_img_path, img_ndarry)
-        return json_path, save_img_path
+        if not os.path.exists(save_img_path):
+            img_ndarry = cv2.imdecode(np.fromfile(img_path, dtype=np.uint8), 1)
+            cv2.imwrite(save_img_path, img_ndarry)
+        return save_json_path, save_img_path
 
     @staticmethod
     def get_json_from_labelme_json(self, json_path, save_path):
@@ -282,6 +303,8 @@ class Opt(object):
 
     def get_xml_dataset_by_uc_list(self, uc_list, save_dir):
         """根据传入的 uc list 拷贝出数据"""
+        self.log.info("get_xml_dataset_by_uc_list : ")
+        self.log.info("uc_list : {0}".format(uc_list))
         for each_uc in uc_list:
             json_path, img_path = self.get_json_img_path_from_uc(each_uc)
             # 读取 json_path, 转为 xml
@@ -311,14 +334,14 @@ class Opt(object):
         # uc 日期一致的话存在同一个 pkl 中
 
         # 读取历史 pkl
-        print("* read history buffer")
+        self.log.info("read history buffer")
         for each_pkl_path in FileOperationUtil.re_all_file(self.object_buffer_dir, endswitch=['.pkl']):
             each_json_info_dict = PickleUtil.load_data_from_pickle_file(each_pkl_path)
             uc_date = FileOperationUtil.bang_path(each_pkl_path)[1][:3]
             self._json_info_dict[uc_date] = each_json_info_dict
 
         # 更新最新的 json
-        print("* pase new json")
+        self.log.info("parse new json into self.objects")
         index = 0
         for each_json_path in FileOperationUtil.re_all_file(self.json_dir, endswitch=['.json']):
             uc = FileOperationUtil.bang_path(each_json_path)[1]
@@ -333,14 +356,14 @@ class Opt(object):
                     self._json_info_dict[uc_date] = {uc:each_json_info}
 
         # 存储 pkl 到缓存中去
-        print("* save objects to pkl")
+        self.log.info("save objects to pkl")
         for each_uc_date in self._json_info_dict:
             each_pkl_path = os.path.join(self.object_buffer_dir, "{0}.pkl".format(each_uc_date))
             PickleUtil.save_data_to_pickle_file(self._json_info_dict[each_uc_date], each_pkl_path)
 
     def load_buffer(self):
         # 读取历史 pkl
-        print("* read history buffer")
+        self.log.info("read history buffer")
         for each_pkl_path in FileOperationUtil.re_all_file(self.object_buffer_dir, endswitch=['.pkl']):
             each_json_info_dict = PickleUtil.load_data_from_pickle_file(each_pkl_path)
             uc_date = FileOperationUtil.bang_path(each_pkl_path)[1][:3]
