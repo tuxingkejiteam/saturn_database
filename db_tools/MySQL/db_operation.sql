@@ -21,4 +21,6 @@ INSERT INTO `目标标注表` VALUES ('asdfghj', 'cpb_nor', -1) ON DUPLICATE KEY
 INSERT INTO `目标标注表` VALUES ('asdfghj', 'cpb_nor', -1) ON DUPLICATE KEY UPDATE;
 INSERT INTO `目标标注表` VALUES ('asdfghj', 'cpb_dirty', -1);
 
-INSERT INTO `编码使用记录表` (`日期编码`) VALUES('Abc');
+INSERT INTO `编码使用记录表` (`日期编码`) VALUES('Abc');\
+
+INSERT IGNORE INTO `MD5对照表` VALUES('f341a333a4bb011aa8bf0f2fce395041', 'adsffgh');

@@ -4,6 +4,7 @@
 import pymysql
 import datetime
 from tqdm import tqdm
+import hashlib
 
 comparison_tabel = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9',
                     10: 'a', 11: 'b', 12: 'c', 13: 'd', 14: 'e', 15: 'f', 16: 'g', 17: 'h', 18: 'i',
@@ -54,15 +55,29 @@ def coding_rank(serial_number) -> str:
     return letter_4 + letter_5 + letter_6 + letter_7
 
 
-uc_date = first_3_letters()
-# 编码使用记录表：
-sql_statement = "INSERT INTO `编码使用记录表` (`日期编码`) VALUES('{}');".format(uc_date)
-database.cursor().execute(sql_statement)
-database.commit()
+def million_insert():
+    uc_date = first_3_letters()
+    count = 0
+    for i in tqdm(range(1000000)):
+        count += 1
+        fake_file = str(i)
+        fake_md5 = hashlib.md5(fake_file.encode()).hexdigest()
+        uc = uc_date + coding_rank(i)
+
+        sql_statement = "INSERT INTO `MD5对照表` (`MD5`, `UC`) VALUES('{}', '{}');".format(fake_md5, uc)
+        database.cursor().execute(sql_statement)
+        if count > 100000:
+            database.commit()
+            count = 0
 
 
-# uc_date = first_3_letters()
-# for i in tqdm(range(300000)):
-#     uc = uc_date + coding_rank(i)
-#
-#     pass
+if __name__ == "__main__":
+    for j in tqdm(range(0, 10000, 1000000)):
+        print(j)
+        fake_file = str(j)
+        fake_md5 = hashlib.md5(fake_file.encode()).hexdigest()
+        sql_statement = "SELECT UC FROM `MD5对照表` WHERE `MD5`='{}';".format(fake_md5)
+        database.cursor().execute(sql_statement)
+        uc_info = database.cursor().fetchall()
+        print(uc_info)
+    pass
