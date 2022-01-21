@@ -36,6 +36,24 @@ class Read(object):
         else:
             return False, ''  # md5不存在于数据库
 
+    def get_uc_list_from_label_list(self, label_list: list, conf: int = 1) -> list:
+        # 选取所有置信度的绝对值达到conf以上的数据。
+        # 默认1次过图即做输出。不做强制输入要求。
+
+        # 拼接条件语句
+        label_condition = ''
+        for label in label_list:
+            label_condition += "标签='{}' OR ".format(label)
+        label_condition = label_condition[:-4]  # 去掉最后面的" OR "
+
+        sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND (置信度>{} OR 置信度<-{}) GROUP BY `唯一编码`;" \
+            .format(label_condition, conf, conf)
+        print(sql_statement)
+        self.db_cursor.execute(sql_statement)
+        uc_list = self.db_cursor.fetchall()
+
+        return uc_list
+
     def get_coding_num(self, uc_date) -> int:
         sql_statement = "SELECT 已使用数量 FROM `编码使用记录表` WHERE 日期编码='{}';".format(uc_date)
         self.db_cursor.execute(sql_statement)
@@ -45,28 +63,6 @@ class Read(object):
             return 0
         else:
             return coding_num[0][0]
-
-    # def __label_analyze(self, label_list):
-    #     # 分析查询的标签当中有哪些字段，私有函数，禁止外部调用。
-    #     query_dic = {}
-    #     label_sub_class = {}
-    #     for label in label_list:
-    #         if label not in self.label_dic.keys():
-    #             print('标签：{}未导入数据库，请核实！'.format(label))
-    #             continue
-    #         elif self.label_dic[label][3] == 1:
-    #             # TODO:还未支持特殊标签查询
-    #             pass
-    #         else:
-    #             label_info = self.label_dic[label]
-    #             label_main_class = label_info[0]
-    #             # 更新小类字典
-    #             label_sub_class[label_info[1]] = True  # 部件名
-    #             label_sub_class[label_info[2]] = True  # 描述名
-    #             label_sub_class['日期'] = label_info[4]  # 上次更新的日期
-    #
-    #             query_dic[label_main_class] = label_sub_class
-    #     return query_dic
 
     @staticmethod
     def Operation_date() -> str:

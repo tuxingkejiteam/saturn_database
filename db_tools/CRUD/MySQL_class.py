@@ -98,6 +98,12 @@ class SaturnSQL(object):
         D.drop_all_tables()
         return True
 
+    def uc_list_from_label_list(self, label_list, conf: int = 1):
+        # 根据标签和置信度来导出uc列表
+        R = self.R(self.database, self.db_cursor)
+        uc_list = R.get_uc_list_from_label_list(label_list, conf)
+        return uc_list
+
     # 给一个md5，返回一个uc
     def get_uc_list(self, md5_list: list) -> list:
         md5_set = set(md5_list)

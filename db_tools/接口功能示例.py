@@ -6,11 +6,16 @@ def main():
     mysql = SaturnSQL(user='root', password='root123', host='192.168.3.101',
                       db_name='Saturn_Database_V1')  # 启动数据库，并实例化数据库接口的方法类。
 
-    # 清空数据库中所有表中的数据-----------------
+    # 根据label_list和置信度，返回一个UC_list
+    label_list = ['a', 'b']
+    uc_list = mysql.uc_list_from_label_list(label_list, conf=1)
+    print(len(uc_list))
+
+    # # 清空数据库中所有表中的数据---------------------------------
     # a = mysql.clear_all_table()
 
-    # 梦中杀模块，直接杀死所有进程，不留后患。
-    mysql.kill_in_dream()
+    # # 梦中杀模块，直接杀死所有进程，不留后患。----------------------
+    # mysql.kill_in_dream()
 
     # # 根据json的路径列表写入数据库示例---------------------
     # data_dir = '功能测试用数据'

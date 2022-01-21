@@ -80,9 +80,6 @@ def label_insert():
     uc_date = first_3_letters()
     count = 0
     for i in tqdm(range(1000000)):
-        count += 1
-        fake_file = str(i)
-        fake_md5 = hashlib.md5(fake_file.encode()).hexdigest()
         uc = uc_date + coding_rank(i)
 
         label_in_img = []
@@ -92,16 +89,21 @@ def label_insert():
                 label_in_img.append(label)
 
         for label_inset in label_in_img:
-            sql_statement = "INSERT INTO `目标标注表`  VALUES('{}', '{}');".format(uc, label_inset)
+            confidence = random.randint(-5, 5)
+            sql_statement = "INSERT INTO `目标标注表`  VALUES('{}', '{}', {});".format(uc, label_inset, confidence)
             database.cursor().execute(sql_statement)
+            count += 1
+        if count > 100000:
             database.commit()
-        pass
+            count = 0
+    database.commit()
 
 
 if __name__ == "__main__":
-    # label_insert()
+    label_insert()
 
-    million_insert()
+    # million_insert()
+
     # count = 0
     # for j in tqdm(range(0, 1000000, 1000)):
     #     fake_file = str(j)
@@ -113,8 +115,3 @@ if __name__ == "__main__":
     #         # print(uc_info[0][0])
     #         count += 1
     # print(count)
-
-    # sql_statement = "SELECT UC FROM `MD5对照表`;"
-    # db_cursor.execute(sql_statement)
-    # uc_info = db_cursor.fetchall()
-    # print(len(uc_info))
