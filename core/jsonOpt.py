@@ -61,7 +61,7 @@ class Opt(object):
         self.json_dir = self.img_dir = os.path.join(self.root_dir, "json_img")
         self.object_buffer_dir = os.path.join(self.root_dir, 'buffer')
         self.log_dir = os.path.join(self.root_dir, 'log_dir')
-        self.log = LogUtil.get_log(os.path.join(self.log_dir, "opt.log"), 4, "opt", print_to_console=False)
+        self.log = LogUtil.get_log(os.path.join(self.log_dir, "json_opt.log"), 4, "json opt", print_to_console=False)
         os.makedirs(self.json_dir, exist_ok=True)
         os.makedirs(self.img_dir, exist_ok=True)
         os.makedirs(self.object_buffer_dir, exist_ok=True)

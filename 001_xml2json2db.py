@@ -3,7 +3,7 @@
 
 import os
 from core.jsonInfo import JsonInfo
-from core.opt import Opt
+from core.jsonOpt import Opt
 from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 

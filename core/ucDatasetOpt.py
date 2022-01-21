@@ -4,6 +4,7 @@
 
 import os
 import time
+import json
 import shutil
 import configparser
 from JoTools.utils.LogUtil import LogUtil
@@ -14,11 +15,9 @@ this_dir = os.path.dirname(__file__)
 # todo 写个日志装饰器，用于自动生成日志，或者写个日志函数，用于追踪每一步的操作，记录每一个操作的参数，日志有指定文件大小的功能最好能使用日志来做
 
 
-
-
 class UcDataset(object):
 
-    def __init__(self, uc_list, dataset_name, model_name=None, model_version=None, label_used=None, describe=""):
+    def __init__(self, json_path=None, uc_list=None, dataset_name=None, model_name=None, model_version=None, label_used=None, describe=""):
         self.uc_list = uc_list
         self.dataset_name = dataset_name
         #
@@ -26,16 +25,37 @@ class UcDataset(object):
         self.model_version = model_version
         self.label_used = []  if label_used is None else label_used
         #
-        self.set_time = time.time()
+        self.add_time = time.time()
         self.update_time = time.time()
         # 描述信息
         self.describe = describe
+        self.json_path = json_path
+        #
+        self.parse_json_path()
 
     def __setattr__(self, key, value):
         """记录最后更新的时间"""
         object.__setattr__(self, key, value)
         if key == "uc_list":
             self.update_time = time.time()
+
+    def parse_json_path(self):
+        """解析 json 信息"""
+        if self.json_path is None:
+            return
+
+        if not os.path.exists(self.json_path):
+            raise ValueError("json path is not exists")
+
+        json_info = JsonUtil.load_data_from_json_file(self.json_path)
+        self.uc_list = json_info['uc_list']
+        self.dataset_name = json_info['dataset_name']
+        self.model_name = json_info['model_name']
+        self.model_version = json_info['model_version']
+        self.label_used = json_info['label_used']
+        self.add_time = json_info['set_time']
+        self.update_time = json_info['update_time']
+        self.describe = json_info['describe']
 
     def get_info(self):
         """获取描述信息"""
@@ -45,6 +65,8 @@ class UcDataset(object):
             "model_version":"{0}".format(self.model_version),
             "label_used":"{0}".format(",".join(self.label_used)),
             "dataset_name":"{0}".format(self.dataset_name),
+            "add_time":"{0}".format(self.add_time),
+            "update_time":"{0}".format(self.update_time),
         }
         return info
 
@@ -56,7 +78,7 @@ class UcDataset(object):
             "model_name": self.model_name,
             "model_version": self.model_version,
             "label_used": self.label_used,
-            "set_time": self.set_time,
+            "set_time": self.add_time,
             "update_time": self.update_time,
             "describe": self.describe,
         }
@@ -72,6 +94,7 @@ class UcDatasetOpt(object):
         #
         self.dataset_dir = None                 # 用于存储数据集的地方
         self.log_dir = None                     # 日志文件
+        self.log = None
         self.config_path = config_path
         #
         self.parse_config()
@@ -92,36 +115,50 @@ class UcDatasetOpt(object):
         self.root_dir = cf.get('common', 'root_dir')
         self.log_dir = os.path.join(self.root_dir, "log_dir")
         self.dataset_dir = os.path.join(self.root_dir, "uc_dataset")
+        self.log = LogUtil.get_log(os.path.join(self.log_dir, "uc_dataset_opt.log"), 4, "uc dataset opt", print_to_console=False)
         #
         os.makedirs(self.log_dir, exist_ok=True)
         os.makedirs(self.dataset_dir, exist_ok=True)
 
-    def set_uc_dataset(self, uc_list, dataset_name, model_name=None, model_version=None, label_used=None, describe="") -> bool:
+    def add_uc_dataset(self, uc_list, dataset_name, model_name=None, model_version=None, label_used=None, describe="") -> bool:
         """设置一个 uc_dataset 存储到本地"""
+        self.log.info("add uc dataset : {0}".format(dataset_name))
+        # 如果同样的名字已存在，那么就不能插入只能进行更新
+        json_save_path = self.get_uc_dataset_path_by_dataset_name(dataset_name)
+        if os.path.exists(json_save_path):
+            raise ValueError("{0} is exists".format(dataset_name))
+        #
         a = UcDataset(uc_list, dataset_name, model_name=model_name, model_version=model_version, label_used=label_used, describe=describe)
         # 保存为本地文件
         if not self.check_dataset_name(dataset_name):
             raise ValueError(" dataset name error : {0}".format(dataset_name))
-        json_save_path = os.path.join(self.dataset_dir, "{0}.json".format(dataset_name))
         # todo 对dataset_name 进行格式检查
         a.save_to_file(json_save_path)
 
-    def get_uc_dataset(self, dataset_name) -> list:
-        pass
+    def get_uc_dataset(self, dataset_name):
+        self.log.info("get uc dataset : {0}".format(dataset_name))
+        json_path = self.get_uc_dataset_path_by_dataset_name(dataset_name)
+        if os.path.exists(json_path):
+            a = UcDataset(json_path=json_path)
+            return a
+        else:
+            self.log.info("dataset not exists")
+            raise ValueError('dataset not exists')
 
-    def get_uc_dataset_by_name(self, dataset_name):
-        pass
-
-    def get_uc_dataset_by_label(self, label_last):
-        pass
-
-    def get_uc_dataset_des_by_name(self, dataset_name):
-        pass
+    def get_uc_dataset_path_by_dataset_name(self, dataset_name):
+        return os.path.join(self.dataset_dir, "{0}.json".format(dataset_name))
 
     def update_uc_dataset(self, uc_dataset):
         """根据 dataset_name 找到对应的"""
-        # todo 增加日志记录
-        pass
+        if not isinstance(uc_dataset, UcDataset):
+            raise TypeError("need UcDataset")
+        uc_dataset_name = uc_dataset.dataset_name
+        self.log.info("update uc dataset : {0}".format(uc_dataset_name))
+        uc_dataset.update_time = time.time()
+        json_path = self.get_uc_dataset_path_by_dataset_name(uc_dataset_name)
+        if not os.path.exists(json_path):
+            raise ValueError("no dataset with name {0} can not update, try insert".format(uc_dataset_name))
+        uc_dataset.save_to_file(json_path)
 
     @staticmethod
     def check_dataset_name(dataset_name):
