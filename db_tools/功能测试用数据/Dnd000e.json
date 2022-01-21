@@ -1,0 +1,45 @@
+{
+    "org_name": "02efccc7119d0ba4bf3a4796868b5c4f.jpg",
+    "unique_code": "Dnd000e",
+    "size": {
+        "width": 5280,
+        "height": 2970
+    },
+    "train_info": null,
+    "trace": null,
+    "MD5": "02efccc7119d0ba4bf3a4796868b5c4f",
+    "extra_info": null,
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    443,
+                    1087
+                ],
+                [
+                    898,
+                    1269
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3662,
+                    848
+                ],
+                [
+                    4117,
+                    988
+                ]
+            ]
+        }
+    ]
+}

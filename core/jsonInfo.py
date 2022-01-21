@@ -46,21 +46,8 @@ class JsonInfo(object):
         #
         self.parse_json(json_path)
 
-    def __getitem__(self, item):
-        if item > self.objects_num:
-            print('目标索引越界！')
-            return None
-        dix = str(item)
-        return self.objects[dix]
-
-    def __len__(self):
-        return self.objects_num
-
     def __str__(self):
-        return self.unique_code + ' ' + self.org_name
-
-    def __iter__(self):
-        return self.objects.items()
+        return self.unique_code
 
     def __contains__(self, item):
         for each_obj in self.objects:
@@ -96,15 +83,13 @@ class JsonInfo(object):
 
         self.org_name = json_dic['org_name']
         self.unique_code = json_dic['unique_code']
-        self.size = json_dic['size']
-        self.H = self.size['height']
-        self.W = self.size['width']
+        self.H = json_dic['size']['height']
+        self.W = json_dic['size']['width']
         self.MD5 = json_dic['MD5']
         self.trace = bool(json_dic['trace'])
         self.mode = json_dic['mode']                            # 输配变模式
         self.train_info = json_dic['train_info']
         self.extra_info = json_dic['extra_info']
-        # self.objects_num = len(self.objects)
 
         for each_obj_dict in json_dic['objects']:
             obj = Object()
