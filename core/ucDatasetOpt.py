@@ -48,16 +48,30 @@ class UcDataset(object):
         }
         return info
 
+    def save_to_file(self, save_path):
+        """保存为本地文件"""
+        uc_dataset_info = {
+            "uc_list": self.uc_list,
+            "dataset_name": self.dataset_name,
+            "model_name": self.model_name,
+            "model_version": self.model_version,
+            "label_used": self.label_used,
+            "set_time": self.set_time,
+            "update_time": self.update_time,
+            "describe": self.describe,
+        }
+        JsonUtil.save_data_to_json_file(uc_dataset_info, save_path)
+
 
 class UcDatasetOpt(object):
 
     # todo 要有单独的日志，用于记录每一个 dataset 的设立，导入导出，时间 uc_list 变化等
 
     def __init__(self, config_path=None):
-        self.root_dir = None            # 存储的文件夹
+        self.root_dir = None                    # 存储的文件夹
         #
-        self.dataset_dir = None         # 用于存储数据集的地方
-        self.log_dir = None             # 日志文件
+        self.dataset_dir = None                 # 用于存储数据集的地方
+        self.log_dir = None                     # 日志文件
         self.config_path = config_path
         #
         self.parse_config()
@@ -82,9 +96,13 @@ class UcDatasetOpt(object):
         os.makedirs(self.log_dir, exist_ok=True)
         os.makedirs(self.dataset_dir, exist_ok=True)
 
-    def set_uc_dataset(self, uc_list, dataset_name) -> bool:
+    def set_uc_dataset(self, uc_list, dataset_name, model_name=None, model_version=None, label_used=None, describe="") -> bool:
         """设置一个 uc_dataset 存储到本地"""
-        pass
+        # todo
+        a = UcDataset(uc_list, dataset_name, model_name=None, model_version=None, label_used=None, describe="")
+        # todo 保存为本地文件
+        # todo 对dataset_name 进行格式检查
+
 
     def get_uc_dataset(self, dataset_name) -> list:
         pass
