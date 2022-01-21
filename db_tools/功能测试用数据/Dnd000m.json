@@ -1,0 +1,30 @@
+{
+    "org_name": "03ead8de6786ec90202ec1549bc0c7e9.jpg",
+    "unique_code": "Dnd000m",
+    "size": {
+        "width": 5280,
+        "height": 2970
+    },
+    "train_info": null,
+    "trace": null,
+    "MD5": "03ead8de6786ec90202ec1549bc0c7e9",
+    "extra_info": null,
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3642,
+                    1653
+                ],
+                [
+                    4148,
+                    1872
+                ]
+            ]
+        }
+    ]
+}

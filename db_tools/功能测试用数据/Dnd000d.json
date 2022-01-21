@@ -1,0 +1,345 @@
+{
+    "org_name": "02b623b5ba68f43d1dc0ac01e2daeca2.jpg",
+    "unique_code": "Dnd000d",
+    "size": {
+        "width": 5472,
+        "height": 3648
+    },
+    "train_info": null,
+    "trace": null,
+    "MD5": "02b623b5ba68f43d1dc0ac01e2daeca2",
+    "extra_info": null,
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4001,
+                    202
+                ],
+                [
+                    4134,
+                    259
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    517,
+                    225
+                ],
+                [
+                    638,
+                    278
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    261,
+                    2779
+                ],
+                [
+                    421,
+                    2870
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    727,
+                    2613
+                ],
+                [
+                    906,
+                    2683
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    677,
+                    2725
+                ],
+                [
+                    840,
+                    2799
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    330,
+                    999
+                ],
+                [
+                    525,
+                    1093
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    382,
+                    807
+                ],
+                [
+                    587,
+                    898
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    302,
+                    2672
+                ],
+                [
+                    473,
+                    2749
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4954,
+                    689
+                ],
+                [
+                    5142,
+                    793
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    5033,
+                    864
+                ],
+                [
+                    5194,
+                    960
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    833,
+                    3355
+                ],
+                [
+                    964,
+                    3412
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    781,
+                    3420
+                ],
+                [
+                    916,
+                    3482
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3965,
+                    72
+                ],
+                [
+                    4071,
+                    131
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4766,
+                    2404
+                ],
+                [
+                    4916,
+                    2473
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4786,
+                    2504
+                ],
+                [
+                    4923,
+                    2575
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4352,
+                    3112
+                ],
+                [
+                    4460,
+                    3165
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4383,
+                    3174
+                ],
+                [
+                    4488,
+                    3223
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    548,
+                    344
+                ],
+                [
+                    666,
+                    395
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    768,
+                    1147
+                ],
+                [
+                    867,
+                    1194
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    994,
+                    1108
+                ],
+                [
+                    1092,
+                    1153
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1000,
+                    1196
+                ],
+                [
+                    1092,
+                    1239
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    794,
+                    1232
+                ],
+                [
+                    882,
+                    1274
+                ]
+            ]
+        }
+    ]
+}

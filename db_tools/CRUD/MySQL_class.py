@@ -27,7 +27,7 @@ class SaturnSQL(object):
     #         print(seek, '函数的作用为：')
     #         print('此函数的作用，是将每一个json文件都必然含有的信息写入数据库。包括：唯一编码，图片原名，长宽，是否为裸图，MD5值')
 
-    def __init__(self, host='192.168.3.101', user='root', password='', db_name='Saturn_Database'):
+    def __init__(self, host='192.168.3.101', user='root', password='', db_name='Saturn_Database_V1'):
         # TODO:调用之前，检查json文件是否是已经存在的文件。
         # 启动数据库函数。若启动失败，则报出错误并优雅地终止程序。
         # 入参：数据库服务器地址，用户名，密码，数据库名
@@ -64,14 +64,28 @@ class SaturnSQL(object):
                                  28: 'u', 29: 'v', 30: 'w', 31: 'x', 32: 'y', 33: 'z'}
         self.year_dict = {2019: 'A', 2020: 'B', 2021: 'C', 2022: 'D', 2023: 'E', 2024: 'F', 2025: 'G'}
 
-        # 计时模块
-        self.start_time = time()
+    def add_json_to_db(self, json_path_list: list, label_list=None, confidence=False, ) -> bool:
+        # 将json中有的信息写入数据库
+        # 是否更新置信度区间。
+        if label_list is None:
+            label_list = []  # 编译器不建议直接初始化为空列表。不知道python为什么建议这样做。
 
-    def create(self, json_file) -> bool:
-        # # 实例化需要用到的操作：写
         C = self.C(self.database, self.db_cursor)
-        succeed = C.add_json(json_file)
+        succeed = C.add_json_to_db(json_path_list, confidence=confidence, label_list=label_list)
         return succeed
+
+    def clear_all_table(self) -> bool:
+        # 删除数据库中所有表的内容。连个毛都不剩下
+        if self.user == 'root':
+            sql_statement = "TRUNCATE TABLE 图片大类表;"
+            self.db_cursor.execute(sql_statement)  # 执行语句
+
+            sql_statement = "TRUNCATE TABLE 目标标注表;"
+            self.db_cursor.execute(sql_statement)  # 执行语句
+            return True
+        else:
+            print("无清空权限！")
+            return False
 
     def delete(self, UC):
         # 对数据库进行删除数据操作
@@ -118,7 +132,7 @@ class SaturnSQL(object):
         self.database.commit()  # 立即提交修改
 
         # 根据新数据的数量，统一申请一个UC编码的list
-        new_uc_list = self.apply_for_uc(new_data_num, coding_num, uc_date)
+        new_uc_list = self.__apply_for_uc(new_data_num, coding_num, uc_date)
 
         count = 0
         for idx, item in enumerate(uc_list):
@@ -132,10 +146,10 @@ class SaturnSQL(object):
 
         return uc_list
 
-    def apply_for_uc(self, new_num, coding_num, uc_date) -> list:
+    def __apply_for_uc(self, new_num, coding_num, uc_date) -> list:
         # 使用一个编码的上下界，申请一个新uc的列表
         uc_rank_list = []
-        for i in range(coding_num+1, coding_num + new_num+1):
+        for i in range(coding_num + 1, coding_num + new_num + 1):
             uc_rank_list.append(uc_date + self.__coding_rank(i))
         return uc_rank_list
 
@@ -209,6 +223,10 @@ class SaturnSQL(object):
 
     def __del__(self):
         # 断开数据库连接。
-        self.database.close()
-        # print('操作耗时：{:.4f}s'.format(time() - self.start_time))
+        try:
+            # TODO: 数据库断开连接时存在问题
+            self.database.close()
+        except TypeError:
+            print("已知bug（1）")
+            pass
         # print('数据库连接已断开！')

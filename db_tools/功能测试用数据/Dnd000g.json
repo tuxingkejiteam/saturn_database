@@ -1,0 +1,150 @@
+{
+    "org_name": "031b9d17b702ac74d29a3f887d5b8539.jpg",
+    "unique_code": "Dnd000g",
+    "size": {
+        "width": 1920,
+        "height": 1080
+    },
+    "train_info": null,
+    "trace": null,
+    "MD5": "031b9d17b702ac74d29a3f887d5b8539",
+    "extra_info": null,
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    234,
+                    890
+                ],
+                [
+                    361,
+                    938
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    569,
+                    844
+                ],
+                [
+                    692,
+                    891
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1211,
+                    827
+                ],
+                [
+                    1331,
+                    872
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1107,
+                    623
+                ],
+                [
+                    1181,
+                    653
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    717,
+                    625
+                ],
+                [
+                    789,
+                    660
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    546,
+                    650
+                ],
+                [
+                    613,
+                    681
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    537,
+                    121
+                ],
+                [
+                    605,
+                    151
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    701,
+                    96
+                ],
+                [
+                    773,
+                    133
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1091,
+                    91
+                ],
+                [
+                    1164,
+                    123
+                ]
+            ]
+        }
+    ]
+}

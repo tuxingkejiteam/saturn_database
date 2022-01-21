@@ -15,8 +15,8 @@ DELETE FROM md5_uc WHERE `md5` IN(
 		SELECT `md5` FROM md5_uc GROUP BY `md5` HAVING COUNT(`md5`) > 1
 		) AS tmp
 
-CREATE TABLE `img_bit`(
-	`name` VARCHAR(10),
-	`bit` LONGBLOB
-);
-INSERT INTO `img_bit` VALUES ('test01', '01\\\xxxx1010');
+
+INSERT IGNORE INTO `目标标注表` VALUES ('asdfghj', 'cpb_ps', -1);
+INSERT INTO `目标标注表` VALUES ('asdfghj', 'cpb_nor', -1) ON DUPLICATE KEY UPDATE 置信度=置信度+1;
+INSERT INTO `目标标注表` VALUES ('asdfghj', 'cpb_nor', -1) ON DUPLICATE KEY UPDATE;
+INSERT INTO `目标标注表` VALUES ('asdfghj', 'cpb_dirty', -1);
