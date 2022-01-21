@@ -53,7 +53,7 @@ class UcDataset(object):
         self.model_name = json_info['model_name']
         self.model_version = json_info['model_version']
         self.label_used = json_info['label_used']
-        self.add_time = json_info['set_time']
+        self.add_time = json_info['add_time']
         self.update_time = json_info['update_time']
         self.describe = json_info['describe']
 
@@ -78,7 +78,7 @@ class UcDataset(object):
             "model_name": self.model_name,
             "model_version": self.model_version,
             "label_used": self.label_used,
-            "set_time": self.add_time,
+            "add_time": self.add_time,
             "update_time": self.update_time,
             "describe": self.describe,
         }
