@@ -28,26 +28,28 @@ opt.load_buffer()
 # exit()
 
 
-uc_list = opt.get_uc_list_by_label_from_root_buffer(need_label_list=['Fnormal'])
+uc_list = opt.get_uc_list_by_label_from_root_buffer(need_label_list=['fzc_broken'])
+
+uc_opt.add_uc_dataset(uc_list=uc_list, dataset_name="fzc_broken_train_data", model_name="fzc", model_version="v0.2.1")
+
+fzc_broken_dataset = uc_opt.get_uc_dataset(dataset_name="fzc_broken_train_data")
+
+print(fzc_broken_dataset.get_info())
 
 
-# uc_opt.add_uc_dataset(uc_list=uc_list, dataset_name="fzc_test_data", model_name="fzc", model_version="v0.0.1")
-
-# uc_opt.add_uc_dataset(uc_list=uc_list, dataset_name="fzc_test_data", model_name="fzc", model_version="v0.0.1")
-
-fzc_dataset = uc_opt.get_uc_dataset("fzc_test_data")
-
-print(fzc_dataset.get_info())
-
-print('-'*20)
-
-fzc_dataset.model_version = "v2.0.1"
-
-uc_opt.update_uc_dataset(fzc_dataset)
-
-fzc_dataset = uc_opt.get_uc_dataset("fzc_test_data")
-
-print(fzc_dataset.get_info())
+# fzc_dataset = uc_opt.get_uc_dataset("fzc_test_data")
+#
+# print(fzc_dataset.get_info())
+#
+# print('-'*20)
+#
+# fzc_dataset.model_version = "v2.0.1"
+#
+# uc_opt.update_uc_dataset(fzc_dataset)
+#
+# fzc_dataset = uc_opt.get_uc_dataset("fzc_test_data")
+#
+# print(fzc_dataset.get_info())
 
 
 

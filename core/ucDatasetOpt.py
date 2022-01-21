@@ -128,7 +128,7 @@ class UcDatasetOpt(object):
         if os.path.exists(json_save_path):
             raise ValueError("{0} is exists".format(dataset_name))
         #
-        a = UcDataset(uc_list, dataset_name, model_name=model_name, model_version=model_version, label_used=label_used, describe=describe)
+        a = UcDataset(uc_list=uc_list, dataset_name=dataset_name, model_name=model_name, model_version=model_version, label_used=label_used, describe=describe)
         # 保存为本地文件
         if not self.check_dataset_name(dataset_name):
             raise ValueError(" dataset name error : {0}".format(dataset_name))
