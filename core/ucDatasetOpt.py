@@ -98,11 +98,13 @@ class UcDatasetOpt(object):
 
     def set_uc_dataset(self, uc_list, dataset_name, model_name=None, model_version=None, label_used=None, describe="") -> bool:
         """设置一个 uc_dataset 存储到本地"""
-        # todo
-        a = UcDataset(uc_list, dataset_name, model_name=None, model_version=None, label_used=None, describe="")
-        # todo 保存为本地文件
+        a = UcDataset(uc_list, dataset_name, model_name=model_name, model_version=model_version, label_used=label_used, describe=describe)
+        # 保存为本地文件
+        if not self.check_dataset_name(dataset_name):
+            raise ValueError(" dataset name error : {0}".format(dataset_name))
+        json_save_path = os.path.join(self.dataset_dir, "{0}.json".format(dataset_name))
         # todo 对dataset_name 进行格式检查
-
+        a.save_to_file(json_save_path)
 
     def get_uc_dataset(self, dataset_name) -> list:
         pass
@@ -121,5 +123,9 @@ class UcDatasetOpt(object):
         # todo 增加日志记录
         pass
 
+    @staticmethod
+    def check_dataset_name(dataset_name):
+        """检查dataset的名字，确保能作为文件存储"""
+        return True
 
 
