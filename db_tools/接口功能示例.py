@@ -6,8 +6,8 @@ def main():
     mysql = SaturnSQL(user='root', password='root123', host='192.168.3.101',
                       db_name='Saturn_Database_V1')  # 启动数据库，并实例化数据库接口的方法类。
 
-    # # 清空数据库中所有表中的数据-----------------
-    # a = mysql.clear_all_table()
+    # 清空数据库中所有表中的数据-----------------
+    a = mysql.clear_all_table()
 
     # # 根据json的路径列表写入数据库示例---------------------
     # data_dir = '功能测试用数据'
