@@ -81,37 +81,16 @@ class SaturnSQL(object):
         return succeed
 
     def clear_all_table(self) -> bool:
-        # 删除数据库中所有表的内容。连个毛都不剩下
-        if self.user == 'root':
-            sql_statement = "TRUNCATE TABLE 图片大类表;"
-            self.db_cursor.execute(sql_statement)  # 执行语句
-
-            sql_statement = "TRUNCATE TABLE 目标标注表;"
-            self.db_cursor.execute(sql_statement)  # 执行语句
-            print("删库跑路了！")
-            return True
-        else:
-            print("无清空权限！")
-            return False
-
-    def delete(self, UC):
         # 对数据库进行删除数据操作
-        D = self.D(self.database, self.db_cursor)
-        # TODO:删除功能需要添加
-
-    def read(self, label_list, need='UC'):
-        # 对数据库进行读取操作
-        R = self.R(self.database, self.db_cursor)
-        if need == 'UC':
-            result_list = R.export_data(label_list, scope='and')  # 按标签进行查询。
-            # 传入标签的列表，以及全包含还是不全包含。
-        else:
-            result_list = 0
-
-        return result_list
+        D = self.D(self.database, self.db_cursor, self.user)
+        D.drop_all_tables()
+        return True
 
     # 给一个md5，返回一个uc
     def get_uc_list(self, md5_list: list) -> list:
+        md5_set = set(md5_list)
+        assert len(md5_set) == len(md5_list), "传入图片存在重复，请核查数据集。"
+
         # 实例化需要用到的操作：读和写
         R = self.R(self.database, self.db_cursor)
         C = self.C(self.database, self.db_cursor)
@@ -134,7 +113,7 @@ class SaturnSQL(object):
         # 查询后立刻更新record表，尽快占坑
         coding_num = R.get_coding_num(uc_date)  # 查询一个当日已编码数量
         # TODO:更新操作，暂时不用update类
-        sql_statement = "UPDATE record SET 已使用数量={} WHERE 日期编码='{}';".format(coding_num + new_data_num, uc_date)
+        sql_statement = "UPDATE `编码使用记录表` SET 已使用数量={} WHERE 日期编码='{}';".format(coding_num + new_data_num, uc_date)
         self.db_cursor.execute(sql_statement)  # 执行语句
         self.database.commit()  # 立即提交修改
 
@@ -149,7 +128,6 @@ class SaturnSQL(object):
                 count += 1
             else:
                 pass
-        self.database.commit()  # 提交add_md5_uc_info的修改。很不爽。
 
         return uc_list
 
