@@ -17,12 +17,12 @@ opt.load_buffer()
 # opt.update_buffer_objects('all')
 
 
-
 # uc_list = opt.get_uc_list_by_label_from_root_buffer(need_label_list=['Fnormal', 'fzc_broken', 'fzc_yt', 'fzc_gt', 'zd_yt', 'qx_yt', 'zd_gt', 'zd_sm', 'fzc_sm', 'fs', 'qx_gt','qx_sm'])
-uc_list = opt.get_uc_list_by_label_from_root_buffer(need_label_list=['fzc_broken'])
-print(uc_list)
+uc_list = opt.get_uc_list_by_label_from_root_buffer(need_label_list=['Fnormal'])
+print(uc_list, len(uc_list))
 
-attr_list = [('extra_info','fzc broken')]
+
+attr_list = [('extra_info','fzc test data')]
 opt.update_json_attr(uc_list=uc_list, attr_list=attr_list)
 
 

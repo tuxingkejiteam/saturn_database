@@ -19,7 +19,6 @@ this_dir = os.path.dirname(__file__)
 
 # fixme 为了增加速度，可以使用缓存模式，就是除非是强制进行更新并筛选，否者，只在已缓存的部分内容中进行删选
 
-# todo 写个日志装饰器，用于自动生成日志，或者写个日志函数，用于追踪每一步的操作，记录每一个操作的参数，日志有指定文件大小的功能最好能使用日志来做
 
 
 class Opt(object):
@@ -303,6 +302,10 @@ class Opt(object):
 
     def get_xml_dataset_by_uc_list(self, uc_list, save_dir):
         """根据传入的 uc list 拷贝出数据"""
+
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir, exist_ok=True)
+
         self.log.info("get_xml_dataset_by_uc_list : ")
         self.log.info("uc_list : {0}".format(uc_list))
         for each_uc in uc_list:
