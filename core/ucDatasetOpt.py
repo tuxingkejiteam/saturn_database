@@ -12,8 +12,6 @@ from JoTools.utils.JsonUtil import JsonUtil
 this_dir = os.path.dirname(__file__)
 
 
-# todo 写个日志装饰器，用于自动生成日志，或者写个日志函数，用于追踪每一步的操作，记录每一个操作的参数，日志有指定文件大小的功能最好能使用日志来做
-
 
 class UcDataset(object):
 
