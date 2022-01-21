@@ -80,6 +80,18 @@ class SaturnSQL(object):
         succeed = C.add_json_to_db(json_path_list, confidence=confidence, label_list=label_list)
         return succeed
 
+    def kill_in_dream(self):
+        # 梦中杀函数，用来解决卡死的问题。
+        sql_statement = "show full processlist;"
+        self.db_cursor.execute(sql_statement)
+        all_process = self.db_cursor.fetchall()
+        for process in all_process:
+            if process[4] == 'Sleep':
+                sql_statement = "Kill {};".format(process[0])
+                self.db_cursor.execute(sql_statement)
+                print(process[0])
+        pass
+
     def clear_all_table(self) -> bool:
         # 对数据库进行删除数据操作
         D = self.D(self.database, self.db_cursor, self.user)

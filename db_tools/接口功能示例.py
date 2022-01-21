@@ -7,7 +7,10 @@ def main():
                       db_name='Saturn_Database_V1')  # 启动数据库，并实例化数据库接口的方法类。
 
     # 清空数据库中所有表中的数据-----------------
-    a = mysql.clear_all_table()
+    # a = mysql.clear_all_table()
+
+    # 梦中杀模块，直接杀死所有进程，不留后患。
+    mysql.kill_in_dream()
 
     # # 根据json的路径列表写入数据库示例---------------------
     # data_dir = '功能测试用数据'
@@ -19,6 +22,7 @@ def main():
     #
     # label_list = ['Fnormal', 'zd_yt', 'no_mark', 'aaa']  # 定义一个标签列表，可为空，就是什么都传入，如果非空就按照列表导入。
     # result = mysql.add_json_to_db(json_list, label_list=label_list, confidence=True)
+    # print(result)
 
     # # md5_list申请UC_list示例----------------------------
     # MD5_list = ['5a96a260a93dd004364be81589f10161', 'f341a333a4bb011aa8bf0f2fce395041',

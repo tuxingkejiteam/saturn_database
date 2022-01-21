@@ -1,6 +1,8 @@
 # 虚拟一堆md5和UC，在20个标签里，随机选10个标签作为UC的目标。
 # 脚本独立运行，无任何外部函数依赖。
 # 为目标标注表，插入大批量以及20个标签。
+import random
+
 import pymysql
 import datetime
 from tqdm import tqdm
@@ -12,6 +14,7 @@ comparison_tabel = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '
                     28: 'u', 29: 'v', 30: 'w', 31: 'x', 32: 'y', 33: 'z'}
 year_dict = {2019: 'A', 2020: 'B', 2021: 'C', 2022: 'D', 2023: 'E', 2024: 'F', 2025: 'G'}
 database = pymysql.connect(host='192.168.3.101', user='root', password='root123', database='Saturn_Database_V1')
+db_cursor = database.cursor()
 
 
 def first_3_letters() -> str:
@@ -66,18 +69,52 @@ def million_insert():
 
         sql_statement = "INSERT INTO `MD5对照表` (`MD5`, `UC`) VALUES('{}', '{}');".format(fake_md5, uc)
         database.cursor().execute(sql_statement)
-        if count > 100000:
+        if count > 10000:
             database.commit()
             count = 0
+    database.commit()
+
+
+def label_insert():
+    label_candi = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']  # 虚拟有10个标签
+    uc_date = first_3_letters()
+    count = 0
+    for i in tqdm(range(1000000)):
+        count += 1
+        fake_file = str(i)
+        fake_md5 = hashlib.md5(fake_file.encode()).hexdigest()
+        uc = uc_date + coding_rank(i)
+
+        label_in_img = []
+        for label in label_candi:
+            rate = random.random()
+            if rate > 0.7:
+                label_in_img.append(label)
+
+        for label_inset in label_in_img:
+            sql_statement = "INSERT INTO `目标标注表`  VALUES('{}', '{}');".format(uc, label_inset)
+            database.cursor().execute(sql_statement)
+            database.commit()
+        pass
 
 
 if __name__ == "__main__":
-    for j in tqdm(range(0, 10000, 1000000)):
-        print(j)
-        fake_file = str(j)
-        fake_md5 = hashlib.md5(fake_file.encode()).hexdigest()
-        sql_statement = "SELECT UC FROM `MD5对照表` WHERE `MD5`='{}';".format(fake_md5)
-        database.cursor().execute(sql_statement)
-        uc_info = database.cursor().fetchall()
-        print(uc_info)
-    pass
+    # label_insert()
+
+    million_insert()
+    # count = 0
+    # for j in tqdm(range(0, 1000000, 1000)):
+    #     fake_file = str(j)
+    #     fake_md5 = hashlib.md5(fake_file.encode()).hexdigest()
+    #     sql_statement = "SELECT UC FROM `MD5对照表` WHERE `MD5`='{}';".format(fake_md5)
+    #     db_cursor.execute(sql_statement)
+    #     uc_info = db_cursor.fetchall()
+    #     if len(uc_info) != 0:
+    #         # print(uc_info[0][0])
+    #         count += 1
+    # print(count)
+
+    # sql_statement = "SELECT UC FROM `MD5对照表`;"
+    # db_cursor.execute(sql_statement)
+    # uc_info = db_cursor.fetchall()
+    # print(len(uc_info))

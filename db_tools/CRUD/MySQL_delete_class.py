@@ -38,6 +38,7 @@ class Delete(object):
             print("无清空权限！")
             return False
         pass
+
     def __drop(self, uc: str):
         # 删除一个编码对应的所有信息。
         # 私有函数，禁止外部调用。
@@ -54,4 +55,5 @@ class Delete(object):
         self.db_cursor.execute(sql_statement)
 
         self.database.commit()
+
     pass

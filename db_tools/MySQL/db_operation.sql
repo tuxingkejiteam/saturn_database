@@ -24,3 +24,5 @@ INSERT INTO `目标标注表` VALUES ('asdfghj', 'cpb_dirty', -1);
 INSERT INTO `编码使用记录表` (`日期编码`) VALUES('Abc');\
 
 INSERT IGNORE INTO `MD5对照表` VALUES('f341a333a4bb011aa8bf0f2fce395041', 'adsffgh');
+SELECT UC FROM `MD5对照表` WHERE `MD5`='f97129f5e5e76f2ee7c53cfd1f4b9b8c';
+TRUNCATE TABLE MD5对照表;
