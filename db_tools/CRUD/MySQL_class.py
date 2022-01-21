@@ -28,6 +28,10 @@ class SaturnSQL(object):
     #         print('此函数的作用，是将每一个json文件都必然含有的信息写入数据库。包括：唯一编码，图片原名，长宽，是否为裸图，MD5值')
 
     def __init__(self, host='192.168.3.101', user='root', password='', db_name='Saturn_Database_V1'):
+        """
+
+        :rtype: object
+        """
         # TODO:调用之前，检查json文件是否是已经存在的文件。
         # 启动数据库函数。若启动失败，则报出错误并优雅地终止程序。
         # 入参：数据库服务器地址，用户名，密码，数据库名
@@ -67,8 +71,10 @@ class SaturnSQL(object):
     def add_json_to_db(self, json_path_list: list, label_list=None, confidence=False, ) -> bool:
         # 将json中有的信息写入数据库
         # 是否更新置信度区间。
+        succeed = False
         if label_list is None:
-            label_list = []  # 编译器不建议直接初始化为空列表。不知道python为什么建议这样做。
+            print("未传入标签列表！")
+            return succeed
 
         C = self.C(self.database, self.db_cursor)
         succeed = C.add_json_to_db(json_path_list, confidence=confidence, label_list=label_list)
@@ -82,6 +88,7 @@ class SaturnSQL(object):
 
             sql_statement = "TRUNCATE TABLE 目标标注表;"
             self.db_cursor.execute(sql_statement)  # 执行语句
+            print("删库跑路了！")
             return True
         else:
             print("无清空权限！")
@@ -227,6 +234,6 @@ class SaturnSQL(object):
             # TODO: 数据库断开连接时存在问题
             self.database.close()
         except TypeError:
-            print("已知bug（1）")
+            # print("已知bug（1）")
             pass
-        # print('数据库连接已断开！')
+        print('数据库连接已断开！')
