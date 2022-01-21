@@ -1,0 +1,45 @@
+{
+    "org_name": "b10c8fba079bebcb1e7e851b6f75b0a5.jpg",
+    "unique_code": "Dad01jw",
+    "size": {
+        "width": 5280,
+        "height": 2970
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "b10c8fba079bebcb1e7e851b6f75b0a5",
+    "extra_info": "fzc test data",
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1272,
+                    1645
+                ],
+                [
+                    1784,
+                    1821
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4010,
+                    1578
+                ],
+                [
+                    4571,
+                    1767
+                ]
+            ]
+        }
+    ]
+}

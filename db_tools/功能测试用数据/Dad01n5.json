@@ -1,0 +1,90 @@
+{
+    "org_name": "eda2a38169780d4af8c8ad39ca72eae9.jpg",
+    "unique_code": "Dad01n5",
+    "size": {
+        "width": 5280,
+        "height": 2970
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "eda2a38169780d4af8c8ad39ca72eae9",
+    "extra_info": "fzc test data",
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4027,
+                    1549
+                ],
+                [
+                    4716,
+                    1763
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    739,
+                    1554
+                ],
+                [
+                    1390,
+                    1779
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2303,
+                    1820
+                ],
+                [
+                    2746,
+                    1971
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4425,
+                    1826
+                ],
+                [
+                    4887,
+                    1976
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2475,
+                    489
+                ],
+                [
+                    3715,
+                    935
+                ]
+            ]
+        }
+    ]
+}

@@ -1,0 +1,60 @@
+{
+    "org_name": "eae32e62929c12951e1ceb75281590f4.jpg",
+    "unique_code": "Dad01jr",
+    "size": {
+        "width": 5280,
+        "height": 2970
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "eae32e62929c12951e1ceb75281590f4",
+    "extra_info": "fzc test data",
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4399,
+                    1334
+                ],
+                [
+                    4899,
+                    1559
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4831,
+                    1819
+                ],
+                [
+                    5280,
+                    2079
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1,
+                    1732
+                ],
+                [
+                    448,
+                    1919
+                ]
+            ]
+        }
+    ]
+}

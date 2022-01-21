@@ -1,0 +1,60 @@
+{
+    "org_name": "11e47b91bd5303e5bf740a32f4d5f4e0.jpg",
+    "unique_code": "Dad019e",
+    "size": {
+        "width": 1280,
+        "height": 853
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "11e47b91bd5303e5bf740a32f4d5f4e0",
+    "extra_info": "fzc test data",
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    158,
+                    315
+                ],
+                [
+                    313,
+                    382
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    740,
+                    428
+                ],
+                [
+                    887,
+                    534
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    995,
+                    544
+                ],
+                [
+                    1143,
+                    617
+                ]
+            ]
+        }
+    ]
+}

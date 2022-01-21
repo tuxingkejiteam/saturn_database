@@ -1,0 +1,105 @@
+{
+    "org_name": "f39049831af05eac4bf03c7e6ba7931b.jpg",
+    "unique_code": "Dad01k8",
+    "size": {
+        "width": 5280,
+        "height": 2970
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "f39049831af05eac4bf03c7e6ba7931b",
+    "extra_info": "fzc test data",
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3930,
+                    1410
+                ],
+                [
+                    4687,
+                    1678
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    407,
+                    1593
+                ],
+                [
+                    1210,
+                    1883
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    965,
+                    1181
+                ],
+                [
+                    1484,
+                    1363
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3427,
+                    1050
+                ],
+                [
+                    3928,
+                    1229
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3344,
+                    918
+                ],
+                [
+                    3741,
+                    1031
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1467,
+                    1021
+                ],
+                [
+                    1864,
+                    1134
+                ]
+            ]
+        }
+    ]
+}

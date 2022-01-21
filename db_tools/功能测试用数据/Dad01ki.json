@@ -1,0 +1,75 @@
+{
+    "org_name": "1b90def5d4e6a65518dabda8d9ae80c8.jpg",
+    "unique_code": "Dad01ki",
+    "size": {
+        "width": 5280,
+        "height": 2970
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "1b90def5d4e6a65518dabda8d9ae80c8",
+    "extra_info": "fzc test data",
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4263,
+                    1641
+                ],
+                [
+                    5061,
+                    1935
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    231,
+                    1665
+                ],
+                [
+                    984,
+                    1912
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4357,
+                    1277
+                ],
+                [
+                    4801,
+                    1424
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2318,
+                    1289
+                ],
+                [
+                    2826,
+                    1432
+                ]
+            ]
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+    "org_name": "12ec376b93e5ec36e6a25a87986908b9.jpg",
+    "unique_code": "Dad019r",
+    "size": {
+        "width": 5472,
+        "height": 3078
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "12ec376b93e5ec36e6a25a87986908b9",
+    "extra_info": "fzc broken",
+    "mode": null,
+    "objects": [
+        {
+            "id": 0,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3398,
+                    1085
+                ],
+                [
+                    3570,
+                    1217
+                ]
+            ]
+        },
+        {
+            "id": 1,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1708,
+                    1909
+                ],
+                [
+                    2064,
+                    2019
+                ]
+            ]
+        }
+    ]
+}

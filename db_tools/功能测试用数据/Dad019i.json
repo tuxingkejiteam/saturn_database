@@ -1,0 +1,180 @@
+{
+    "org_name": "9a68eb4cd45f5c3b44a1ca1b9f708151.jpg",
+    "unique_code": "Dad019i",
+    "size": {
+        "width": 5472,
+        "height": 3078
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "9a68eb4cd45f5c3b44a1ca1b9f708151",
+    "extra_info": "fzc broken",
+    "mode": null,
+    "objects": [
+        {
+            "id": 0,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2197,
+                    1423
+                ],
+                [
+                    2268,
+                    1502
+                ]
+            ]
+        },
+        {
+            "id": 1,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3512,
+                    1288
+                ],
+                [
+                    3639,
+                    1338
+                ]
+            ]
+        },
+        {
+            "id": 2,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2405,
+                    2891
+                ],
+                [
+                    2584,
+                    2964
+                ]
+            ]
+        },
+        {
+            "id": 3,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2875,
+                    1225
+                ],
+                [
+                    3029,
+                    1276
+                ]
+            ]
+        },
+        {
+            "id": 4,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3159,
+                    1570
+                ],
+                [
+                    3503,
+                    1693
+                ]
+            ]
+        },
+        {
+            "id": 5,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3501,
+                    2541
+                ],
+                [
+                    3644,
+                    2594
+                ]
+            ]
+        },
+        {
+            "id": 6,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3706,
+                    1650
+                ],
+                [
+                    4073,
+                    1778
+                ]
+            ]
+        },
+        {
+            "id": 7,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3837,
+                    1328
+                ],
+                [
+                    4003,
+                    1387
+                ]
+            ]
+        },
+        {
+            "id": 8,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3916,
+                    2627
+                ],
+                [
+                    4067,
+                    2681
+                ]
+            ]
+        },
+        {
+            "id": 9,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4336,
+                    2712
+                ],
+                [
+                    4495,
+                    2770
+                ]
+            ]
+        },
+        {
+            "id": 10,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4712,
+                    1793
+                ],
+                [
+                    5126,
+                    1913
+                ]
+            ]
+        }
+    ]
+}

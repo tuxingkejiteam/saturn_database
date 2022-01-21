@@ -1,0 +1,165 @@
+{
+    "org_name": "a65cf9bbf0f5a2f6b23b245743729da3.jpg",
+    "unique_code": "Dad019t",
+    "size": {
+        "width": 5472,
+        "height": 3078
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "a65cf9bbf0f5a2f6b23b245743729da3",
+    "extra_info": "fzc broken",
+    "mode": null,
+    "objects": [
+        {
+            "id": 0,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1309,
+                    912
+                ],
+                [
+                    1432,
+                    984
+                ]
+            ]
+        },
+        {
+            "id": 1,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3027,
+                    1034
+                ],
+                [
+                    3233,
+                    1113
+                ]
+            ]
+        },
+        {
+            "id": 2,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3543,
+                    1063
+                ],
+                [
+                    3607,
+                    1131
+                ]
+            ]
+        },
+        {
+            "id": 3,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4065,
+                    1403
+                ],
+                [
+                    4167,
+                    1505
+                ]
+            ]
+        },
+        {
+            "id": 4,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4608,
+                    1439
+                ],
+                [
+                    4885,
+                    1557
+                ]
+            ]
+        },
+        {
+            "id": 5,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    841,
+                    1233
+                ],
+                [
+                    955,
+                    1358
+                ]
+            ]
+        },
+        {
+            "id": 6,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3623,
+                    1967
+                ],
+                [
+                    3846,
+                    2036
+                ]
+            ]
+        },
+        {
+            "id": 7,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4198,
+                    1990
+                ],
+                [
+                    4416,
+                    2058
+                ]
+            ]
+        },
+        {
+            "id": 8,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    497,
+                    1944
+                ],
+                [
+                    796,
+                    2019
+                ]
+            ]
+        },
+        {
+            "id": 9,
+            "label": "zd_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1,
+                    2504
+                ],
+                [
+                    346,
+                    2631
+                ]
+            ]
+        }
+    ]
+}
