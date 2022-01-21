@@ -28,6 +28,10 @@ class SaturnSQL(object):
     #         print('此函数的作用，是将每一个json文件都必然含有的信息写入数据库。包括：唯一编码，图片原名，长宽，是否为裸图，MD5值')
 
     def __init__(self, host='192.168.3.101', user='root', password='', db_name='Saturn_Database_V1'):
+        """
+
+        :rtype: object
+        """
         # TODO:调用之前，检查json文件是否是已经存在的文件。
         # 启动数据库函数。若启动失败，则报出错误并优雅地终止程序。
         # 入参：数据库服务器地址，用户名，密码，数据库名
@@ -67,44 +71,26 @@ class SaturnSQL(object):
     def add_json_to_db(self, json_path_list: list, label_list=None, confidence=False, ) -> bool:
         # 将json中有的信息写入数据库
         # 是否更新置信度区间。
+        succeed = False
         if label_list is None:
-            label_list = []  # 编译器不建议直接初始化为空列表。不知道python为什么建议这样做。
+            print("未传入标签列表！")
+            return succeed
 
         C = self.C(self.database, self.db_cursor)
         succeed = C.add_json_to_db(json_path_list, confidence=confidence, label_list=label_list)
         return succeed
 
     def clear_all_table(self) -> bool:
-        # 删除数据库中所有表的内容。连个毛都不剩下
-        if self.user == 'root':
-            sql_statement = "TRUNCATE TABLE 图片大类表;"
-            self.db_cursor.execute(sql_statement)  # 执行语句
-
-            sql_statement = "TRUNCATE TABLE 目标标注表;"
-            self.db_cursor.execute(sql_statement)  # 执行语句
-            return True
-        else:
-            print("无清空权限！")
-            return False
-
-    def delete(self, UC):
         # 对数据库进行删除数据操作
-        D = self.D(self.database, self.db_cursor)
-        # TODO:删除功能需要添加
-
-    def read(self, label_list, need='UC'):
-        # 对数据库进行读取操作
-        R = self.R(self.database, self.db_cursor)
-        if need == 'UC':
-            result_list = R.export_data(label_list, scope='and')  # 按标签进行查询。
-            # 传入标签的列表，以及全包含还是不全包含。
-        else:
-            result_list = 0
-
-        return result_list
+        D = self.D(self.database, self.db_cursor, self.user)
+        D.drop_all_tables()
+        return True
 
     # 给一个md5，返回一个uc
     def get_uc_list(self, md5_list: list) -> list:
+        md5_set = set(md5_list)
+        assert len(md5_set) == len(md5_list), "传入图片存在重复，请核查数据集。"
+
         # 实例化需要用到的操作：读和写
         R = self.R(self.database, self.db_cursor)
         C = self.C(self.database, self.db_cursor)
@@ -127,7 +113,7 @@ class SaturnSQL(object):
         # 查询后立刻更新record表，尽快占坑
         coding_num = R.get_coding_num(uc_date)  # 查询一个当日已编码数量
         # TODO:更新操作，暂时不用update类
-        sql_statement = "UPDATE record SET 已使用数量={} WHERE 日期编码='{}';".format(coding_num + new_data_num, uc_date)
+        sql_statement = "UPDATE `编码使用记录表` SET 已使用数量={} WHERE 日期编码='{}';".format(coding_num + new_data_num, uc_date)
         self.db_cursor.execute(sql_statement)  # 执行语句
         self.database.commit()  # 立即提交修改
 
@@ -142,7 +128,6 @@ class SaturnSQL(object):
                 count += 1
             else:
                 pass
-        self.database.commit()  # 提交add_md5_uc_info的修改。很不爽。
 
         return uc_list
 
@@ -227,6 +212,6 @@ class SaturnSQL(object):
             # TODO: 数据库断开连接时存在问题
             self.database.close()
         except TypeError:
-            print("已知bug（1）")
+            # print("已知bug（1）")
             pass
-        # print('数据库连接已断开！')
+        print('数据库连接已断开！')

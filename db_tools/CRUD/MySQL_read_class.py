@@ -2,7 +2,7 @@ import sys
 import os
 import datetime
 from pathlib import Path
-from db_tools.tools.Img_class import LabelInfo
+from core.jsonInfo import JsonInfo
 
 
 class Read(object):
@@ -18,7 +18,7 @@ class Read(object):
         for item in label_info:
             self.label_dic[item[0]] = item[1:]
 
-        self.json = LabelInfo  # 读取json信息的类，使用时传入json文件的路径。
+        self.json = JsonInfo  # 读取json信息的类，使用时传入json文件的路径。
         self.date = self.Operation_date()  # 获取操作时的日期信息
 
     def all_label(self) -> None:
@@ -26,45 +26,9 @@ class Read(object):
         for key in self.label_dic:
             print(key)
 
-    def __query_UC(self, label_list, scope='and'):
-        # 标签信息解析
-        query_dic = self.__label_analyze(label_list)
-        UC_set = set()  # 唯一编码不允许重复，用集合来存储
-        # 分表查询
-        for main_class, subclass in query_dic.items():
-            conditions = ''
-            for describe in subclass:
-                if describe != '日期':
-                    conditions += "{}=TRUE {} ".format(describe, scope)
-            # 形成的condition字符串，最后五位为：' AND '，需要去掉
-
-            sql_statement = "SELECT 唯一编码 FROM `{}` WHERE {};".format(main_class, conditions[:-5])
-            self.db_cursor.execute(sql_statement)
-            label_info = self.db_cursor.fetchall()
-            for item in label_info:
-                UC_set.add(item[0])  # 将查询到的唯一编码添加到集合当中去。
-
-        return UC_set
-
-    def export_data(self, label_list, scope='and', save_path=''):
-        UC_set = self.__query_UC(label_list, scope=scope)
-        label_set = set(label_list)
-        for UC in UC_set:
-            UC_json = self.__get_json(UC)
-            for item in UC_json.objects:
-                if UC_json.objects[item]['label'] in label_set:
-                    print(11111)
-                    pass
-                    # TODO：这里要写一个写xml文件的函数
-                else:
-                    pass
-            # TODO：保存xml和图片到指定路径。
-
-        pass
-
     def md5_in_db(self, md5):
         # 通过md5，返回一个UC。新md5则会生成一个新值，旧md5则会使用旧值。
-        sql_statement = "SELECT UC FROM `md5_uc` WHERE MD5='{}';".format(md5)
+        sql_statement = "SELECT UC FROM `MD5对照表` WHERE MD5='{}';".format(md5)
         self.db_cursor.execute(sql_statement)
         uc_info = self.db_cursor.fetchall()
         if len(uc_info) == 1:
@@ -73,7 +37,7 @@ class Read(object):
             return False, ''  # md5不存在于数据库
 
     def get_coding_num(self, uc_date) -> int:
-        sql_statement = "SELECT 已使用数量 FROM `record` WHERE 日期编码='{}';".format(uc_date)
+        sql_statement = "SELECT 已使用数量 FROM `编码使用记录表` WHERE 日期编码='{}';".format(uc_date)
         self.db_cursor.execute(sql_statement)
         coding_num = self.db_cursor.fetchall()
         if len(coding_num) == 0:
@@ -82,35 +46,27 @@ class Read(object):
         else:
             return coding_num[0][0]
 
-    def __get_json(self, UC):
-        # 通过唯一编码，返回该编码对应的json标注信息，私有函数，禁止外部调用
-
-        # TODO:这里需要嵌入一个通过UC来寻找json路径的函数。
-        json_path = 'output_json/Clc0007.json'
-        json_class = self.json(json_path)  # 读取实例化的json文件
-        return json_class
-
-    def __label_analyze(self, label_list):
-        # 分析查询的标签当中有哪些字段，私有函数，禁止外部调用。
-        query_dic = {}
-        label_sub_class = {}
-        for label in label_list:
-            if label not in self.label_dic.keys():
-                print('标签：{}未导入数据库，请核实！'.format(label))
-                continue
-            elif self.label_dic[label][3] == 1:
-                # TODO:还未支持特殊标签查询
-                pass
-            else:
-                label_info = self.label_dic[label]
-                label_main_class = label_info[0]
-                # 更新小类字典
-                label_sub_class[label_info[1]] = True  # 部件名
-                label_sub_class[label_info[2]] = True  # 描述名
-                label_sub_class['日期'] = label_info[4]  # 上次更新的日期
-
-                query_dic[label_main_class] = label_sub_class
-        return query_dic
+    # def __label_analyze(self, label_list):
+    #     # 分析查询的标签当中有哪些字段，私有函数，禁止外部调用。
+    #     query_dic = {}
+    #     label_sub_class = {}
+    #     for label in label_list:
+    #         if label not in self.label_dic.keys():
+    #             print('标签：{}未导入数据库，请核实！'.format(label))
+    #             continue
+    #         elif self.label_dic[label][3] == 1:
+    #             # TODO:还未支持特殊标签查询
+    #             pass
+    #         else:
+    #             label_info = self.label_dic[label]
+    #             label_main_class = label_info[0]
+    #             # 更新小类字典
+    #             label_sub_class[label_info[1]] = True  # 部件名
+    #             label_sub_class[label_info[2]] = True  # 描述名
+    #             label_sub_class['日期'] = label_info[4]  # 上次更新的日期
+    #
+    #             query_dic[label_main_class] = label_sub_class
+    #     return query_dic
 
     @staticmethod
     def Operation_date() -> str:

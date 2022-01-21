@@ -27,17 +27,17 @@ class Create(object):
         self.date = self.Operation_date()  # 获取操作时的日期信息
 
     def add_md5_uc_info(self, md5, uc):
-        # 将md5信息，添加到md5_uc这个表中
-        sql_statement = "INSERT INTO md5_uc (MD5,UC) VALUES('{}','{}');".format(md5, uc)
+        # 将md5信息，添加到MD5对照表中
+        sql_statement = "INSERT IGNORE INTO `MD5对照表` (MD5,UC) VALUES('{}','{}');".format(md5, uc)
         self.db_cursor.execute(sql_statement)  # 执行语句
+        self.database.commit()  # 提交add_md5_uc_info的修改。很不爽。
 
     def add_json_to_db(self, json_list: list, confidence: bool, label_list=None) -> bool:
         # 传入一个json的路径列表。可以传入label_list，只会按照label_list中的标签进行更新，若confidence为True则必须传入。
         label_dic = {}
         if len(label_list) == 0:
-            if confidence:
-                print("修改置信度时，标签列表不可为空。")
-                return False
+            print("标签列表不可为空。")
+            return False
         else:
             for item in label_list:
                 label_dic[item] = True
