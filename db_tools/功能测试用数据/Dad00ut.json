@@ -1,0 +1,120 @@
+{
+    "org_name": "d625e6b6e20da7113fbba26fb0f7c546.jpg",
+    "unique_code": "Dad00ut",
+    "size": {
+        "width": 5472,
+        "height": 3648
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "d625e6b6e20da7113fbba26fb0f7c546",
+    "extra_info": "fzc broken",
+    "mode": null,
+    "objects": [
+        {
+            "id": 0,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4739,
+                    1278
+                ],
+                [
+                    5401,
+                    1565
+                ]
+            ]
+        },
+        {
+            "id": 1,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1190,
+                    672
+                ],
+                [
+                    1374,
+                    742
+                ]
+            ]
+        },
+        {
+            "id": 2,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1615,
+                    594
+                ],
+                [
+                    1798,
+                    670
+                ]
+            ]
+        },
+        {
+            "id": 3,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1773,
+                    2144
+                ],
+                [
+                    1975,
+                    2227
+                ]
+            ]
+        },
+        {
+            "id": 4,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2595,
+                    451
+                ],
+                [
+                    2765,
+                    521
+                ]
+            ]
+        },
+        {
+            "id": 5,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3465,
+                    3272
+                ],
+                [
+                    3791,
+                    3383
+                ]
+            ]
+        },
+        {
+            "id": 6,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    99,
+                    2073
+                ],
+                [
+                    1099,
+                    2445
+                ]
+            ]
+        }
+    ]
+}

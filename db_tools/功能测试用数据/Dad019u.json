@@ -1,0 +1,195 @@
+{
+    "org_name": "68cd6929af6647d933d20fbbe4761036.jpg",
+    "unique_code": "Dad019u",
+    "size": {
+        "width": 5472,
+        "height": 3078
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "68cd6929af6647d933d20fbbe4761036",
+    "extra_info": "fzc broken",
+    "mode": null,
+    "objects": [
+        {
+            "id": 0,
+            "label": "fzc_broken",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4834,
+                    746
+                ],
+                [
+                    5041,
+                    837
+                ]
+            ]
+        },
+        {
+            "id": 1,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1574,
+                    2284
+                ],
+                [
+                    1719,
+                    2348
+                ]
+            ]
+        },
+        {
+            "id": 2,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2854,
+                    1508
+                ],
+                [
+                    2987,
+                    1555
+                ]
+            ]
+        },
+        {
+            "id": 3,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2870,
+                    563
+                ],
+                [
+                    3022,
+                    643
+                ]
+            ]
+        },
+        {
+            "id": 4,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3726,
+                    1744
+                ],
+                [
+                    4159,
+                    1934
+                ]
+            ]
+        },
+        {
+            "id": 5,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4285,
+                    624
+                ],
+                [
+                    4504,
+                    712
+                ]
+            ]
+        },
+        {
+            "id": 6,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4711,
+                    2070
+                ],
+                [
+                    5219,
+                    2293
+                ]
+            ]
+        },
+        {
+            "id": 7,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4724,
+                    1787
+                ],
+                [
+                    4930,
+                    1876
+                ]
+            ]
+        },
+        {
+            "id": 8,
+            "label": "qx_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1255,
+                    1272
+                ],
+                [
+                    1470,
+                    1390
+                ]
+            ]
+        },
+        {
+            "id": 9,
+            "label": "zd_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1889,
+                    2313
+                ],
+                [
+                    2048,
+                    2389
+                ]
+            ]
+        },
+        {
+            "id": 10,
+            "label": "zd_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2556,
+                    1525
+                ],
+                [
+                    2669,
+                    1579
+                ]
+            ]
+        },
+        {
+            "id": 11,
+            "label": "zd_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    5295,
+                    1976
+                ],
+                [
+                    5470,
+                    2048
+                ]
+            ]
+        }
+    ]
+}

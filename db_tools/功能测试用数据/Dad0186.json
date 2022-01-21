@@ -1,0 +1,60 @@
+{
+    "org_name": "b09a9f221c97015ccef9e61c21e7d91d.jpg",
+    "unique_code": "Dad0186",
+    "size": {
+        "width": 5472,
+        "height": 3078
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "b09a9f221c97015ccef9e61c21e7d91d",
+    "extra_info": "fzc data",
+    "mode": null,
+    "objects": [
+        {
+            "id": 0,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1363,
+                    1553
+                ],
+                [
+                    1800,
+                    1728
+                ]
+            ]
+        },
+        {
+            "id": 1,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1851,
+                    2891
+                ],
+                [
+                    2043,
+                    2966
+                ]
+            ]
+        },
+        {
+            "id": 2,
+            "label": "fzc_yt",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    2299,
+                    1214
+                ],
+                [
+                    2497,
+                    1306
+                ]
+            ]
+        }
+    ]
+}

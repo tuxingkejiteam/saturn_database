@@ -1,0 +1,75 @@
+{
+    "org_name": "e2f23f4d2a26e9dbf3160651f99a7548.jpg",
+    "unique_code": "Dad01mc",
+    "size": {
+        "width": 5280,
+        "height": 2970
+    },
+    "train_info": null,
+    "trace": false,
+    "MD5": "e2f23f4d2a26e9dbf3160651f99a7548",
+    "extra_info": "fzc test data",
+    "mode": null,
+    "objects": [
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    4316,
+                    1808
+                ],
+                [
+                    5201,
+                    2140
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    3591,
+                    878
+                ],
+                [
+                    4006,
+                    1018
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1548,
+                    911
+                ],
+                [
+                    2005,
+                    1037
+                ]
+            ]
+        },
+        {
+            "id": -1,
+            "label": "Fnormal",
+            "shape_type": "rectangle",
+            "points": [
+                [
+                    1,
+                    1762
+                ],
+                [
+                    748,
+                    2037
+                ]
+            ]
+        }
+    ]
+}
