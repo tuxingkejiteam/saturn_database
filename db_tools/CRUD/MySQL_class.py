@@ -100,10 +100,10 @@ class SaturnSQL(object):
         D.drop_all_tables()
         return True
 
-    def uc_list_from_label_list(self, label_list, conf: int = 1):
+    def query_uc_list_from_label(self, label_list, conf: int = 1, AND=True):
         # 根据标签和置信度来导出uc列表
         R = self.R(self.database, self.db_cursor)
-        uc_list = R.get_uc_list_from_label_list(label_list, conf)
+        uc_list = R.query_uc_list_from_label(label_list, conf, AND=AND)
         return uc_list
 
     # 给一个md5，返回一个uc

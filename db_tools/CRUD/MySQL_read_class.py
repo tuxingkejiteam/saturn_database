@@ -36,19 +36,25 @@ class Read(object):
         else:
             return False, ''  # md5不存在于数据库
 
-    def get_uc_list_from_label_list(self, label_list: list, conf: int = 1) -> list:
+    def query_uc_list_from_label(self, label_list: list, conf: int = 1, AND=True) -> list:
         # 选取所有置信度的绝对值达到conf以上的数据。
         # 默认1次过图即做输出。不做强制输入要求。
 
-        # 拼接条件语句
         label_condition = ''
+        conf_condition = '置信度>{} OR 置信度<-{}'.format(conf, conf)
         for label in label_list:
             label_condition += "标签='{}' OR ".format(label)
         label_condition = label_condition[:-4]  # 去掉最后面的" OR "
+        num_label = len(label_list)
 
-        sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND (置信度>{} OR 置信度<-{}) GROUP BY `唯一编码`;" \
-            .format(label_condition, conf, conf)
-        print(sql_statement)
+        # 拼接条件语句
+        if AND:
+            sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码` HAVING COUNT(`唯一编码`)={};" \
+                .format(label_condition, conf_condition, num_label)
+        else:
+            sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码`;" \
+                .format(label_condition, conf_condition)
+
         self.db_cursor.execute(sql_statement)
         uc_list = self.db_cursor.fetchall()
 

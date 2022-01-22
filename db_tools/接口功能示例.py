@@ -7,8 +7,8 @@ def main():
                       db_name='Saturn_Database_V1')  # 启动数据库，并实例化数据库接口的方法类。
 
     # 根据label_list和置信度，返回一个UC_list
-    label_list = ['a', 'b']
-    uc_list = mysql.uc_list_from_label_list(label_list, conf=1)
+    label_list = ['a', 'b', 'fzc']
+    uc_list = mysql.query_uc_list_from_label(label_list, conf=1, AND=False)
     print(len(uc_list))
 
     # # 清空数据库中所有表中的数据---------------------------------
