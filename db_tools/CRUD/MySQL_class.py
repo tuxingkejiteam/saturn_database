@@ -93,6 +93,8 @@ class SaturnSQL(object):
         pass
 
     def clear_all_table(self) -> bool:
+        print("已禁止操作！")
+        return False
         # 对数据库进行删除数据操作
         D = self.D(self.database, self.db_cursor, self.user)
         D.drop_all_tables()
