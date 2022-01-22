@@ -21,7 +21,7 @@ this_dir = os.path.dirname(__file__)
 
 
 
-class Opt(object):
+class JsonOpt(object):
 
     def __init__(self, config_path=None):
         self.config_path = config_path
@@ -83,19 +83,23 @@ class Opt(object):
         print('-'*30)
 
     @staticmethod
-    def add_json_to_db(json_path):
-        pass
+    def add_json_label_to_db(json_path_list, label_list, confidence):
+        self.sql_zy.add_json_label_to_db(json_path_list, label_list=label_list, confidence=confidence)
 
     @staticmethod
     def update_json_to_db(json_path):
         pass
 
     @staticmethod
-    def del_json_from_db(json_path):
+    def del_json_from_db(json_path, label_list, conf, mode):
         pass
 
-    @staticmethod
-    def get_uc(img_md5):
+    def query_uc_list_from_label(self, label_list, conf, mode):
+        """数据库中根据条件查询 uc list"""
+        return self.sql_zy.query_uc_list_from_label(label_list, conf=conf, AND=mode)
+
+    def del_uc_label_from_db(self, uc, label_list):
+        """从数据库中删除 uc 对应的 label 信息"""
         pass
 
     # ------------------------------------------------------------------------------------------------------------------

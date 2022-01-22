@@ -5,7 +5,7 @@
 import os
 import shutil
 from core.jsonInfo import JsonInfo
-from core.jsonOpt import Opt
+from core.jsonOpt import JsonOpt
 from JoTools.utils.FileOperationUtil import FileOperationUtil
 from core.ucDatasetOpt import UcDataset, UcDatasetOpt
 from JoTools.utils.JsonUtil import JsonUtil
@@ -16,7 +16,7 @@ from JoTools.utils.JsonUtil import JsonUtil
 
 
 uc_opt = UcDatasetOpt()
-opt = Opt()
+opt = JsonOpt()
 opt.load_buffer()
 
 uc_list = opt.get_uc_list_by_label_from_root_buffer(need_label_list='fzc_gt')

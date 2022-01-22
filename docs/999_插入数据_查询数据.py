@@ -5,7 +5,7 @@
 import os
 import shutil
 from core.jsonInfo import JsonInfo
-from core.jsonOpt import Opt
+from core.jsonOpt import JsonOpt
 from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 from db_tools.CRUD.MySQL_class import SaturnSQL
@@ -24,7 +24,7 @@ mysql = SaturnSQL(user='root', password='root123', host='192.168.3.101', db_name
 #         json_list.append(json_path)
 
 
-opt = Opt()
+opt = JsonOpt()
 opt.load_buffer()
 
 # 插入数据
@@ -41,7 +41,7 @@ opt.load_buffer()
 #
 #
 # label_list = ['Fnormal', 'fzc_broken']
-# result = mysql.add_json_to_db(json_path_list, label_list=label_list, confidence=True)
+# result = mysql.add_json_label_to_db(json_path_list, label_list=label_list, confidence=True)
 # print(result)
 
 
