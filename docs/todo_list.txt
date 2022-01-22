@@ -10,3 +10,10 @@
 
 * 数据库 update 功能
 
+（1）名字改为 mysql.add_json_label_to_db(json_path_list, label_list=label_list, confidence=True)，解释，只是更新，label 信息，不考虑图片的属性信息
+ （2）增加 删除属性 del_uc , md5_uc 表不变，只增不减，删除目标标注表中的指定 uc 信息，传入数据 1. uc  2. label_list
+ （3）增加查询函数，输入 uc 返回 此 uc 对应的所有 label 信息，{'fzc': conf, 'fzc_broken':conf }
+盖亚:
+(3) 修改：传入 uc_list , 返回 [{'fzc': {'conf': 5}}, ]
+盖亚:
+第二个名字改为  del_uc_label ？

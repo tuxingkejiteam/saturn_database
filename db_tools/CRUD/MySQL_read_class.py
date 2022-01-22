@@ -21,6 +21,20 @@ class Read(object):
         self.json = JsonInfo  # 读取json信息的类，使用时传入json文件的路径。
         self.date = self.Operation_date()  # 获取操作时的日期信息
 
+    def query_json_label_info_from_uc_label(self, uc_list: list, label_list: list):
+        label_info_list = [{} for i in range(len(uc_list))]
+        count = 0
+        for uc in uc_list:
+            sql_statement = "SELECT `标签`, `置信度` FROM `目标标注表` WHERE `唯一编码`='{}'".format(uc)
+            self.db_cursor.execute(sql_statement)
+            label_info = self.db_cursor.fetchall()
+            one_uc_label = {}
+            for one_label in label_info:
+                one_uc_label[one_label[0]] = one_label[1]
+            label_info_list[count][uc] = one_uc_label
+            count += 1
+        return label_info_list
+
     def all_label(self) -> None:
         # 输出所有已经录入数据库的标签
         for key in self.label_dic:
@@ -41,7 +55,7 @@ class Read(object):
         # 默认1次过图即做输出。不做强制输入要求。
 
         label_condition = ''
-        conf_condition = '置信度>{} OR 置信度<-{}'.format(conf, conf)
+        conf_condition = '置信度>={} OR 置信度<=-{}'.format(conf, conf)
         for label in label_list:
             label_condition += "标签='{}' OR ".format(label)
         label_condition = label_condition[:-4]  # 去掉最后面的" OR "
@@ -56,8 +70,10 @@ class Read(object):
                 .format(label_condition, conf_condition)
 
         self.db_cursor.execute(sql_statement)
-        uc_list = self.db_cursor.fetchall()
-
+        uc_tuple_list = self.db_cursor.fetchall()
+        uc_list = []
+        for uc_tuple in uc_tuple_list:
+            uc_list.append(uc_tuple[0])
         return uc_list
 
     def get_coding_num(self, uc_date) -> int:

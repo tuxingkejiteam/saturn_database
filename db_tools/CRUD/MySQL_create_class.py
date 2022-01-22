@@ -32,7 +32,7 @@ class Create(object):
         self.db_cursor.execute(sql_statement)  # 执行语句
         self.database.commit()  # 提交add_md5_uc_info的修改。很不爽。
 
-    def add_json_to_db(self, json_list: list, confidence: bool, label_list=None) -> bool:
+    def add_json_label_to_db(self, json_list: list, confidence: bool, label_list=None) -> bool:
         # 传入一个json的路径列表。可以传入label_list，只会按照label_list中的标签进行更新，若confidence为True则必须传入。
         label_dic = {}
         if len(label_list) == 0:

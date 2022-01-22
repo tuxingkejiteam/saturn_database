@@ -100,7 +100,11 @@ def label_insert():
 
 
 if __name__ == "__main__":
-    label_insert()
+    sql_statement = "SELECT 唯一编码 FROM `目标标注表`;"
+    db_cursor.execute(sql_statement)
+    uc_list = db_cursor.fetchall()
+    print(len(uc_list))
+    # label_insert()
 
     # million_insert()
 

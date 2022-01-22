@@ -20,6 +20,15 @@ class Delete(object):
             self.label_dic[item[0]] = item[1:]
         self.user = user
 
+    def delete_uc_label(self, uc, label_list: list) -> bool:
+        # 删除某个uc当中的指定标签。
+        for label in label_list:
+            sql_statement = "DELETE FROM `目标标注表` WHERE `唯一编码`='{}' AND `标签`='{}'".format(uc, label)
+            self.db_cursor.execute(sql_statement)
+
+        self.database.commit()
+        return True
+
     def drop_all_tables(self):
         # 删除数据库中所有表的内容。连个毛都不剩下
         if self.user == 'root':

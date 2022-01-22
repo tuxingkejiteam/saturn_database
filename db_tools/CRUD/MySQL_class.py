@@ -68,9 +68,20 @@ class SaturnSQL(object):
                                  28: 'u', 29: 'v', 30: 'w', 31: 'x', 32: 'y', 33: 'z'}
         self.year_dict = {2019: 'A', 2020: 'B', 2021: 'C', 2022: 'D', 2023: 'E', 2024: 'F', 2025: 'G'}
 
-    def add_json_to_db(self, json_path_list: list, label_list=None, confidence=False, ) -> bool:
-        # todo 如果之前有的话，就直接报错
+    def query_label_info_from_uc_list(self, uc_list: list, label_list=None) -> list:
+        # label_list可以不传入，默认查询所有标签的信息。目前没有用。
+        R = self.R(self.database, self.db_cursor)
+        label_info_list = R.query_json_label_info_from_uc_label(uc_list, [])
 
+        return label_info_list
+
+    def delete_uc_label(self, uc, label_list: list) -> bool:
+        # 删除单个UC的某些标签。
+        D = self.D(self.database, self.db_cursor, self.user)
+        succeed = D.delete_uc_label(uc, label_list)
+        return succeed
+
+    def add_json_label_to_db(self, json_path_list: list, label_list=None, confidence=False, ) -> bool:
         # 将json中有的信息写入数据库
         # 是否更新置信度区间。
         succeed = False
@@ -79,7 +90,7 @@ class SaturnSQL(object):
             return succeed
 
         C = self.C(self.database, self.db_cursor)
-        succeed = C.add_json_to_db(json_path_list, confidence=confidence, label_list=label_list)
+        succeed = C.add_json_label_to_db(json_path_list, confidence=confidence, label_list=label_list)
         return succeed
 
     def kill_in_dream(self):
@@ -108,7 +119,7 @@ class SaturnSQL(object):
         uc_list = R.query_uc_list_from_label(label_list, conf, AND=AND)
         return uc_list
 
-    # 给一个md5，返回一个uc
+    # 给一个md5列表，返回一个uc列表
     def get_uc_list(self, md5_list: list) -> list:
         md5_set = set(md5_list)
         assert len(md5_set) == len(md5_list), "传入图片存在重复，请核查数据集。"

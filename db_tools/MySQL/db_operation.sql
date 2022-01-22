@@ -26,3 +26,17 @@ INSERT INTO `编码使用记录表` (`日期编码`) VALUES('Abc');\
 INSERT IGNORE INTO `MD5对照表` VALUES('f341a333a4bb011aa8bf0f2fce395041', 'adsffgh');
 SELECT UC FROM `MD5对照表` WHERE `MD5`='f97129f5e5e76f2ee7c53cfd1f4b9b8c';
 TRUNCATE TABLE MD5对照表;
+
+SELECT `唯一编码`,`标签`FROM `目标标注表` WHERE (`标签`='a' OR `标签`='b' OR `标签`='c') AND (置信度>1 OR 置信度<-1)
+GROUP BY `唯一编码`  HAVING COUNT(`唯一编码`) = 3;
+
+SELECT * FROM `目标标注表` WHERE `唯一编码`='Dnf001x' AND (`标签`='a' OR `标签`='b' OR `标签`='c');
+
+
+INSERT INTO `目标标注表` VALUES('测试1','label1',1);
+INSERT INTO `目标标注表` VALUES('测试1','label2',1);
+INSERT INTO `目标标注表` VALUES('测试2','label2',1);
+INSERT INTO `目标标注表` VALUES('测试2','label3',1);
+INSERT INTO `目标标注表` VALUES('测试3','label3',1);
+
+
