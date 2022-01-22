@@ -69,6 +69,8 @@ class SaturnSQL(object):
         self.year_dict = {2019: 'A', 2020: 'B', 2021: 'C', 2022: 'D', 2023: 'E', 2024: 'F', 2025: 'G'}
 
     def add_json_to_db(self, json_path_list: list, label_list=None, confidence=False, ) -> bool:
+        # todo 如果之前有的话，就直接报错
+
         # 将json中有的信息写入数据库
         # 是否更新置信度区间。
         succeed = False
