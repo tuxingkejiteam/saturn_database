@@ -13,7 +13,7 @@ comparison_tabel = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '
                     19: 'j', 20: 'k', 21: 'm', 22: 'n', 23: 'p', 24: 'q', 25: 'r', 26: 's', 27: 't',
                     28: 'u', 29: 'v', 30: 'w', 31: 'x', 32: 'y', 33: 'z'}
 year_dict = {2019: 'A', 2020: 'B', 2021: 'C', 2022: 'D', 2023: 'E', 2024: 'F', 2025: 'G'}
-database = pymysql.connect(host='192.168.3.101', user='root', password='root123', database='Saturn_Database_V1')
+database = pymysql.connect(host='192.168.3.101', user='root', password='root123', database='Saturn_Database_beta')
 db_cursor = database.cursor()
 
 
@@ -60,8 +60,9 @@ def coding_rank(serial_number) -> str:
 
 def million_insert():
     uc_date = first_3_letters()
+    uc_date = 'Dnh'
     count = 0
-    for i in tqdm(range(1000000)):
+    for i in tqdm(range(500000)):
         count += 1
         fake_file = str(i)
         fake_md5 = hashlib.md5(fake_file.encode()).hexdigest()
@@ -100,13 +101,13 @@ def label_insert():
 
 
 if __name__ == "__main__":
-    sql_statement = "SELECT 唯一编码 FROM `目标标注表`;"
-    db_cursor.execute(sql_statement)
-    uc_list = db_cursor.fetchall()
-    print(len(uc_list))
+    # sql_statement = "SELECT 唯一编码 FROM `目标标注表`;"
+    # db_cursor.execute(sql_statement)
+    # uc_list = db_cursor.fetchall()
+    # print(len(uc_list))
     # label_insert()
 
-    # million_insert()
+    million_insert()
 
     # count = 0
     # for j in tqdm(range(0, 1000000, 1000)):

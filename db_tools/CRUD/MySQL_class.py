@@ -1,6 +1,4 @@
 import pymysql
-import json
-from time import time
 import datetime
 from db_tools.CRUD.MySQL_create_class import Create
 from db_tools.CRUD.MySQL_delete_class import Delete
@@ -107,8 +105,8 @@ class SaturnSQL(object):
         pass
 
     def clear_all_table(self) -> bool:
-        # print("已禁止操作！")
-        # return False
+        print("已禁止操作！")
+        return False
         # 对数据库进行删除数据操作
         D = self.D(self.database, self.db_cursor, self.user)
         D.drop_all_tables()
@@ -117,14 +115,7 @@ class SaturnSQL(object):
     def query_uc_list_from_label(self, label_list, conf: int = 1, MODE='AND'):
         # 根据标签和置信度来导出uc列表
         R = self.R(self.database, self.db_cursor)
-        if MODE == 'AND':
-            AND = True
-        elif MODE == 'OR':
-            AND = False
-        else:
-            print("未识别的模式参数。")
-            return False
-        uc_list = R.query_uc_list_from_label(label_list, conf, AND=AND)
+        uc_list = R.query_uc_list_from_label(label_list, conf, MODE=MODE)
         return uc_list
 
     # 给一个md5列表，返回一个uc列表
