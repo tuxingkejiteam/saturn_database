@@ -52,7 +52,6 @@ class Read(object):
         # 默认1次过图即做输出。不做强制输入要求。
 
         label_condition = ''
-        # conf_condition = '置信度>={} OR 置信度<=-{}'.format(conf, conf)
         for label in label_list:
             label_condition += "标签='{}' OR ".format(label)
         label_condition = label_condition[:-4]  # 去掉最后面的" OR "
@@ -67,16 +66,24 @@ class Read(object):
             conf_condition = '置信度>={} OR 置信度<=-{}'.format(conf, conf)
             sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码`;" \
                 .format(label_condition, conf_condition)
-        elif MODE == 'EXIST':
+        elif MODE == 'AND_EXIST':
+            conf_condition = '置信度>={}'.format(conf)
+            sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码` HAVING COUNT(`唯一编码`)={};" \
+                .format(label_condition, conf_condition, num_label)
+        elif MODE == 'OR_EXIST':
             conf_condition = '置信度>={}'.format(conf)
             sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码`;" \
                 .format(label_condition, conf_condition)
-        elif MODE == 'NOT_EXIST':
+        elif MODE == 'AND_NOTEXIST':
+            conf_condition = '置信度<=-{}'.format(conf)
+            sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码` HAVING COUNT(`唯一编码`)={};" \
+                .format(label_condition, conf_condition, num_label)
+        elif MODE == 'OR_NOTEXIST':
             conf_condition = '置信度<=-{}'.format(conf)
             sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码`;" \
                 .format(label_condition, conf_condition)
         else:
-            print("未识别的模式参数。")
+            print("查询模式错误，未识别的模式参数。")
             return []
 
         self.db_cursor.execute(sql_statement)
