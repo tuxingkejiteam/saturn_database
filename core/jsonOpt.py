@@ -158,7 +158,7 @@ class JsonOpt(object):
         self.log.info("uc_list : {0}".format(uc_list))
         self.log.info("attr_list : {0}".format(attr_list))
         for index, each_uc in enumerate(uc_list):
-            print(index, each_uc)
+            print("update attr : ", index, each_uc)
             each_json_path = self.get_json_img_path_from_uc(each_uc)[0]
             each_json_info = JsonInfo(each_json_path)
             for attr_name, attr_value in attr_list:
@@ -205,10 +205,8 @@ class JsonOpt(object):
     @DecoratorUtil.time_this
     def add_xml_to_root(self, xml_path, img_path):
         """输入一个 xml img 得到 json 文件"""
-
-
         # 申请 uc
-        self.log.info("get_json_from_xml : ")
+        self.log.info("add_xml_to_root : ")
         self.log.info("xml path : {0}".format(xml_path))
         self.log.info("img_path : {0}".format(img_path))
         each_hash = HashLibUtil.get_file_md5(img_path)
@@ -242,8 +240,13 @@ class JsonOpt(object):
         # 将 img 重命名之后
         if not os.path.exists(save_img_path):
             img_ndarry = cv2.imdecode(np.fromfile(img_path, dtype=np.uint8), 1)
-            cv2.imwrite(save_img_path, img_ndarry)
-        return save_json_path, save_img_path
+            cv2.imencode('.jpg', img_ndarry)[1].tofile(save_img_path)
+
+        # 最后主动做检查
+        if os.path.exists(save_json_path) and os.path.exists(save_img_path):
+            return save_json_path, save_img_path
+        else:
+            raise ValueError("add_xml_to_root error")
 
     @staticmethod
     def get_json_from_labelme_json(self, json_path, save_path):
@@ -345,9 +348,14 @@ class JsonOpt(object):
             # 读取 json_path, 转为 xml
             save_xml_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.xml')
             save_img_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.jpg')
-            json_info = JsonInfo(json_path)
-            shutil.copy(img_path, save_img_path)
-            json_info.save_to_xml(save_xml_path)
+
+            if os.path.exists(img_path):
+                json_info = JsonInfo(json_path)
+                shutil.copy(img_path, save_img_path)
+                json_info.save_to_xml(save_xml_path)
+            else:
+
+                print("* {0} img not exist ".format(each_uc))
 
     def get_json_dataset_by_uc_list(self, uc_list, save_dir):
         """根据传入的 uc list 拷贝出数据"""

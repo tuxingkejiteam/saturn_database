@@ -215,6 +215,16 @@ class JsonInfo(object):
 
     # ------------------------------------------------------------------------------------------------------------------
 
+    def del_obj_by_label(self, del_label_list):
+        """删除指定的标签"""
+        new_objs = []
+        for each_obj in self.objects:
+            if not each_obj.label in del_label_list:
+                new_objs.append(each_obj)
+        self.objects = new_objs
+
+    # ------------------------------------------------------------------------------------------------------------------
+
     def count_tags(self):
         """分类型统计标签"""
         count = {}
