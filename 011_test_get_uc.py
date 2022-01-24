@@ -1,10 +1,13 @@
 # -*- coding: utf-8  -*-
 # -*- author: jokker -*-
 
+
 import os
 from core.jsonInfo import JsonInfo
 from core.jsonOpt import JsonOpt
 from JoTools.utils.FileOperationUtil import FileOperationUtil
+from JoTools.utils.HashlibUtil import HashLibUtil
+from db_tools.CRUD.MySQL_class import SaturnSQL
 
 
 # 读取 xml 中的内容，存放到数据库中
@@ -16,38 +19,38 @@ from JoTools.utils.FileOperationUtil import FileOperationUtil
 xml_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\Annotations"
 img_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_0_标准测试集\JPEGImages"
 
-# xml_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_train_data_step_1\Annotations"
-# img_dir = r"D:\data\001_fzc_优化相关资料\dataset_fzc\000_train_data_step_1\JPEGImages"
-
 opt = JsonOpt()
+host="192.168.3.101"
+user="root"
+password="root123"
+db_name="Saturn_Database_V1"
+sql_zy = SaturnSQL(host=host, user=user, password=password, db_name=db_name)
 
-# a = opt.query_label_info_from_uc_list(["Dni002k", "Dni002n"])
-# print(a)
-
-
-#
-
-
-
-label_list = ['Fnormal', 'fzc_broken']
+label_list = []
 
 index, json_path_list = 0,  []
-for each_img_path in list(FileOperationUtil.re_all_file(img_dir, endswitch=['.jpg', '.JPG', '.png', '.PNG']))[:100]:
+for each_img_path in FileOperationUtil.re_all_file(img_dir, endswitch=['.jpg', '.JPG', '.png', '.PNG']):
     index += 1
     print(index, each_img_path)
     xml_name = FileOperationUtil.bang_path(each_img_path)[1] + '.xml'
     each_xml_path = os.path.join(xml_dir, xml_name)
-    # 获取标准 json
-    json_path, img_path = opt.add_xml_to_root(each_xml_path, each_img_path)
-    json_path_list.append(json_path)
 
-# 更新入数据库
-a = opt.add_json_label_to_db(json_path_list, label_list, confidence=True)
+    each_hash = HashLibUtil.get_file_md5(each_img_path)
+    uc = sql_zy.get_uc_list([each_hash])[0]
 
-a = opt.query_label_info_from_uc_list(["Dni002k", "Dni002n"])
+    # print(each_img_path)
+    # print(each_xml_path)
+    print(uc)
+    print('-'*20)
 
-print(a)
-
+#     # 获取标准 json
+#     json_path, img_path = opt.get_json_from_xml(each_xml_path, each_img_path)
+#     # 标准 json 入库
+#     opt.add_uc_to_root(json_path, img_path, is_clip=True)
+#     json_path_list.append(json_path)
+#
+# # 更新入数据库
+# opt.add_json_label_to_db(json_path_list, label_list, confidence=True)
 
 
 

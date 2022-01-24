@@ -82,9 +82,8 @@ class JsonOpt(object):
         print("* object_buffer_dir dir : {0}".format(self.object_buffer_dir))
         print('-'*30)
 
-    @staticmethod
-    def add_json_label_to_db(json_path_list, label_list, confidence):
-        self.sql_zy.add_json_label_to_db(json_path_list, label_list=label_list, confidence=confidence)
+    def add_json_label_to_db(self, json_path_list, label_list, confidence):
+        return self.sql_zy.add_json_label_to_db(json_path_list, label_list=label_list, confidence=confidence)
 
     @staticmethod
     def update_json_to_db(json_path):
@@ -97,6 +96,9 @@ class JsonOpt(object):
     def query_uc_list_from_label(self, label_list, conf, mode):
         """数据库中根据条件查询 uc list"""
         return self.sql_zy.query_uc_list_from_label(label_list, conf=conf, AND=mode)
+
+    def query_label_info_from_uc_list(self, uc_list):
+        return self.sql_zy.query_label_info_from_uc_list(uc_list)
 
     def del_uc_label_from_db(self, uc, label_list):
         """从数据库中删除 uc 对应的 label 信息"""
@@ -115,8 +117,8 @@ class JsonOpt(object):
 
     def add_uc_to_root(self, json_path, img_path, is_clip=False):
         """将 json 存放到 root 目录中去"""
-        if not self._check_json_img_consistence(json_path, img_path):
-            raise ValueError("* json img uc not equal")
+        # if not self._check_json_img_consistence(json_path, img_path):
+        #     raise ValueError("* json img uc not equal")
 
         self.log.info("add_uc_to_root :")
         self.log.info("json_path : {0}".format(json_path))
@@ -186,6 +188,11 @@ class JsonOpt(object):
         img_path = os.path.join(self.json_dir, uc[:3], "{0}.jpg".format(uc))
         return (json_path, img_path)
 
+    # def get_json_img_tmp_path_from_uc(self, uc):
+    #     json_path = os.path.join(self.tmp_dir, uc[:3], "{0}.json".format(uc))
+    #     img_path = os.path.join(self.tmp_dir, uc[:3], "{0}.jpg".format(uc))
+    #     return (json_path, img_path)
+
     def uc_in_root(self, uc):
         """uc 是不是存在于缓存空间"""
         json_path, img_path = self.get_json_img_path_from_uc(uc)
@@ -196,7 +203,7 @@ class JsonOpt(object):
     # ------------------------------------------------------------------------------------------------------------------
 
     @DecoratorUtil.time_this
-    def get_json_from_xml(self, xml_path, img_path):
+    def add_xml_to_root(self, xml_path, img_path):
         """输入一个 xml img 得到 json 文件"""
         # 申请 uc
         self.log.info("get_json_from_xml : ")
@@ -210,7 +217,12 @@ class JsonOpt(object):
         a.unique_code = uc
         a.MD5 = each_hash
         #
+        # save_json_path = os.path.join(self.tmp_dir, "{0}.json".format(uc))
+        # save_img_path = os.path.join(self.tmp_dir, "{0}.jpg".format(uc))
         save_json_path, save_img_path = self.get_json_img_path_from_uc(uc)
+        #
+        save_json_dir = os.path.split(save_json_path)[0]
+        os.makedirs(save_json_dir, exist_ok=True)
         a.save_to_json(save_json_path)
         # 将 img 重命名之后
         if not os.path.exists(save_img_path):
