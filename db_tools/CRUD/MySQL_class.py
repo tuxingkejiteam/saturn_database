@@ -78,6 +78,7 @@ class SaturnSQL(object):
     def delete_uc_label(self, uc, label_list: list) -> bool:
         # 删除单个UC的某些标签。
         D = self.D(self.database, self.db_cursor, self.user)
+
         succeed = D.delete_uc_label(uc, label_list)
         return succeed
 
@@ -106,16 +107,23 @@ class SaturnSQL(object):
         pass
 
     def clear_all_table(self) -> bool:
-        print("已禁止操作！")
-        return False
+        # print("已禁止操作！")
+        # return False
         # 对数据库进行删除数据操作
         D = self.D(self.database, self.db_cursor, self.user)
         D.drop_all_tables()
         return True
 
-    def query_uc_list_from_label(self, label_list, conf: int = 1, AND=True):
+    def query_uc_list_from_label(self, label_list, conf: int = 1, MODE='AND'):
         # 根据标签和置信度来导出uc列表
         R = self.R(self.database, self.db_cursor)
+        if MODE == 'AND':
+            AND = True
+        elif MODE == 'OR':
+            AND = False
+        else:
+            print("未识别的模式参数。")
+            return False
         uc_list = R.query_uc_list_from_label(label_list, conf, AND=AND)
         return uc_list
 

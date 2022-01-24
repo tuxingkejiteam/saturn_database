@@ -81,7 +81,10 @@ class Read(object):
         self.db_cursor.execute(sql_statement)
         coding_num = self.db_cursor.fetchall()
         if len(coding_num) == 0:
-            print("warning!有日子没有弄record了。")
+            # print("warning!有日子没有弄record了。")
+            sql_statement = "INSERT INTO `编码使用记录表` (`日期编码`,`已使用数量`) VALUES ('{}',0);".format(uc_date)
+            self.db_cursor.execute(sql_statement)
+            self.database.commit()
             return 0
         else:
             return coding_num[0][0]
