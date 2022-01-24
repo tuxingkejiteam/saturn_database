@@ -1,10 +1,3 @@
-import pymysql
-import sys
-import os
-from pathlib import Path
-from db_tools.tools.Img_class import LabelInfo
-
-
 class Delete(object):
     # 用于删除数据的类
     # 按照唯一编码，删除所有表中的相关信息

@@ -1,7 +1,4 @@
-import sys
-import os
 import datetime
-from pathlib import Path
 from core.jsonInfo import JsonInfo
 
 
@@ -50,24 +47,37 @@ class Read(object):
         else:
             return False, ''  # md5不存在于数据库
 
-    def query_uc_list_from_label(self, label_list: list, conf: int = 1, AND=True) -> list:
+    def query_uc_list_from_label(self, label_list: list, conf: int = 1, MODE='AND') -> list:
         # 选取所有置信度的绝对值达到conf以上的数据。
         # 默认1次过图即做输出。不做强制输入要求。
 
         label_condition = ''
-        conf_condition = '置信度>={} OR 置信度<=-{}'.format(conf, conf)
+        # conf_condition = '置信度>={} OR 置信度<=-{}'.format(conf, conf)
         for label in label_list:
             label_condition += "标签='{}' OR ".format(label)
         label_condition = label_condition[:-4]  # 去掉最后面的" OR "
         num_label = len(label_list)
 
-        # 拼接条件语句
-        if AND:
+        # 拼接条件语句，屎山if-else
+        if MODE == 'AND':
+            conf_condition = '置信度>={} OR 置信度<=-{}'.format(conf, conf)
             sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码` HAVING COUNT(`唯一编码`)={};" \
                 .format(label_condition, conf_condition, num_label)
-        else:
+        elif MODE == 'OR':
+            conf_condition = '置信度>={} OR 置信度<=-{}'.format(conf, conf)
             sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码`;" \
                 .format(label_condition, conf_condition)
+        elif MODE == 'EXIST':
+            conf_condition = '置信度>={}'.format(conf)
+            sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码`;" \
+                .format(label_condition, conf_condition)
+        elif MODE == 'NOT_EXIST':
+            conf_condition = '置信度<=-{}'.format(conf)
+            sql_statement = "SELECT 唯一编码 FROM `目标标注表` WHERE ({}) AND ({}) GROUP BY `唯一编码`;" \
+                .format(label_condition, conf_condition)
+        else:
+            print("未识别的模式参数。")
+            return []
 
         self.db_cursor.execute(sql_statement)
         uc_tuple_list = self.db_cursor.fetchall()

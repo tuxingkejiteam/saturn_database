@@ -1,5 +1,5 @@
 import datetime
-from db_tools.tools.Img_class import LabelInfo
+from core.jsonInfo import JsonInfo
 
 
 class Update(object):
@@ -15,7 +15,7 @@ class Update(object):
         for item in label_info:
             self.label_dic[item[0]] = item[1:]
 
-        self.json = LabelInfo  # 读取json信息的类，使用时传入json文件的路径。
+        self.json = JsonInfo  # 读取json信息的类，使用时传入json文件的路径。
         self.date = self.Operation_date()  # 获取操作时的日期信息
 
     def UC_labeled(self, label_list, UC_list):
