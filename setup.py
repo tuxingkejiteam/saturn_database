@@ -13,7 +13,7 @@ from setuptools import setup, find_packages
 setup(
 
     name='SaturnDatabase',                                                                 # 打包起来的包的文件名
-    version='0.0.1',                                                                        # 版本
+    version='0.0.2',                                                                        # 版本
     description='a tools for saturn database',                                              # 描述
     author='jokker|zhangyi',                                                                # 作者
     author_email='18761609908@163.com',                                                     # 邮箱

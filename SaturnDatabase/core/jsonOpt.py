@@ -45,7 +45,7 @@ class JsonOpt(object):
 
         if self.config_path is None:
             # config_path = r"./config.ini"
-            config_path = os.path.join(this_dir, '..', 'config.ini')
+            config_path = os.path.join(this_dir, '..\..', 'config.ini')
             print(os.path.abspath(config_path))
             if os.path.exists(config_path):
                 self.config_path = config_path

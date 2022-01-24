@@ -2,9 +2,9 @@
 # -*- author: jokker -*-
 
 import os
-from core.jsonInfo import JsonInfo
-from core.jsonOpt import JsonOpt
-from core.ucDatasetOpt import UcDatasetOpt
+from SaturnDatabase.core.jsonInfo import JsonInfo
+from SaturnDatabase.core.jsonOpt import JsonOpt
+from SaturnDatabase.core.ucDatasetOpt import UcDatasetOpt
 from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 
