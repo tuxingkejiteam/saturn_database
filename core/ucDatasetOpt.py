@@ -37,6 +37,10 @@ class UcDataset(object):
         if key == "uc_list":
             self.update_time = time.time()
 
+    def __getitem__(self, index):
+        """按照 index 取对应的对象"""
+        return self.uc_list[index]
+
     def parse_json_path(self):
         """解析 json 信息"""
         if self.json_path is None:
@@ -122,7 +126,7 @@ class UcDatasetOpt(object):
         """设置一个 uc_dataset 存储到本地"""
         self.log.info("add uc dataset : {0}".format(dataset_name))
         # 如果同样的名字已存在，那么就不能插入只能进行更新
-        json_save_path = self.get_uc_dataset_path_by_dataset_name(dataset_name)
+        json_save_path = self._get_uc_dataset_path_by_dataset_name(dataset_name)
         if os.path.exists(json_save_path):
             raise ValueError("{0} is exists".format(dataset_name))
         #
@@ -135,7 +139,7 @@ class UcDatasetOpt(object):
 
     def get_uc_dataset(self, dataset_name):
         self.log.info("get uc dataset : {0}".format(dataset_name))
-        json_path = self.get_uc_dataset_path_by_dataset_name(dataset_name)
+        json_path = self._get_uc_dataset_path_by_dataset_name(dataset_name)
         if os.path.exists(json_path):
             a = UcDataset(json_path=json_path)
             return a
@@ -143,7 +147,7 @@ class UcDatasetOpt(object):
             self.log.info("dataset not exists")
             raise ValueError('dataset not exists')
 
-    def get_uc_dataset_path_by_dataset_name(self, dataset_name):
+    def _get_uc_dataset_path_by_dataset_name(self, dataset_name):
         return os.path.join(self.dataset_dir, "{0}.json".format(dataset_name))
 
     def update_uc_dataset(self, uc_dataset):
@@ -153,7 +157,7 @@ class UcDatasetOpt(object):
         uc_dataset_name = uc_dataset.dataset_name
         self.log.info("update uc dataset : {0}".format(uc_dataset_name))
         uc_dataset.update_time = time.time()
-        json_path = self.get_uc_dataset_path_by_dataset_name(uc_dataset_name)
+        json_path = self._get_uc_dataset_path_by_dataset_name(uc_dataset_name)
         if not os.path.exists(json_path):
             raise ValueError("no dataset with name {0} can not update, try insert".format(uc_dataset_name))
         uc_dataset.save_to_file(json_path)

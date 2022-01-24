@@ -95,14 +95,14 @@ class JsonOpt(object):
 
     def query_uc_list_from_label(self, label_list, conf, mode):
         """数据库中根据条件查询 uc list"""
-        return self.sql_zy.query_uc_list_from_label(label_list, conf=conf, AND=mode)
+        return self.sql_zy.query_uc_list_from_label(label_list, conf=conf, MODE=mode)
 
     def query_label_info_from_uc_list(self, uc_list):
         return self.sql_zy.query_label_info_from_uc_list(uc_list)
 
     def del_uc_label_from_db(self, uc, label_list):
         """从数据库中删除 uc 对应的 label 信息"""
-        pass
+        return self.sql_zy.delete_uc_label(uc, label_list)
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -205,6 +205,8 @@ class JsonOpt(object):
     @DecoratorUtil.time_this
     def add_xml_to_root(self, xml_path, img_path):
         """输入一个 xml img 得到 json 文件"""
+
+
         # 申请 uc
         self.log.info("get_json_from_xml : ")
         self.log.info("xml path : {0}".format(xml_path))
@@ -217,13 +219,26 @@ class JsonOpt(object):
         a.unique_code = uc
         a.MD5 = each_hash
         #
-        # save_json_path = os.path.join(self.tmp_dir, "{0}.json".format(uc))
-        # save_img_path = os.path.join(self.tmp_dir, "{0}.jpg".format(uc))
         save_json_path, save_img_path = self.get_json_img_path_from_uc(uc)
         #
         save_json_dir = os.path.split(save_json_path)[0]
         os.makedirs(save_json_dir, exist_ok=True)
-        a.save_to_json(save_json_path)
+
+        if not os.path.exists(save_json_path):
+            a.save_to_json(save_json_path)
+        else:
+            # todo 要是 json 已经存在，那个只会更新其中的某一些属性
+            old_josn_info = JsonInfo(save_json_path)
+            # 将需要保留的属性赋值到新的 json_info 中
+            if a.train_info is None:
+                a.train_info = old_josn_info.train_info
+            if a.trace is None:
+                a.trace = old_josn_info.trace
+            if a.extra_info is None:
+                a.extra_info = old_josn_info.extra_info
+            if a.mode is None:
+                a.mode = old_josn_info.mode
+            a.save_to_json(save_json_path)
         # 将 img 重命名之后
         if not os.path.exists(save_img_path):
             img_ndarry = cv2.imdecode(np.fromfile(img_path, dtype=np.uint8), 1)
@@ -324,7 +339,8 @@ class JsonOpt(object):
 
         self.log.info("get_xml_dataset_by_uc_list : ")
         self.log.info("uc_list : {0}".format(uc_list))
-        for each_uc in uc_list:
+        for index, each_uc in enumerate(uc_list):
+            print("save to xml | img {0} : {1}".format(index, each_uc))
             json_path, img_path = self.get_json_img_path_from_uc(each_uc)
             # 读取 json_path, 转为 xml
             save_xml_path = os.path.join(save_dir, FileOperationUtil.bang_path(json_path)[1] + '.xml')
