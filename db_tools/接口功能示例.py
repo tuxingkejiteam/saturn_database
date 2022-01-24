@@ -12,8 +12,8 @@ def main():
     #
     # print(uc_list)
 
-    # # 清空数据库中所有表中的数据---------------------------------
-    # a = mysql.clear_all_table()
+    # 清空数据库中所有表中的数据---------------------------------
+    a = mysql.clear_all_table()
 
     # # 梦中杀模块，直接杀死所有进程，不留后患。----------------------
     # mysql.kill_in_dream()
@@ -39,11 +39,11 @@ def main():
     # uc = '测试3'
     # result = mysql.delete_uc_label(uc, label_list)
 
-    # md5_list申请UC_list示例----------------------------
-    MD5_list = ['5a96a260a93dd004364be81589f10161', 'f341a333a4bb011aa8bf0f2fce395041',
-                '0fbeb8aec7eb843811f9fce4462ce681', 'wojiushiyishinengbunengyouxindu1']
-    UC_list = mysql.get_uc_list(MD5_list)
-    print(UC_list)
+    # # md5_list申请UC_list示例----------------------------
+    # MD5_list = ['5a96a260a93dd004364be81589f10161', 'f341a333a4bb011aa8bf0f2fce395041',
+    #             '0fbeb8aec7eb843811f9fce4462ce681', 'wojiushiyishinengbunengyouxindu1']
+    # UC_list = mysql.get_uc_list(MD5_list)
+    # print(UC_list)
 
 
 if __name__ == "__main__":
