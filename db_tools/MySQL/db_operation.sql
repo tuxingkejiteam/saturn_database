@@ -39,4 +39,5 @@ INSERT INTO `目标标注表` VALUES('测试2','label2',1);
 INSERT INTO `目标标注表` VALUES('测试2','label3',1);
 INSERT INTO `目标标注表` VALUES('测试3','label3',1);
 
+INSERT INTO `编码使用记录表` (`日期编码`,`已使用数量`) VALUES ('abc',0)  ON DUPLICATE KEY UPDATE `已使用数量`=100; 
 
