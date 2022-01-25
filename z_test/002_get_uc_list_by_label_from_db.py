@@ -3,21 +3,22 @@
 
 import os
 import shutil
-from SaturnDatabase.core.jsonInfo import JsonInfo
-from SaturnDatabase.core.jsonOpt import JsonOpt
+from saturndatabase.core.jsonInfo import JsonInfo
+from saturndatabase.core.jsonOpt import JsonOpt
 from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 
 # fixme 验证结果
-
-json_opt = JsonOpt()
 
 # ----------------------------------------------------------------------------------------------------------------------
 label_list = ['Fnormal', 'fzc_broken']
 conf = 1
 # mode = 'OR'
 mode = 'AND'
+config_path = r"D:\Algo\saturn_database\config.ini"
 # ----------------------------------------------------------------------------------------------------------------------
+
+json_opt = JsonOpt(config_path)
 
 
 # AND 两个标签同时都含有

@@ -4,18 +4,19 @@
 
 import os
 import shutil
-from SaturnDatabase.core.jsonInfo import JsonInfo
-from SaturnDatabase.core.jsonOpt import JsonOpt
+from saturndatabase.core.jsonInfo import JsonInfo
+from saturndatabase.core.jsonOpt import JsonOpt
 from JoTools.utils.FileOperationUtil import FileOperationUtil
 
 # todo fixme json 和 数据库都需要删除
 
 # ----------------------------------------------------------------------------------------------------------------------
 assign_uc = "Dni02hs"
+config_path = r"D:\Algo\saturn_database\config.ini"
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-opt = JsonOpt()
+opt = JsonOpt(config_path)
 
 label_info = opt.query_label_info_from_uc_list([assign_uc])
 del_label_list = label_info[0][assign_uc].keys()
