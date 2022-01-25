@@ -32,11 +32,11 @@ GROUP BY `唯一编码`  HAVING COUNT(`唯一编码`) = 3;
 
 SELECT * FROM `目标标注表` WHERE `唯一编码`='Dnf001x' AND (`标签`='a' OR `标签`='b' OR `标签`='c');
 
-INSERT INTO `目标标注表` VALUES('测试1','label1',1);
-INSERT INTO `目标标注表` VALUES('测试1','label2',1);
-INSERT INTO `目标标注表` VALUES('测试2','label2',1);
-INSERT INTO `目标标注表` VALUES('测试2','label3',1);
-INSERT INTO `目标标注表` VALUES('测试3','label3',1);
+INSERT INTO `目标标注表` VALUES('测试1','1',1);
+INSERT INTO `目标标注表` VALUES('测试1','2',-1);
+INSERT INTO `目标标注表` VALUES('测试2','2',1);
+INSERT INTO `目标标注表` VALUES('测试2','3',-1);
+INSERT INTO `目标标注表` VALUES('测试3','3',1);
 
 INSERT INTO `编码使用记录表` (`日期编码`,`已使用数量`) VALUES ('abc',0)  ON DUPLICATE KEY UPDATE `已使用数量`=100; 
-SELECT `唯一编码` FROM `目标标注表` WHERE `唯一编码` LIKE 'Dni%' GROUP BY `唯一编码` HAVING COUNT(`唯一编码`) >= 1;
+select `唯一编码` from `目标标注表` where `唯一编码` like 'Dni%' group by `唯一编码` HAVING COUNT(`唯一编码`) >= 1;
